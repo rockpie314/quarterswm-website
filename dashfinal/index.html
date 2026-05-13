@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://www.quarterswm.com/dashfinal.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QWM — Market &amp; Economic Indicators</title>
+<link href="./dashfinal_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1a2e;
+    --navy-mid: #16213e;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --parchment: #f5f0e8;
+    --parchment-mid: #ede8dc;
+    --red: #c0392b;
+    --red-light: #f9e8e7;
+    --yellow: #b8860b;
+    --yellow-light: #fef9e7;
+    --green: #1a6b3c;
+    --green-light: #e8f5ee;
+    --text-dark: #1a1a2e;
+    --text-mid: #4a4a6a;
+    --border: #d4c9b0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--parchment);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .header-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--parchment);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    font-size: 0.65rem;
+    color: #8888aa;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  /* NAV TABS */
+  .nav {
+    background: var(--navy-mid);
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #2a2a4e;
+    padding: 0 2rem;
+  }
+
+  .nav-tab {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8888aa;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .nav-tab:hover { color: var(--gold-light); }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ACTION BAR */
+  .action-bar {
+    background: var(--parchment-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.5rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: var(--gold);
+    border: 1px solid var(--navy);
+  }
+  .btn-primary:hover { background: var(--gold); color: var(--navy); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+  }
+  .btn-secondary:hover { background: var(--navy); color: var(--parchment); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+    border: 1px solid var(--gold);
+    font-weight: 500;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .last-updated {
+    font-size: 0.65rem;
+    color: var(--text-mid);
+    margin-left: auto;
+  }
+
+  .status-msg {
+    font-size: 0.65rem;
+    color: var(--text-mid);
+    font-style: italic;
+  }
+
+  /* VIEWS */
+  .view { display: none; padding: 2rem; }
+  .view.active { display: block; }
+
+  /* SCORECARD VIEW */
+  .scorecard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .scorecard-grid { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    background: var(--navy);
+    padding: 0.875rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--parchment);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .panel-score {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .panel-score-label {
+    font-size: 0.6rem;
+    color: #8888aa;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .score-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .score-badge.red { background: var(--red); color: white; }
+  .score-badge.yellow { background: var(--yellow); color: white; }
+  .score-badge.green { background: var(--green); color: white; }
+  .score-badge.pending { background: #444466; color: #8888aa; }
+
+  /* INDICATOR ROWS */
+  .indicator-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 80px;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--parchment-mid);
+    gap: 0.75rem;
+  }
+
+  .indicator-row:last-child { border-bottom: none; }
+  .indicator-row:hover { background: var(--parchment); }
+
+  .ind-name {
+    font-size: 0.72rem;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+
+  .ind-sub {
+    font-size: 0.6rem;
+    color: var(--text-mid);
+    margin-top: 2px;
+  }
+
+  .ind-value {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    text-align: right;
+  }
+
+  .ind-value.pending {
+    color: #aaaacc;
+    font-size: 0.65rem;
+  }
+
+  .signal-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin-left: auto;
+  }
+
+  .signal-dot.red { background: var(--red-light); color: var(--red); border: 1.5px solid var(--red); }
+  .signal-dot.yellow { background: var(--yellow-light); color: var(--yellow-text); border: 1.5px solid var(--yellow); }
+  .signal-dot.green { background: var(--green-light); color: var(--green-text); border: 1.5px solid var(--green); }
+  .signal-dot.pending { background: #f0f0f8; color: #aaaacc; border: 1.5px solid #ccccee; }
+
+  /* DIVERGENCE PANEL */
+  .divergence-panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .div-section {
+    flex: 1;
+    text-align: center;
+  }
+
+  .div-label {
+    font-size: 0.6rem;
+    color: var(--text-mid);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .div-score-large {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .div-score-large.red { color: var(--red); }
+  .div-score-large.yellow { color: var(--yellow-text); }
+  .div-score-large.green { color: var(--green); }
+  .div-score-large.pending { color: #aaaacc; }
+
+  .div-separator {
+    width: 1px;
+    height: 60px;
+    background: var(--border);
+  }
+
+  .div-reading {
+    font-size: 0.65rem;
+    color: var(--text-mid);
+    margin-top: 0.25rem;
+  }
+
+  .div-alert {
+    flex: 1.5;
+    font-size: 0.7rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    border-left: 3px solid var(--gold);
+    padding-left: 1rem;
+  }
+
+  /* GOLD RULE */
+  .gold-rule {
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 0.5rem 0;
+  }
+
+  /* CHART VIEW */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  .chart-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.25rem;
+  }
+
+  .chart-card-title {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    margin-bottom: 0.75rem;
+  }
+
+  .chart-canvas-wrap {
+    position: relative;
+    height: 140px;
+  }
+
+  canvas { width: 100% !important; }
+
+  .no-history {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: #aaaacc;
+    border: 1px dashed var(--border);
+    border-radius: 2px;
+  }
+
+  /* HISTORY VIEW — heat map */
+  .history-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    align-items: center;
+  }
+  .history-count {
+    font-size: 0.65rem;
+    color: var(--text-mid);
+    margin-left: auto;
+  }
+  .heatmap-wrap {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  .heatmap-table {
+    border-collapse: collapse;
+    font-size: 0.65rem;
+    min-width: 100%;
+  }
+  .heatmap-table th,
+  .heatmap-table td {
+    padding: 0.45rem 0.7rem;
+    white-space: nowrap;
+    border-bottom: 1px solid #eeeee8;
+  }
+  /* Row label column */
+  .heatmap-table .row-label {
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-align: left;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    min-width: 10rem;
+    border-bottom: 1px solid #2a2a4e;
+  }
+  /* Date header row */
+  .heatmap-table .date-header {
+    background: var(--navy);
+    color: var(--parchment);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    min-width: 5.5rem;
+  }
+  /* Score rows */
+  .heatmap-table .score-row .row-label {
+    color: #ccbb88;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+  /* Data cells */
+  .heatmap-table td.hm-cell {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+  }
+  .heatmap-table td.hm-green { background: var(--green-light); color: var(--green-text); }
+  .heatmap-table td.hm-yellow { background: var(--yellow-light); color: var(--yellow-text); }
+  .heatmap-table td.hm-red { background: var(--red-light); color: var(--red); }
+  .heatmap-table td.hm-pending { color: #aaaacc; }
+  /* Score cells */
+  .heatmap-table td.hm-score-green { background: var(--green); color: white; font-weight: 600; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; }
+  .heatmap-table td.hm-score-yellow { background: var(--yellow); color: white; font-weight: 600; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; }
+  .heatmap-table td.hm-score-red { background: var(--red); color: white; font-weight: 600; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; }
+  /* Section divider rows */
+  .heatmap-table tr.section-divider td,
+  .heatmap-table tr.section-divider th {
+    background: #f0ede6;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #887766;
+    border-bottom: 1px solid #ddddd0;
+  }
+
+  /* LOADING */
+  .loading-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(26,26,46,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .loading-overlay.active { display: flex; }
+
+  .loading-box {
+    background: var(--navy);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 2rem 3rem;
+    text-align: center;
+  }
+
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #333355;
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    color: var(--parchment);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .loading-sub {
+    color: #8888aa;
+    font-size: 0.62rem;
+    margin-top: 0.35rem;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.62rem;
+    color: var(--text-mid);
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.red { background: var(--red); }
+  .legend-dot.yellow { background: var(--yellow); }
+  .legend-dot.green { background: var(--green); }
+/* ============================================================
+   REFERENCE SECTION
+   ============================================================ */
+.ref-section {
+  max-width: 1400px;
+  margin: 3rem auto 2rem;
+  padding: 0 1.5rem 3rem;
+  border-top: 2px solid var(--gold);
+}
+.ref-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  padding: 1.2rem 0 1rem;
+}
+.ref-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.ref-card {
+  background: var(--parchment-mid);
+  border: 1px solid #ddd8cc;
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+}
+.ref-card-full {
+  grid-column: 1 / -1;
+}
+.ref-card-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid var(--gold-light);
+  padding-bottom: 0.4rem;
+}
+.ref-note {
+  font-size: 0.72rem;
+  color: #888877;
+  margin-bottom: 0.8rem;
+  font-style: italic;
+}
+.ref-list-ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.82rem;
+  color: var(--navy);
+  line-height: 1.9;
+}
+.ref-list-ol li { margin-bottom: 0.1rem; }
+.ref-list-ol code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  background: #e8e4da;
+  padding: 0 4px;
+  border-radius: 2px;
+  color: var(--navy-mid);
+}
+/* Signal table */
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.ref-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--gold-light);
+}
+.ref-table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid #e8e4da;
+  color: var(--navy);
+  vertical-align: top;
+  line-height: 1.4;
+}
+.ref-table tr:last-child td { border-bottom: none; }
+.sig-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.sig-dot.green { background: var(--green); }
+.sig-dot.yellow { background: var(--yellow); }
+.sig-dot.red { background: var(--red); }
+/* Defensive steps */
+.def-steps { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.5rem; }
+.def-step {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 0.7rem 0.9rem;
+  background: white;
+  border-radius: 4px;
+  border-left: 3px solid var(--gold);
+}
+.def-step-inactive { border-left-color: #cccccc; opacity: 0.65; }
+.def-step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 1.2rem;
+  line-height: 1.3;
+}
+.def-step-inactive .def-step-num { color: #aaaaaa; }
+.def-step-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--navy);
+  margin-bottom: 0.3rem;
+}
+.def-step-tag {
+  display: inline-block;
+  font-size: 0.58rem;
+  background: #e0e0e0;
+  color: #888;
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+}
+.def-step-desc {
+  font-size: 0.78rem;
+  color: #444433;
+  line-height: 1.5;
+}
+/* Model grid */
+.ref-grid td, .ref-grid th { font-size: 0.75rem; text-align: center; }
+.ref-grid td:first-child, .ref-grid th:first-child { text-align: left; }
+.grid-section td {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: var(--navy);
+  padding: 0.25rem 0.5rem;
+}
+.grid-total td {
+  font-weight: 600;
+  background: #e8e4da;
+  border-top: 1px solid #ccccbb;
+}
+.grid-tactical td {
+  color: #888877;
+  font-style: italic;
+  font-size: 0.72rem;
+}
+/* Data sources */
+.ref-sources-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.8rem;
+}
+/* NARRATIVE BLOCK */
+.narrative-block {
+  background: var(--white);
+  border: 1px solid #e0ddd4;
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.narrative-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.6rem;
+}
+.narrative-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.narrative-para {
+  font-size: 0.78rem;
+  color: var(--navy);
+  line-height: 1.6;
+}
+.narrative-flags {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  border-top: 1px solid #e8e4da;
+  padding-top: 0.5rem;
+  margin-top: 0.1rem;
+}
+.narrative-flag-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+.narrative-flag-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  min-width: 2.2rem;
+}
+.narrative-flag-label.yellow { color: var(--yellow-text); }
+.narrative-flag-label.red    { color: var(--red); }
+
+/* Cluster observations */
+.narrative-clusters {
+  border-top: 1px solid #e8e4da;
+  padding-top: 0.5rem;
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.narrative-cluster-item {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.narrative-cluster-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  padding: 1px 5px;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+}
+.narrative-cluster-text {
+  color: var(--navy);
+  font-style: italic;
+}
+
+.ref-source {
+  display: flex;
+  gap: 0.5rem;
+  background: white;
+  border-radius: 4px;
+  padding: 0.7rem 0.8rem;
+  align-items: flex-start;
+}
+.ref-source-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: white;
+  background: var(--navy);
+  border-radius: 3px;
+  padding: 2px 5px;
+  min-width: 1.8rem;
+  text-align: center;
+  margin-top: 1px;
+}
+.ref-source-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+  line-height: 1.3;
+}
+.ref-source-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: #888877;
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+}
+.ref-source-link code {
+  background: #f0ede6;
+  padding: 0 3px;
+  border-radius: 2px;
+  font-size: 0.6rem;
+}
+.ref-source-desc {
+  font-size: 0.72rem;
+  color: #555544;
+  line-height: 1.45;
+  margin-bottom: 0.35rem;
+}
+.ref-source-thresh {
+  font-size: 0.68rem;
+  color: #666655;
+  font-family: 'DM Mono', monospace;
+}
+.ref-red { color: var(--red); }
+.ref-yellow { color: var(--yellow); }
+.ref-green { color: var(--green); }
+a.ref-source-link-card {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  border: 1px solid transparent;
+}
+a.ref-source-link-card:hover {
+  box-shadow: 0 2px 8px rgba(201,168,76,0.25);
+  border-color: var(--gold-light);
+}
+/* Clickable indicator name links */
+a.ind-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+a.ind-link:hover .ind-name {
+  color: var(--gold);
+}
+a.ind-link:hover .ind-sub {
+  color: var(--gold-light);
+}
+
+/* FOCUS STYLES — keyboard navigation (WCAG AA) */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Fetching Indicators</div>
+    <div class="loading-sub" id="loadingMsg">Connecting to FRED...</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1161 273" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);">
+<g id="surface1">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 163.390625 252.777344 L 144.980469 252.6875 L 144.75 224.066406 C 144.625 208.324219 144.523438 153.167969 144.523438 101.496094 L 144.523438 7.542969 L 161.789062 7.492188 C 171.285156 7.464844 179.789062 7.425781 180.691406 7.40625 L 182.324219 7.371094 L 182.320312 129.933594 C 182.316406 197.339844 182.199219 252.578125 182.058594 252.679688 C 181.917969 252.78125 173.519531 252.824219 163.390625 252.777344 Z M 16.523438 252.265625 C 16.433594 252.03125 16.398438 196.90625 16.445312 129.773438 L 16.535156 7.714844 L 34.402344 7.542969 C 44.226562 7.449219 52.695312 7.429688 53.214844 7.496094 L 54.160156 7.621094 L 54.074219 130.074219 L 53.988281 252.523438 L 35.335938 252.609375 C 20.601562 252.679688 16.652344 252.609375 16.523438 252.265625 Z M 80.613281 130.464844 C 80.613281 63.234375 80.613281 8.117188 80.613281 7.972656 C 80.613281 7.832031 89.195312 7.675781 99.683594 7.628906 L 118.753906 7.539062 L 118.75 129.34375 C 118.746094 196.335938 118.652344 251.496094 118.535156 251.921875 L 118.328125 252.695312 L 80.613281 252.695312 Z M 209.007812 252.46875 C 208.878906 252.339844 208.773438 197.179688 208.773438 129.890625 L 208.773438 7.542969 L 226.898438 7.507812 C 236.867188 7.492188 245.453125 7.453125 245.976562 7.421875 L 246.925781 7.371094 L 246.929688 129.949219 L 246.933594 252.523438 L 228.085938 252.609375 C 217.71875 252.660156 209.132812 252.59375 209.007812 252.46875 Z M 864.199219 236.671875 C 858.117188 235.199219 853.976562 230.722656 852.492188 224.023438 C 851.269531 218.511719 852.355469 213.027344 855.558594 208.535156 C 859.703125 202.726562 868.140625 200.632812 876.375 203.371094 C 879.027344 204.253906 879.519531 204.566406 881.75 206.78125 C 883.519531 208.539062 884.328125 209.632812 884.648438 210.699219 C 885.175781 212.464844 885 212.644531 882.410156 213.003906 C 880.785156 213.226562 880.640625 213.183594 879.988281 212.273438 C 878.457031 210.136719 877.011719 208.765625 875.277344 207.804688 C 873.585938 206.863281 873.199219 206.792969 869.847656 206.796875 C 866.480469 206.796875 866.085938 206.871094 863.957031 207.914062 C 861.433594 209.144531 859.816406 210.757812 858.71875 213.136719 C 857.683594 215.375 857.660156 222.742188 858.679688 225.496094 C 859.59375 227.964844 861.429688 229.976562 864.039062 231.367188 C 867.816406 233.378906 873.726562 233.207031 877.65625 230.96875 C 880.335938 229.441406 880.5 229.15625 880.5 225.988281 L 880.5 223.125 L 871.1875 223.125 L 871.289062 221.148438 L 871.394531 219.171875 L 885.722656 219.242188 L 885.671875 227.433594 C 885.644531 231.9375 885.535156 235.761719 885.429688 235.929688 C 885.324219 236.097656 884.597656 236.183594 883.816406 236.117188 C 882.480469 236.007812 882.382812 235.925781 882.28125 234.871094 C 882.21875 234.25 882.066406 233.796875 881.9375 233.863281 C 879.367188 235.203125 876.824219 236.269531 875.1875 236.691406 C 872.628906 237.355469 866.972656 237.34375 864.199219 236.671875 Z M 372.414062 236.625 C 370.539062 236.515625 370.246094 236.40625 370.082031 235.746094 C 368.351562 228.753906 364.667969 215.980469 362.179688 208.367188 C 361.351562 205.828125 360.753906 203.625 360.851562 203.46875 C 360.949219 203.3125 362.09375 203.183594 363.398438 203.183594 C 365.3125 203.183594 365.832031 203.300781 366.078125 203.785156 C 366.246094 204.117188 366.882812 206.242188 367.496094 208.511719 C 368.105469 210.78125 369.046875 214.109375 369.585938 215.90625 C 370.125 217.699219 371.046875 221.105469 371.628906 223.46875 C 372.773438 228.09375 373.292969 229.65625 373.691406 229.65625 C 373.832031 229.65625 374.363281 228.070312 374.875 226.132812 C 375.382812 224.195312 376.863281 219.28125 378.164062 215.21875 C 379.460938 211.152344 380.8125 206.820312 381.167969 205.589844 L 381.808594 203.355469 L 384.832031 203.183594 C 386.492188 203.089844 387.894531 203.089844 387.945312 203.183594 C 388.066406 203.410156 392.71875 219.015625 393.839844 222.953125 C 395.253906 227.910156 395.726562 229.3125 395.996094 229.3125 C 396.132812 229.3125 396.523438 228.191406 396.867188 226.820312 C 397.207031 225.449219 398.1875 221.929688 399.042969 219 C 399.894531 216.066406 401.171875 211.347656 401.875 208.511719 L 403.15625 203.355469 L 405.777344 203.253906 C 407.746094 203.179688 408.402344 203.265625 408.402344 203.597656 C 408.402344 203.84375 407.417969 207.136719 406.207031 210.917969 C 403.445312 219.574219 401.203125 227.234375 399.140625 235.074219 L 398.753906 236.535156 L 396.011719 236.535156 C 392.785156 236.535156 393.238281 237.152344 391.230469 230 C 390.515625 227.449219 389.351562 223.582031 388.644531 221.40625 C 387.9375 219.230469 386.8125 215.632812 386.140625 213.410156 C 385.46875 211.191406 384.8125 209.371094 384.683594 209.371094 C 384.394531 209.371094 383.578125 211.554688 382.8125 214.355469 C 382.503906 215.492188 381.582031 218.585938 380.765625 221.234375 C 378.277344 229.289062 377.207031 232.851562 376.785156 234.472656 C 376.308594 236.300781 375.878906 236.902344 375.117188 236.8125 C 374.808594 236.773438 373.59375 236.691406 372.414062 236.625 Z M 424.292969 236.652344 L 423.519531 236.488281 L 423.519531 203.199219 L 436.421875 203.105469 C 449.238281 203.011719 449.320312 203.015625 449.5 203.726562 C 449.597656 204.121094 449.628906 205.125 449.570312 205.960938 L 449.460938 207.480469 L 439.066406 207.351562 L 428.675781 207.21875 L 428.675781 217.675781 L 438.3125 217.425781 L 447.949219 217.179688 L 447.847656 219.367188 L 447.742188 221.558594 L 438.210938 221.464844 L 428.675781 221.371094 L 428.675781 232.410156 L 450.011719 232.410156 L 449.90625 234.53125 L 449.804688 236.65625 L 437.4375 236.738281 C 430.632812 236.78125 424.71875 236.742188 424.292969 236.652344 Z M 462.519531 236.535156 C 462.390625 236.328125 463.523438 233.5 465.035156 230.246094 C 467.9375 223.988281 475.484375 206.410156 476.546875 203.425781 C 476.738281 202.890625 477.140625 202.824219 479.765625 202.910156 L 482.761719 203.011719 L 483.515625 205.074219 C 484.429688 207.570312 486.613281 212.792969 488.117188 216.078125 C 488.722656 217.398438 490.070312 220.496094 491.109375 222.953125 C 492.148438 225.410156 493.988281 229.339844 495.195312 231.683594 C 496.40625 234.027344 497.394531 236.152344 497.394531 236.410156 C 497.394531 236.75 496.847656 236.878906 495.375 236.878906 C 492.097656 236.878906 491.285156 236.605469 490.878906 235.375 C 490.683594 234.785156 489.867188 232.785156 489.0625 230.933594 L 487.601562 227.570312 L 479.609375 227.496094 L 471.613281 227.421875 L 470.0625 231.203125 C 467.621094 237.160156 468.03125 236.691406 465.199219 236.804688 C 463.703125 236.867188 462.660156 236.761719 462.519531 236.535156 Z M 485.148438 223.128906 C 486.023438 223.125 485.742188 222.058594 483.796875 218.039062 C 482.949219 216.28125 481.777344 213.417969 481.199219 211.679688 C 479.984375 208.015625 479.6875 207.574219 479.222656 208.71875 C 479.035156 209.171875 477.636719 212.484375 476.109375 216.078125 C 474.585938 219.667969 473.339844 222.714844 473.339844 222.839844 C 473.34375 223.257812 474.457031 223.324219 479.527344 223.226562 C 482.265625 223.175781 484.796875 223.128906 485.148438 223.128906 Z M 512.765625 236.660156 C 512.199219 236.492188 512.167969 235.476562 512.25 219.917969 L 512.339844 203.355469 L 514.660156 203.183594 C 515.9375 203.089844 517.097656 203.050781 517.238281 203.097656 C 517.378906 203.144531 517.445312 209.753906 517.386719 217.789062 L 517.28125 232.398438 L 526.492188 232.488281 L 535.703125 232.582031 L 535.65625 234.40625 C 535.628906 235.410156 535.511719 236.324219 535.398438 236.441406 C 535.140625 236.699219 513.601562 236.910156 512.765625 236.660156 Z M 558.808594 236.621094 L 556.492188 236.503906 L 556.492188 207.480469 L 544.292969 207.480469 L 544.089844 203.175781 L 558.964844 203.265625 L 573.84375 203.355469 L 573.945312 204.578125 C 574 205.25 573.902344 206.183594 573.726562 206.648438 L 573.402344 207.496094 L 567.699219 207.421875 L 561.996094 207.34375 L 561.90625 221.996094 C 561.847656 231.4375 561.695312 236.664062 561.472656 236.691406 C 561.285156 236.714844 560.085938 236.683594 558.808594 236.621094 Z M 589.476562 220.058594 L 589.476562 203.238281 L 591.886719 203.125 C 593.214844 203.0625 594.414062 203.050781 594.550781 203.097656 C 594.6875 203.144531 594.75 206.355469 594.683594 210.230469 L 594.570312 217.28125 L 613.96875 217.28125 L 613.792969 210.226562 C 613.617188 203.214844 613.621094 203.171875 614.359375 202.988281 C 615.394531 202.726562 619.214844 202.953125 619.109375 203.269531 C 619.0625 203.410156 619.023438 211.03125 619.023438 220.203125 L 619.023438 236.878906 L 617.050781 236.875 C 613.222656 236.863281 613.527344 237.550781 613.527344 228.953125 L 613.527344 221.453125 L 604.03125 221.515625 L 594.539062 221.578125 L 594.703125 229.226562 L 594.867188 236.878906 L 589.476562 236.878906 Z M 661.914062 236.652344 C 661.386719 236.507812 661.34375 235.148438 661.398438 219.828125 L 661.457031 203.164062 L 665.003906 203.257812 L 668.554688 203.355469 L 670.265625 207.480469 C 674.113281 216.746094 676.429688 222.613281 677.628906 226.121094 C 678.324219 228.160156 679.003906 229.953125 679.140625 230.101562 C 679.515625 230.511719 680.027344 229.691406 680.703125 227.59375 C 681.324219 225.667969 682.71875 222.167969 686.53125 212.980469 C 687.707031 210.144531 689.015625 206.78125 689.4375 205.503906 L 690.203125 203.183594 L 693.648438 203.183594 C 696.5 203.183594 697.0625 203.269531 696.90625 203.675781 C 696.800781 203.949219 696.847656 211.414062 697.007812 220.265625 C 697.171875 229.117188 697.175781 236.496094 697.015625 236.664062 C 696.859375 236.828125 695.710938 236.855469 694.46875 236.722656 L 692.210938 236.480469 L 692.210938 223.613281 C 692.210938 216.351562 692.078125 210.746094 691.90625 210.746094 C 691.570312 210.746094 690.816406 212.523438 687.960938 220.03125 C 686.917969 222.773438 685.085938 227.570312 683.890625 230.6875 L 681.714844 236.363281 L 679.316406 236.453125 L 676.921875 236.546875 L 673.230469 227.171875 C 671.203125 222.015625 668.972656 216.132812 668.277344 214.097656 C 667.585938 212.066406 666.886719 210.402344 666.726562 210.402344 C 666.488281 210.402344 666.285156 220.621094 666.273438 233.613281 L 666.269531 236.707031 L 664.378906 236.757812 C 663.339844 236.789062 662.230469 236.742188 661.914062 236.652344 Z M 713.597656 236.625 C 712.605469 236.554688 711.792969 236.425781 711.792969 236.335938 C 711.792969 236.246094 712.273438 235.226562 712.855469 234.070312 C 714.082031 231.636719 718.476562 221.304688 722.699219 210.917969 C 724.316406 206.949219 725.792969 203.5 725.984375 203.253906 C 726.230469 202.945312 727.152344 202.84375 729.105469 202.910156 L 731.878906 203.011719 L 732.863281 205.417969 C 733.910156 207.96875 735.507812 211.65625 737.410156 215.90625 C 738.046875 217.324219 739.5625 220.882812 740.777344 223.8125 C 741.996094 226.742188 743.765625 230.792969 744.710938 232.8125 C 745.65625 234.835938 746.34375 236.574219 746.234375 236.683594 C 745.976562 236.941406 743.5625 236.898438 741.902344 236.601562 L 740.570312 236.363281 L 738.789062 231.71875 L 737.011719 227.078125 L 729.003906 227.132812 L 721 227.1875 L 719.546875 230.570312 C 718.746094 232.433594 717.988281 234.371094 717.863281 234.875 C 717.578125 236.03125 716.734375 236.898438 715.980469 236.8125 C 715.660156 236.78125 714.589844 236.695312 713.597656 236.625 Z M 735.160156 222.949219 C 735.160156 222.851562 734.328125 220.878906 733.308594 218.566406 C 730.230469 211.566406 729.414062 209.589844 729.171875 208.546875 C 729.042969 208 728.8125 207.691406 728.664062 207.859375 C 728.515625 208.03125 727.679688 209.949219 726.8125 212.121094 C 725.183594 216.195312 723.894531 219.195312 722.757812 221.554688 C 722.398438 222.300781 722.101562 222.957031 722.101562 223.015625 C 722.101562 223.078125 725.039062 223.125 728.628906 223.125 C 732.222656 223.125 735.160156 223.046875 735.160156 222.949219 Z M 761.402344 220.03125 C 761.429688 209.078125 761.5625 203.175781 761.789062 203.15625 C 763.320312 203.03125 766.671875 203.300781 767.003906 203.578125 C 767.230469 203.765625 768.691406 205.726562 770.25 207.9375 C 771.8125 210.144531 774.410156 213.777344 776.027344 216.007812 C 777.644531 218.238281 780 221.566406 781.265625 223.398438 C 784.402344 227.949219 784.996094 228.679688 785.449219 228.527344 C 785.734375 228.433594 785.804688 224.996094 785.714844 215.789062 L 785.585938 203.183594 L 790.476562 203.183594 L 790.476562 219.839844 C 790.476562 229 790.363281 236.550781 790.21875 236.621094 C 790.078125 236.6875 788.84375 236.660156 787.472656 236.554688 L 784.984375 236.363281 L 783.867188 234.746094 C 781.75 231.691406 775.542969 223.292969 772.992188 220.03125 C 771.585938 218.234375 769.601562 215.488281 768.582031 213.925781 C 767.5625 212.367188 766.566406 211.089844 766.371094 211.089844 C 766.132812 211.089844 766.058594 215.234375 766.136719 223.808594 C 766.230469 234.164062 766.167969 236.558594 765.796875 236.703125 C 765.546875 236.800781 764.445312 236.878906 763.347656 236.878906 L 761.359375 236.878906 Z M 805.703125 236.65625 C 805.289062 236.488281 805.492188 235.882812 807.246094 232.0625 C 807.636719 231.214844 808.367188 229.511719 808.867188 228.28125 C 809.371094 227.054688 810.988281 223.183594 812.464844 219.6875 C 814.980469 213.738281 817.980469 206.492188 818.972656 203.976562 L 819.40625 202.878906 L 822.335938 202.945312 L 825.261719 203.011719 L 825.933594 204.730469 C 827.980469 209.984375 835.855469 228.679688 837.4375 232.050781 C 838.453125 234.214844 839.210938 236.1875 839.117188 236.433594 C 838.933594 236.910156 836.382812 237.039062 834.523438 236.667969 C 833.527344 236.46875 833.394531 236.230469 831.835938 231.855469 L 830.195312 227.25 L 823.050781 227.1875 C 819.121094 227.15625 815.582031 227.117188 815.191406 227.101562 C 814.613281 227.082031 814.226562 227.683594 813.105469 230.34375 C 812.351562 232.140625 811.570312 234.152344 811.375 234.816406 C 810.824219 236.6875 810.527344 236.878906 808.214844 236.851562 C 807.058594 236.835938 805.925781 236.75 805.703125 236.65625 Z M 828.273438 222.789062 C 828.273438 222.347656 826.996094 219.054688 825.003906 214.355469 C 824.121094 212.277344 823.242188 210.035156 823.050781 209.371094 C 822.351562 206.960938 822.246094 207.097656 819.820312 213.425781 C 818.972656 215.640625 818.066406 217.917969 817.800781 218.484375 C 816.515625 221.273438 815.972656 222.738281 816.15625 222.921875 C 816.515625 223.277344 828.273438 223.148438 828.273438 222.789062 Z M 904.144531 236.703125 C 904.050781 236.605469 904.019531 229.023438 904.078125 219.851562 L 904.1875 203.179688 L 916.613281 203.019531 C 923.449219 202.929688 929.132812 202.914062 929.25 202.984375 C 929.367188 203.058594 929.410156 204.097656 929.347656 205.296875 L 929.238281 207.480469 L 919.425781 207.363281 C 911.488281 207.265625 909.558594 207.332031 909.320312 207.707031 C 909.160156 207.960938 909.023438 210.222656 909.023438 212.734375 L 909.015625 217.300781 L 918.035156 217.28125 C 922.996094 217.269531 927.25 217.261719 927.484375 217.269531 C 927.78125 217.277344 927.914062 217.933594 927.914062 219.378906 L 927.914062 221.480469 L 918.640625 221.355469 C 911.148438 221.257812 909.335938 221.320312 909.191406 221.691406 C 909.097656 221.945312 909.015625 224.464844 909.015625 227.292969 L 909.015625 232.4375 L 929.632812 232.234375 L 929.632812 236.878906 L 916.976562 236.878906 C 910.015625 236.878906 904.242188 236.800781 904.144531 236.703125 Z M 1001.785156 219.921875 L 1001.785156 202.964844 L 1014.671875 202.882812 L 1027.554688 202.804688 L 1027.554688 207.730469 L 1026.441406 207.53125 C 1025.824219 207.421875 1021.226562 207.304688 1016.21875 207.269531 L 1007.113281 207.203125 L 1007.019531 212.242188 L 1006.921875 217.28125 L 1026.214844 217.28125 L 1026.011719 221.234375 L 1007.347656 221.234375 L 1007.222656 226.046875 C 1007.15625 228.695312 1007.160156 231.21875 1007.238281 231.660156 L 1007.375 232.457031 L 1017.722656 232.378906 C 1023.414062 232.335938 1028.109375 232.402344 1028.15625 232.527344 C 1028.203125 232.648438 1028.242188 233.679688 1028.242188 234.816406 L 1028.242188 236.878906 L 1001.785156 236.878906 Z M 1045.582031 236.449219 C 1045.492188 236.210938 1045.457031 228.667969 1045.503906 219.6875 L 1045.59375 203.355469 L 1048.515625 203.261719 L 1051.4375 203.164062 L 1052.457031 204.808594 C 1054.121094 207.488281 1064.625 222.257812 1065.617188 223.316406 C 1065.984375 223.703125 1066.976562 225.007812 1067.820312 226.21875 C 1068.667969 227.425781 1069.542969 228.476562 1069.761719 228.550781 C 1070.0625 228.648438 1070.160156 225.496094 1070.160156 215.960938 L 1070.160156 203.238281 L 1072.601562 203.125 C 1073.941406 203.0625 1075.0625 203.089844 1075.09375 203.183594 C 1075.121094 203.277344 1075.101562 210.902344 1075.046875 220.128906 L 1074.945312 236.90625 L 1072.300781 236.804688 L 1069.65625 236.707031 L 1067.589844 233.902344 C 1066.453125 232.359375 1064.210938 229.269531 1062.601562 227.039062 C 1060.996094 224.808594 1058.855469 221.96875 1057.839844 220.730469 C 1056.828125 219.496094 1054.847656 216.742188 1053.433594 214.613281 C 1052.023438 212.488281 1050.703125 210.746094 1050.5 210.746094 C 1050.242188 210.746094 1050.1875 214.628906 1050.3125 223.8125 L 1050.492188 236.878906 L 1048.117188 236.878906 C 1046.535156 236.878906 1045.691406 236.734375 1045.582031 236.449219 Z M 1102 236.648438 C 1101.875 236.523438 1101.773438 229.945312 1101.773438 222.035156 L 1101.773438 207.652344 L 1089.746094 207.652344 L 1089.746094 203.183594 L 1104.175781 203.132812 C 1112.113281 203.101562 1118.792969 203.0625 1119.023438 203.046875 C 1119.308594 203.019531 1119.410156 203.59375 1119.347656 204.902344 C 1119.203125 208.066406 1119.703125 207.839844 1113.117188 207.703125 L 1107.269531 207.582031 L 1107.269531 236.878906 L 1104.75 236.878906 C 1103.363281 236.878906 1102.128906 236.773438 1102 236.648438 Z M 947.328125 219.859375 L 947.328125 203.183594 L 955.375 203.183594 L 955.746094 204.566406 C 955.953125 205.324219 956.4375 206.679688 956.832031 207.574219 C 957.222656 208.46875 958.203125 210.902344 959.015625 212.980469 C 959.828125 215.0625 961.0625 218.078125 961.765625 219.6875 C 962.464844 221.292969 963.542969 224.226562 964.15625 226.203125 C 964.773438 228.183594 965.429688 229.851562 965.617188 229.914062 C 965.800781 229.976562 966.378906 228.820312 966.894531 227.347656 C 967.414062 225.875 969.433594 220.648438 971.382812 215.734375 C 973.332031 210.816406 975.121094 206.132812 975.355469 205.328125 C 975.59375 204.523438 975.957031 203.71875 976.167969 203.546875 C 976.464844 203.296875 980.894531 203.035156 982.722656 203.160156 C 982.933594 203.171875 983.066406 204.574219 983.066406 206.707031 C 983.0625 208.644531 983.121094 216.109375 983.199219 223.296875 L 983.335938 236.363281 L 980.878906 236.464844 L 978.421875 236.5625 L 978.390625 229.414062 C 978.371094 225.484375 978.386719 220.097656 978.417969 217.445312 C 978.476562 212.722656 978.273438 210.746094 977.734375 210.746094 C 977.585938 210.746094 977.042969 211.945312 976.53125 213.410156 C 976.019531 214.878906 975.160156 217.238281 974.625 218.65625 C 973.710938 221.070312 969.734375 231.828125 968.554688 235.074219 L 968.023438 236.535156 L 963.355469 236.535156 L 962.671875 234.730469 C 962.296875 233.734375 961.054688 230.726562 959.90625 228.042969 C 958.761719 225.355469 956.738281 220.335938 955.410156 216.886719 C 954.085938 213.433594 952.84375 210.457031 952.65625 210.265625 C 952.425781 210.035156 952.308594 214.335938 952.308594 223.226562 L 952.308594 236.535156 L 947.328125 236.535156 Z M 406.535156 179.945312 C 389.59375 177.3125 374.625 170.9375 361.023438 160.5625 C 358.746094 158.824219 356.144531 156.746094 355.242188 155.941406 C 352.960938 153.914062 347.660156 149.816406 346.210938 148.964844 C 345.433594 148.503906 344.078125 148.175781 342.363281 148.027344 C 339.132812 147.75 331.273438 145.851562 327.347656 144.402344 C 309.792969 137.914062 297.371094 125.898438 291.085938 109.316406 C 287.804688 100.660156 286.597656 88.335938 288.140625 79.234375 C 288.558594 76.773438 289 74.683594 289.125 74.589844 C 289.246094 74.496094 289.386719 73.90625 289.4375 73.285156 C 289.59375 71.296875 291.949219 64.582031 293.890625 60.585938 C 299.367188 49.3125 308.144531 40.234375 320.058594 33.515625 C 331.546875 27.035156 347.21875 23.695312 361.238281 24.738281 C 378.390625 26.015625 393.191406 32.386719 404.164062 43.21875 C 411.476562 50.441406 417.773438 61.265625 420.289062 70.945312 C 422.671875 80.117188 422.71875 91.988281 420.40625 101.128906 C 416.75 115.570312 406.554688 129.929688 393.867188 138.496094 C 386.992188 143.140625 375.636719 147.464844 370.261719 147.484375 C 367.390625 147.496094 367.046875 147.925781 368.71875 149.425781 C 370.214844 150.769531 373.191406 153.113281 377.996094 156.742188 C 387.515625 163.933594 399.390625 169.832031 410.464844 172.871094 C 414.988281 174.113281 422.066406 175.332031 424.742188 175.332031 L 427.332031 175.332031 L 427.128906 179.972656 L 424.894531 180.191406 C 420.808594 180.589844 409.722656 180.441406 406.535156 179.945312 Z M 362.652344 144.515625 C 369.160156 143.195312 375.589844 140.636719 380.273438 137.503906 C 383.078125 135.625 388.910156 129.738281 391.207031 126.464844 C 396.59375 118.792969 400.023438 109.1875 401.386719 97.972656 C 402.167969 91.535156 401.914062 79.238281 400.882812 73.449219 C 398.34375 59.230469 393.308594 48.792969 385.382812 41.304688 C 377.976562 34.308594 367.960938 30.386719 356.519531 30 C 351.964844 29.847656 350.621094 29.929688 347.242188 30.574219 C 339.890625 31.976562 334.59375 33.992188 329.527344 37.316406 C 319.882812 43.648438 312.460938 54.847656 309.503906 67.542969 C 307.972656 74.105469 307.578125 78.109375 307.585938 86.96875 C 307.605469 101.558594 309.601562 110.699219 315.03125 121.007812 C 322.105469 134.445312 333.617188 142.960938 347.070312 144.714844 C 348.582031 144.910156 350.285156 145.136719 350.851562 145.214844 C 352.71875 145.472656 360.082031 145.035156 362.652344 144.515625 Z M 484.164062 149.1875 C 473.480469 148.382812 465.179688 145.644531 459.003906 140.886719 C 454.640625 137.523438 450.8125 132.203125 449.445312 127.597656 C 448.007812 122.753906 447.917969 120.445312 447.917969 88.296875 C 447.914062 53.800781 448 55.078125 445.511719 52.585938 C 443.871094 50.945312 442.023438 50.433594 436.921875 50.203125 L 432.625 50.007812 L 432.625 45.882812 L 455.644531 45.96875 L 478.667969 46.054688 L 478.546875 47.859375 C 478.394531 50.117188 478.296875 50.265625 477.160156 50.015625 C 476.117188 49.785156 470.421875 50.359375 468.425781 50.894531 C 466.933594 51.296875 464.726562 53.402344 463.605469 55.496094 C 462.863281 56.882812 462.863281 56.886719 462.757812 86.796875 C 462.652344 117.8125 462.714844 119.617188 464.09375 124.753906 C 466.691406 134.429688 472.328125 139.832031 482.511719 142.40625 C 485.152344 143.074219 486.4375 143.171875 492.582031 143.171875 C 500.320312 143.167969 502.925781 142.800781 508.144531 140.957031 C 512.472656 139.425781 515.488281 137.617188 518.203125 134.921875 C 521.78125 131.371094 523.953125 127.125 525.628906 120.390625 C 526.359375 117.464844 526.378906 116.765625 526.503906 89.398438 C 526.589844 70.601562 526.511719 60.625 526.265625 59.03125 C 525.269531 52.609375 522.003906 50.183594 513.542969 49.578125 C 509.570312 49.292969 509.476562 49.226562 509.914062 46.898438 L 510.128906 45.746094 L 528.671875 45.796875 L 547.214844 45.84375 L 547.214844 47.175781 C 547.214844 49.265625 546.773438 49.804688 545.222656 49.59375 C 543.269531 49.332031 539.144531 50.078125 537.261719 51.03125 C 535.199219 52.078125 533.335938 54.21875 532.789062 56.171875 C 532.480469 57.277344 532.355469 64.976562 532.308594 85.984375 C 532.25 111.175781 532.175781 114.738281 531.632812 118.257812 C 531.03125 122.148438 529.25 128.109375 527.886719 130.808594 C 525.09375 136.316406 519.992188 141.292969 514.082031 144.269531 C 506.640625 148.019531 494.691406 149.984375 484.164062 149.1875 Z M 1108.128906 148.960938 C 1098.246094 148.074219 1090.617188 145.875 1083.644531 141.898438 L 1081.148438 140.476562 L 1081.328125 117.398438 L 1083.636719 117.296875 C 1086.28125 117.179688 1086.128906 116.972656 1086.445312 121.0625 C 1086.550781 122.417969 1087.054688 124.476562 1087.679688 126.097656 C 1090.914062 134.492188 1098.417969 140.789062 1107.710938 142.902344 C 1111.441406 143.753906 1118.667969 143.660156 1122.214844 142.714844 C 1126.410156 141.601562 1130.476562 139.453125 1132.617188 137.226562 C 1135.9375 133.769531 1138.167969 127.664062 1137.691406 123.335938 C 1137.054688 117.558594 1134.191406 113.101562 1128.578125 109.152344 C 1126.0625 107.386719 1118.304688 103.328125 1113.109375 101.066406 C 1108.417969 99.023438 1099.246094 94.335938 1095.929688 92.289062 C 1091.652344 89.644531 1087.28125 85.300781 1085.546875 81.96875 C 1083.40625 77.855469 1082.761719 74.820312 1082.957031 69.785156 C 1083.089844 66.308594 1083.300781 64.949219 1084.050781 62.730469 C 1086.960938 54.128906 1094.257812 47.898438 1104.535156 45.238281 C 1114.480469 42.664062 1123.332031 43.132812 1133.628906 46.78125 C 1135.289062 47.371094 1137.882812 48.289062 1139.394531 48.828125 L 1142.144531 49.804688 L 1142.316406 70.15625 L 1140.558594 70.054688 L 1138.800781 69.949219 L 1138.175781 67.480469 C 1137.382812 64.355469 1135.53125 60.332031 1133.910156 58.203125 C 1127.167969 49.367188 1113.453125 46.4375 1102.609375 51.515625 C 1099.636719 52.90625 1096.214844 56.21875 1094.820312 59.0625 C 1093.78125 61.171875 1093.699219 61.589844 1093.699219 64.789062 L 1093.699219 68.238281 L 1095.21875 70.898438 C 1096.054688 72.363281 1096.867188 73.558594 1097.023438 73.558594 C 1097.558594 73.558594 1097.304688 74.195312 1096.703125 74.355469 C 1096.253906 74.472656 1096.300781 74.519531 1096.882812 74.550781 C 1097.308594 74.574219 1098.777344 75.5 1100.144531 76.605469 C 1103.898438 79.648438 1108.570312 82.183594 1115.171875 84.75 C 1138.355469 93.765625 1148.265625 102.570312 1149.886719 115.601562 C 1150.648438 121.71875 1149.609375 126.296875 1145.996094 132.761719 C 1143.363281 137.476562 1137.78125 142.324219 1131.65625 145.21875 C 1125.589844 148.085938 1115.761719 149.648438 1108.128906 148.960938 Z M 808.585938 146.535156 L 783.226562 146.445312 L 783.332031 144.5 L 783.433594 142.554688 L 786.527344 142.449219 C 794.992188 142.15625 798.957031 140.328125 800.652344 135.929688 C 801.273438 134.3125 801.300781 132.660156 801.300781 94.53125 L 801.300781 54.820312 L 789.101562 54.828125 C 777.402344 54.835938 776.824219 54.867188 774.890625 55.589844 C 772.210938 56.59375 769.507812 58.734375 767.675781 61.308594 C 765.632812 64.179688 764.867188 65.777344 763.859375 69.265625 C 763.382812 70.902344 762.910156 72.382812 762.800781 72.554688 C 762.5625 72.941406 759.890625 72.964844 759.292969 72.585938 C 758.953125 72.371094 759.160156 70.707031 760.242188 64.941406 C 761.003906 60.886719 762.199219 54.4375 762.898438 50.609375 L 764.175781 43.644531 L 765.988281 43.644531 C 767.492188 43.644531 767.800781 43.75 767.800781 44.253906 C 767.800781 45.382812 769.453125 47.351562 770.800781 47.828125 C 771.851562 48.199219 779.292969 48.289062 810.125 48.289062 C 847.878906 48.289062 848.15625 48.28125 849.121094 47.585938 C 849.65625 47.199219 850.523438 46 851.046875 44.921875 L 852.007812 42.957031 L 855.972656 42.957031 L 855.953125 47.6875 C 855.941406 50.285156 856.007812 56.824219 856.105469 62.214844 L 856.277344 72.011719 L 854.859375 71.980469 C 852.632812 71.929688 852.324219 71.703125 852.324219 70.09375 C 852.324219 68.390625 851.582031 65.324219 850.371094 62.042969 C 849.660156 60.113281 849.0625 59.21875 847.367188 57.535156 C 844.296875 54.496094 844.148438 54.472656 829.277344 54.503906 C 822.554688 54.515625 816.796875 54.628906 816.480469 54.75 C 815.945312 54.953125 815.902344 57.796875 815.902344 94.0625 C 815.902344 121.507812 816.019531 133.820312 816.289062 135.382812 C 817.144531 140.292969 820.832031 142.171875 830.242188 142.496094 L 834.285156 142.636719 L 834.390625 144.195312 C 834.449219 145.054688 834.371094 145.953125 834.21875 146.191406 C 834 146.53125 828.664062 146.605469 808.585938 146.535156 Z M 1061.367188 146.53125 L 1047.246094 146.441406 L 1046.277344 144.640625 C 1045.128906 142.503906 1043.394531 139.800781 1035.96875 128.570312 C 1030.152344 119.777344 1028.929688 117.890625 1023.113281 108.742188 C 1021.167969 105.683594 1018.820312 102.332031 1017.894531 101.289062 C 1015.578125 98.691406 1014.421875 98.355469 1007.457031 98.277344 L 1001.957031 98.214844 L 1001.863281 115.542969 C 1001.808594 125.640625 1001.910156 133.785156 1002.105469 135.0625 C 1002.460938 137.382812 1003.605469 139.519531 1004.980469 140.417969 C 1006.507812 141.421875 1011.078125 142.3125 1014.699219 142.320312 C 1016.605469 142.324219 1018.234375 142.394531 1018.320312 142.480469 C 1018.402344 142.5625 1018.390625 143.441406 1018.289062 144.429688 L 1018.109375 146.226562 L 994.3125 146.273438 C 972.972656 146.316406 970.519531 146.265625 970.515625 145.785156 C 970.511719 145.488281 970.417969 144.667969 970.300781 143.957031 L 970.085938 142.667969 L 972.648438 142.667969 C 975.980469 142.667969 981.316406 141.746094 983.0625 140.867188 C 984.71875 140.03125 986.152344 138.453125 986.734375 136.824219 C 987.304688 135.226562 987.578125 62.4375 987.027344 58.289062 C 986.609375 55.109375 985.53125 53 983.777344 51.914062 C 982.09375 50.875 978.449219 50.191406 974.542969 50.183594 L 971.175781 50.179688 L 971.378906 46.015625 L 998.179688 46 C 1016.625 45.992188 1025.890625 46.109375 1027.898438 46.382812 C 1037.511719 47.691406 1045.097656 51.402344 1048.996094 56.699219 C 1054.394531 64.039062 1055.226562 72.914062 1051.253906 80.796875 C 1048.203125 86.851562 1040.464844 93.214844 1033.914062 95.058594 C 1032.777344 95.378906 1031.71875 95.765625 1031.554688 95.917969 C 1031.390625 96.070312 1032.101562 97.328125 1033.132812 98.714844 C 1034.167969 100.101562 1036.328125 103.25 1037.9375 105.707031 C 1039.546875 108.164062 1042.382812 112.496094 1044.242188 115.335938 C 1046.105469 118.171875 1047.832031 120.871094 1048.085938 121.332031 C 1049.089844 123.171875 1055.648438 132.15625 1058.09375 135.050781 C 1061.8125 139.445312 1069.300781 142.984375 1074.925781 143.007812 L 1076.425781 143.011719 L 1076.1875 144.644531 C 1076.054688 145.542969 1075.84375 146.355469 1075.71875 146.449219 C 1075.589844 146.546875 1069.132812 146.582031 1061.367188 146.53125 Z M 1013.835938 92.808594 C 1022.546875 92.324219 1026.574219 91.117188 1030.910156 87.691406 C 1037.4375 82.523438 1039.351562 71.683594 1035.214844 63.304688 C 1033.433594 59.695312 1029.390625 55.605469 1026.011719 53.988281 C 1022.597656 52.355469 1020.378906 51.644531 1017.394531 51.230469 C 1013.046875 50.625 1003.335938 50.921875 1002.570312 51.683594 C 1002.300781 51.957031 1001.769531 92.417969 1002.03125 92.898438 C 1002.21875 93.246094 1006.542969 93.214844 1013.835938 92.808594 Z M 539.800781 146.117188 C 539.273438 145.972656 539.140625 145.621094 539.140625 144.386719 C 539.140625 142.628906 539.460938 142.441406 542.550781 142.367188 C 545.226562 142.300781 549.421875 141.007812 551.660156 139.558594 C 556.265625 136.582031 558.136719 132.929688 570.0625 103.644531 C 573.144531 96.082031 576.929688 86.875 578.472656 83.1875 C 580.019531 79.5 581.441406 76.054688 581.632812 75.535156 C 581.828125 75.015625 582.238281 74.589844 582.550781 74.585938 C 582.921875 74.582031 582.980469 74.492188 582.726562 74.328125 C 582.332031 74.070312 586.398438 63.542969 591.855469 50.695312 C 593.21875 47.480469 594.550781 44.035156 594.808594 43.039062 C 595.070312 42.046875 595.375 41.078125 595.492188 40.890625 C 595.605469 40.703125 597.148438 40.550781 598.917969 40.550781 L 602.132812 40.550781 L 602.371094 41.667969 C 602.609375 42.792969 603.480469 44.894531 608.027344 55.335938 C 614.085938 69.238281 615.945312 73.695312 615.828125 74.042969 C 615.757812 74.25 615.902344 74.574219 616.144531 74.761719 C 616.539062 75.066406 626.324219 98.105469 631.113281 110.003906 C 634.652344 118.792969 640.449219 132.617188 641.734375 135.328125 C 642.742188 137.453125 643.414062 138.386719 644.511719 139.195312 C 646.46875 140.636719 649.179688 141.621094 652.695312 142.175781 C 654.304688 142.429688 655.65625 142.644531 655.703125 142.652344 C 655.75 142.660156 655.789062 143.417969 655.789062 144.332031 L 655.789062 146 L 632.898438 146.199219 C 620.308594 146.308594 609.796875 146.316406 609.535156 146.214844 C 609.210938 146.09375 609.058594 145.441406 609.058594 144.179688 L 609.058594 142.324219 L 612.753906 142.320312 C 616.695312 142.3125 620.664062 141.648438 622 140.773438 C 622.449219 140.476562 623.277344 139.601562 623.84375 138.824219 C 625.105469 137.078125 625.191406 135.183594 624.148438 131.980469 C 623.519531 130.042969 614.242188 106.367188 613.046875 103.644531 L 612.59375 102.613281 L 594.421875 102.707031 L 576.246094 102.800781 L 573.230469 110.273438 C 571.570312 114.378906 569.683594 119.132812 569.035156 120.835938 C 568.386719 122.539062 567.054688 126.019531 566.074219 128.570312 C 564.554688 132.523438 564.285156 133.582031 564.257812 135.679688 C 564.214844 138.625 564.808594 139.679688 567.160156 140.851562 C 569.011719 141.773438 573.925781 142.667969 577.152344 142.667969 L 579.511719 142.667969 L 579.507812 143.785156 C 579.503906 144.402344 579.417969 145.214844 579.316406 145.589844 C 579.136719 146.269531 578.839844 146.277344 559.796875 146.289062 C 549.164062 146.292969 540.164062 146.214844 539.800781 146.117188 Z M 611.121094 97.589844 C 611.121094 97.40625 610.804688 96.632812 610.417969 95.875 C 610.03125 95.113281 609.117188 92.992188 608.390625 91.160156 C 607.664062 89.328125 606.417969 86.28125 605.625 84.390625 C 604.828125 82.5 603.640625 79.636719 602.988281 78.027344 C 602.332031 76.421875 601.578125 74.9375 601.3125 74.730469 C 601.042969 74.519531 600.925781 74.253906 601.042969 74.132812 C 601.308594 73.867188 600.058594 70.824219 597.171875 64.71875 C 595.992188 62.21875 594.925781 59.859375 594.804688 59.472656 C 594.503906 58.519531 594.136719 58.597656 593.613281 59.71875 C 591.964844 63.289062 587.765625 73.753906 587.867188 74.054688 C 587.933594 74.253906 587.808594 74.574219 587.585938 74.761719 C 587.367188 74.953125 586.011719 77.890625 584.574219 81.296875 C 583.136719 84.699219 580.960938 89.757812 579.738281 92.535156 C 577.613281 97.367188 577.546875 97.59375 578.253906 97.730469 C 579.910156 98.046875 611.121094 97.914062 611.121094 97.589844 Z M 661.800781 146.164062 C 661.707031 146.070312 661.628906 145.246094 661.628906 144.332031 L 661.628906 142.667969 L 663.820312 142.667969 C 666.703125 142.667969 671.621094 141.792969 673.65625 140.917969 C 675.785156 140 677.277344 138.398438 677.789062 136.480469 C 678.316406 134.5 678.609375 63.335938 678.113281 58.507812 C 677.421875 51.835938 675.503906 50.449219 666.230469 49.902344 L 662.144531 49.664062 L 662.042969 47.839844 L 661.9375 46.015625 L 690.386719 46.148438 C 715.285156 46.265625 719.160156 46.355469 721.40625 46.855469 C 724.546875 47.550781 729.011719 49.003906 730.863281 49.929688 C 739.234375 54.125 744.324219 62.296875 744.058594 71.121094 C 744.003906 72.933594 743.851562 74.574219 743.726562 74.761719 C 743.597656 74.953125 743.398438 75.648438 743.277344 76.308594 C 742.621094 79.953125 738.746094 85.648438 734.382812 89.375 C 731.195312 92.097656 726.320312 94.703125 723.730469 95.070312 C 722.832031 95.195312 722.003906 95.445312 721.894531 95.625 C 721.78125 95.804688 722.382812 96.832031 723.222656 97.90625 C 724.066406 98.980469 725.34375 100.789062 726.0625 101.925781 C 737.53125 120.050781 746.230469 132.488281 750.023438 136.171875 C 753.550781 139.601562 758.527344 141.917969 763.609375 142.496094 L 765.773438 142.742188 L 765.667969 144.507812 L 765.566406 146.277344 L 752.511719 146.277344 C 737.8125 146.277344 736.878906 146.234375 736.878906 145.523438 C 736.878906 144.929688 734.84375 141.398438 731.832031 136.753906 C 728.707031 131.933594 725.636719 127.050781 718.25 115.164062 C 710.894531 103.320312 710.046875 102.03125 708.585938 100.46875 C 706.949219 98.714844 705.460938 98.367188 698.984375 98.222656 L 693.21875 98.09375 L 693.414062 137.390625 L 694.335938 138.785156 C 694.894531 139.628906 695.855469 140.46875 696.777344 140.914062 C 698.847656 141.917969 703.011719 142.667969 706.5 142.667969 C 709.695312 142.667969 709.714844 142.6875 709.191406 145.289062 L 708.992188 146.277344 L 685.480469 146.304688 C 672.550781 146.320312 661.894531 146.257812 661.800781 146.164062 Z M 706.578125 92.796875 C 714.386719 92.238281 719.175781 90.308594 722.984375 86.195312 C 726.515625 82.378906 727.816406 78.132812 727.511719 71.371094 C 727.300781 66.632812 726.476562 63.902344 724.21875 60.441406 C 722.191406 57.328125 719.960938 55.34375 716.734375 53.773438 C 712.3125 51.617188 709.800781 51.179688 701.953125 51.195312 C 695.125 51.203125 694 51.316406 693.503906 52.046875 C 693.1875 52.503906 693.15625 92.613281 693.46875 92.929688 C 693.8125 93.269531 700.988281 93.199219 706.578125 92.796875 Z M 861.441406 145.84375 C 861.339844 145.582031 861.257812 144.78125 861.257812 144.070312 L 861.257812 142.773438 L 865.5625 142.542969 C 873.96875 142.09375 876.539062 140.921875 878.503906 136.652344 L 879.296875 134.933594 L 879.296875 56.539062 L 878.335938 54.582031 C 876.785156 51.421875 874.78125 50.582031 867.957031 50.222656 L 863.835938 50.007812 L 863.730469 48.03125 L 863.628906 46.054688 L 906.027344 46.054688 C 929.347656 46.054688 949.382812 45.953125 950.546875 45.832031 L 952.664062 45.609375 L 952.570312 57.4375 L 952.480469 69.261719 L 951.421875 69.363281 C 950.1875 69.484375 949.859375 69.136719 949.207031 67.027344 C 948.433594 64.511719 946.191406 59.121094 945.289062 57.605469 C 944.019531 55.464844 941.417969 52.953125 939.640625 52.152344 C 938.148438 51.476562 937.152344 51.410156 923.449219 51.113281 C 905.949219 50.734375 897.449219 51.035156 896.28125 52.078125 C 894.597656 53.582031 894.585938 53.722656 894.585938 73.546875 L 894.585938 92.125 L 910.132812 92.125 C 928.136719 92.121094 930.769531 91.925781 932.777344 90.449219 C 933.535156 89.890625 934.535156 88.921875 934.996094 88.289062 C 936.058594 86.855469 937.164062 83.316406 937.398438 80.613281 C 937.726562 76.847656 937.660156 76.949219 939.671875 77.066406 L 941.441406 77.167969 L 941.441406 112.582031 L 938.277344 112.792969 L 938.050781 110.796875 C 937.1875 103.113281 935.242188 99.519531 931.09375 97.96875 C 929.351562 97.316406 928.402344 97.285156 911.753906 97.285156 L 894.242188 97.285156 L 894.253906 114.5625 C 894.261719 124.0625 894.402344 132.898438 894.566406 134.191406 C 894.957031 137.210938 896.273438 139.421875 898.378906 140.605469 L 899.910156 141.464844 L 915.03125 141.574219 C 934.507812 141.714844 939.75 141.183594 945.214844 138.515625 C 951.007812 135.691406 955.710938 129.796875 958.179688 122.277344 C 958.59375 121.011719 959.105469 119.960938 959.316406 119.945312 C 962.238281 119.699219 962.675781 119.730469 962.855469 120.191406 C 963.078125 120.78125 962.601562 123.425781 961.246094 129.085938 C 960.699219 131.355469 959.695312 136.070312 959.011719 139.566406 C 958.328125 143.058594 957.734375 145.953125 957.691406 145.992188 C 957.652344 146.035156 936.019531 146.125 909.621094 146.199219 C 868.699219 146.308594 861.601562 146.253906 861.441406 145.84375 Z M 759.984375 74.34375 C 760.503906 74.265625 761.355469 74.265625 761.875 74.34375 C 762.394531 74.421875 761.96875 74.488281 760.929688 74.488281 C 759.890625 74.488281 759.464844 74.421875 759.984375 74.34375 Z M 759.984375 74.34375 "></path>
+</g>
+</svg>
+    <div class="header-divider"></div>
+    <div class="header-title">Indicator Dashboard</div>
+  </div>
+  <div class="header-meta">
+    <div>Market &amp; Economic Conditions</div>
+    <div id="headerDate">Wednesday, May 13, 2026</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-tab active" onclick="switchView(&#39;scorecard&#39;, this)">Scorecard</button>
+  <button class="nav-tab" onclick="switchView(&#39;charts&#39;, this)">Charts</button>
+  <button class="nav-tab" onclick="switchView(&#39;history&#39;, this)">History</button>
+</div>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <button class="btn btn-primary" onclick="fetchAllData()" id="updateBtn">↻ Update</button>
+  <button class="btn btn-secondary" onclick="loadTestData()" title="Loads mock data for local testing without live API calls" style="border-style:dashed;opacity:0.7;">⚗ Test Data</button>
+  <button class="btn btn-gold" onclick="takeSnapshot()" id="snapshotBtn">⬇ Snapshot</button>
+  <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+  <button class="btn btn-secondary" onclick="clearHistory()" style="color:#c0392b;border-color:#c0392b;">Clear History</button>
+  <div class="status-msg" id="statusMsg"></div>
+  <div class="last-updated" id="lastUpdated">Not yet updated</div>
+</div>
+
+<!-- SCORECARD VIEW -->
+<div class="view active" id="view-scorecard">
+
+  <!-- DIVERGENCE SUMMARY -->
+  <div class="divergence-panel">
+    <div class="div-section">
+      <div class="div-label">Market Conditions</div>
+      <div class="div-score-large pending" id="mktScoreLarge">—</div>
+      <div class="div-reading" id="mktScoreRead">Awaiting data</div>
+    </div>
+    <div class="div-separator"></div>
+    <div class="div-section">
+      <div class="div-label">Economic Conditions</div>
+      <div class="div-score-large pending" id="ecoScoreLarge">—</div>
+      <div class="div-reading" id="ecoScoreRead">Awaiting data</div>
+    </div>
+    <div class="div-separator"></div>
+    <div class="div-alert" id="divergenceAlert">
+      Press <strong>Update</strong> to load current indicator readings. Market and economic scores will appear here with alignment or divergence noted.
+    </div>
+  </div>
+
+  <div class="legend">
+    <span style="font-size:0.6rem;color:var(--text-mid);letter-spacing:0.08em;text-transform:uppercase;">Signal:</span>
+    <div class="legend-item"><div class="legend-dot red"></div> Stress / Contraction</div>
+    <div class="legend-item"><div class="legend-dot yellow"></div> Caution / Neutral</div>
+    <div class="legend-item"><div class="legend-dot green"></div> Healthy / Expansion</div>
+  </div>
+
+  <!-- NARRATIVE BLOCK -->
+  <div class="narrative-block" id="narrativeBlock" style="display:none;">
+    <div class="narrative-label">Narrative</div>
+    <div class="narrative-body">
+      <div class="narrative-para" id="narrativeMkt"></div>
+      <div class="narrative-para" id="narrativeEco"></div>
+      <div class="narrative-flags" id="narrativeFlags"></div>
+      <div class="narrative-clusters" id="narrativeClusters" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="scorecard-grid">
+
+    <!-- MARKET PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Market Conditions</div>
+        <div class="panel-score">
+          <div class="panel-score-label">Score</div>
+          <div class="score-badge pending" id="mktBadge">—</div>
+        </div>
+      </div>
+
+      <!-- M1 — Wilshire 5000 -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">S&amp;P 500 (30-day momentum)</div>
+          <div class="ind-sub">FRED SP500 · Daily · 30-day momentum</div>
+        </div>
+        <div class="ind-value pending" id="m1-val">—</div>
+        <div class="signal-dot pending" id="m1-sig">—</div>
+      </div>
+
+      <!-- M2 — Yield Curve -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Yield Curve (10yr − 3mo)</div>
+          <div class="ind-sub">FRED DGS10 / DGS3MO · Daily</div>
+        </div>
+        <div class="ind-value pending" id="m2-val">—</div>
+        <div class="signal-dot pending" id="m2-sig">—</div>
+      </div>
+
+      <!-- M3 — HY Spread -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">High Yield Credit Spread</div>
+          <div class="ind-sub">FRED BAMLH0A0HYM2 · Daily</div>
+        </div>
+        <div class="ind-value pending" id="m3-val">—</div>
+        <div class="signal-dot pending" id="m3-sig">—</div>
+      </div>
+
+      <!-- M4 — IG Spread -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Investment Grade Credit Spread</div>
+          <div class="ind-sub">FRED BAMLC0A0CM · Daily</div>
+        </div>
+        <div class="ind-value pending" id="m4-val">—</div>
+        <div class="signal-dot pending" id="m4-sig">—</div>
+      </div>
+
+      <!-- M5 — NFCI -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Financial Conditions (NFCI)</div>
+          <div class="ind-sub">FRED NFCI · Weekly Wed</div>
+        </div>
+        <div class="ind-value pending" id="m5-val">—</div>
+        <div class="signal-dot pending" id="m5-sig">—</div>
+      </div>
+
+      <!-- M6 — 10yr Real Yield -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">10-Year Real Yield (TIPS)</div>
+          <div class="ind-sub">FRED DFII10 · Daily</div>
+        </div>
+        <div class="ind-value pending" id="m6-val">—</div>
+        <div class="signal-dot pending" id="m6-sig">—</div>
+      </div>
+    </div>
+
+    <!-- ECONOMIC PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Economic Conditions</div>
+        <div class="panel-score">
+          <div class="panel-score-label">Score</div>
+          <div class="score-badge pending" id="ecoBadge">—</div>
+        </div>
+      </div>
+
+      <!-- E1 — OECD CLI -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">OECD Composite Leading Indicator</div>
+          <div class="ind-sub">FRED USALOLITOAASTSAM · Monthly · Centered on 100</div>
+        </div>
+        <div class="ind-value pending" id="e1-val">—</div>
+        <div class="signal-dot pending" id="e1-sig">—</div>
+      </div>
+
+      <!-- E2 — Jobless Claims -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Initial Jobless Claims (4-wk MA)</div>
+          <div class="ind-sub">FRED IC4WSA · Weekly Thu</div>
+        </div>
+        <div class="ind-value pending" id="e2-val">—</div>
+        <div class="signal-dot pending" id="e2-sig">—</div>
+      </div>
+
+      <!-- E3 — Core Capex -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Core Capex (Nondefense Capital Goods ex-Aircraft)</div>
+          <div class="ind-sub">FRED NEWORDER · Monthly · YoY %</div>
+        </div>
+        <div class="ind-value pending" id="e3-val">—</div>
+        <div class="signal-dot pending" id="e3-sig">—</div>
+      </div>
+
+      <!-- E4 — SLOOS -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">SLOOS C&amp;I Lending Standards</div>
+          <div class="ind-sub">FRED DRTSCILM · Quarterly</div>
+        </div>
+        <div class="ind-value pending" id="e4-val">—</div>
+        <div class="signal-dot pending" id="e4-sig">—</div>
+      </div>
+
+      <!-- E5 — Breakeven Inflation -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">5-Year Breakeven Inflation</div>
+          <div class="ind-sub">FRED T5YIEM · Daily</div>
+        </div>
+        <div class="ind-value pending" id="e5-val">—</div>
+        <div class="signal-dot pending" id="e5-sig">—</div>
+      </div>
+
+      <!-- E6 — Real Consumer Spending -->
+      <div class="indicator-row">
+        <div>
+          <div class="ind-name">Real Consumer Spending (PCE)</div>
+          <div class="ind-sub">FRED PCEC96 · Monthly · YoY %</div>
+        </div>
+        <div class="ind-value pending" id="e6-val">—</div>
+        <div class="signal-dot pending" id="e6-sig">—</div>
+      </div>
+    </div>
+
+  </div><!-- end scorecard-grid -->
+</div><!-- end scorecard view -->
+
+<!-- CHARTS VIEW -->
+<div class="view" id="view-charts">
+  <div style="font-size:0.65rem;color:var(--text-mid);margin-bottom:1.25rem;">
+    Charts display your weekly snapshot history. Take snapshots over time to populate trends. Threshold lines show red/yellow/green boundaries.
+  </div>
+  <div class="chart-grid" id="chartGrid">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- HISTORY VIEW -->
+<div class="view" id="view-history">
+  <div class="history-controls">
+    <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+    <div class="history-count" id="historyCount">0 snapshots stored</div>
+  </div>
+  <div class="heatmap-wrap">
+    <table class="heatmap-table" id="heatmapTable">
+      <tbody id="heatmapBody"><tr><td class="row-label" colspan="20" style="text-align:center;color:#aaaacc;padding:2rem;background:var(--navy);">No snapshots yet. Update data and take a snapshot.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- REFERENCE SECTION — always visible, below all tabs          -->
+<!-- ============================================================ -->
+<div class="ref-section">
+
+  <div class="ref-header">QWM INDICATOR REFERENCE</div>
+
+  <!-- ROW 1: Routine + Signal Guide -->
+  <div class="ref-row">
+
+    <!-- Weekly Routine -->
+    <div class="ref-card">
+      <div class="ref-card-title">FRIDAY ROUTINE</div>
+      <ol class="ref-list-ol">
+        <li>Open dashboard via bookmarked URL</li>
+        <li><strong>M1–M6</strong> auto-load via FRED — no manual entry required</li>
+        
+        <li>Click <strong>Update</strong> — all FRED indicators load automatically</li>
+        <li>Review scorecard signals · note any changes from prior week</li>
+        <li>Click <strong>Snapshot</strong> — saves to history, auto-downloads CSV</li>
+        <li>Last Friday of month: formal review · implementation first business day following</li>
+      </ol>
+    </div>
+
+    <!-- Signal Guide -->
+    <div class="ref-card">
+      <div class="ref-card-title">SIGNAL GUIDE</div>
+      <table class="ref-table">
+        <thead><tr><th>Scorecard Reading</th><th>Posture</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="sig-dot green"></span> Both Green</td>
+            <td>Normal</td>
+            <td>Hold model targets. Monitor weekly.</td>
+          </tr>
+          <tr>
+            <td><span class="sig-dot yellow"></span> One Caution</td>
+            <td>Watch</td>
+            <td>Heightened awareness. No allocation change.</td>
+          </tr>
+          <tr>
+            <td><span class="sig-dot yellow"></span> Both Caution</td>
+            <td>Alert</td>
+            <td>Begin quality/value tilt within equity sleeve.</td>
+          </tr>
+          <tr>
+            <td><span class="sig-dot red"></span> One Stress</td>
+            <td>Confirm</td>
+            <td>Quality/value tilt + cash/short-duration increase.</td>
+          </tr>
+          <tr>
+            <td><span class="sig-dot red"></span> Both Stress</td>
+            <td>Defensive</td>
+            <td>Full defensive sequence. See below.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ROW 2: Defensive Sequence + Model Grid -->
+  <div class="ref-row">
+
+    <!-- Defensive Sequence -->
+    <div class="ref-card">
+      <div class="ref-card-title">DEFENSIVE IMPLEMENTATION SEQUENCE</div>
+      <div class="ref-note">All stages are reversible. Unwind in reverse order as signals clear.</div>
+      <div class="def-steps">
+
+        <div class="def-step">
+          <div class="def-step-num">1</div>
+          <div class="def-step-body">
+            <div class="def-step-label">QUALITY / VALUE TILT</div>
+            <div class="def-step-desc">Rotate within equity sleeve. Overweight <strong>AVLV</strong> and <strong>SCHD</strong>. Reduce <strong>ITOT</strong> and <strong>QGRW</strong> proportionally. No allocation change — equity % stays at model target. Applies all profiles.</div>
+          </div>
+        </div>
+
+        <div class="def-step">
+          <div class="def-step-num">2</div>
+          <div class="def-step-body">
+            <div class="def-step-label">CASH / SHORT-DURATION INCREASE</div>
+            <div class="def-step-desc">Raise cash and/or <strong>VTIP</strong> by up to <strong>+5%</strong>, funded from equity. Duration-neutral to duration-reducing. Builds dry powder for redeployment when signals clear. Applies all profiles — Conservative included.</div>
+          </div>
+        </div>
+
+        <div class="def-step">
+          <div class="def-step-num">3</div>
+          <div class="def-step-body">
+            <div class="def-step-label">BUFFERED ETF TRANCHES</div>
+            <div class="def-step-desc">Deploy <strong>Innovator 15% buffer / 10–12% cap</strong> ETFs in <strong>5–7% increments</strong> from ITOT/QGRW (US equity sleeve only). Conservative · Moderate · Mod Growth: up to <strong>20%</strong> of portfolio. Growth: up to <strong>10%</strong>. Aggressive: not eligible. Sustained stress (&gt;2 quarters) before deploying tranche 2.</div>
+          </div>
+        </div>
+
+        <div class="def-step def-step-inactive">
+          <div class="def-step-num">4</div>
+          <div class="def-step-body">
+            <div class="def-step-label">DD ETFs <span class="def-step-tag">NOT YET OPERATIONAL</span></div>
+            <div class="def-step-desc">Dual Directional ETFs (Innovator). Growth and Aggressive profiles only. Up to <strong>10%</strong> of portfolio. Funded from ITOT. Reserved for confirmed negative regime. Shown in model grid for reference — not yet deployed in practice.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Model Grid -->
+    <div class="ref-card">
+      <div class="ref-card-title">QWM MODEL GRID — TARGET ALLOCATIONS</div>
+      <div class="ref-note">All figures % of total portfolio · Buffered and DD rows show tactical maximum (0% in constructive markets)</div>
+      <table class="ref-table ref-grid">
+        <thead>
+          <tr>
+            <th>ETF / Category</th>
+            <th>Cons</th>
+            <th>Mod</th>
+            <th>Mod Gro</th>
+            <th>Growth</th>
+            <th>Agg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="grid-section"><td colspan="6">EQUITY</td></tr>
+          <tr><td>ITOT</td><td>15</td><td>22</td><td>26</td><td>30</td><td>38</td></tr>
+          <tr><td>QGRW</td><td>5</td><td>8</td><td>10</td><td>11</td><td>14</td></tr>
+          <tr><td>AVLV</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>
+          <tr><td>SCHD</td><td>3</td><td>4</td><td>5</td><td>5</td><td>6</td></tr>
+          <tr><td>AVDE</td><td>2</td><td>7</td><td>8</td><td>10</td><td>11</td></tr>
+          <tr><td>AVEM</td><td>2</td><td>5</td><td>6</td><td>8</td><td>9</td></tr>
+          <tr class="grid-total"><td>Equity Total</td><td>30</td><td>50</td><td>60</td><td>70</td><td>85</td></tr>
+          <tr class="grid-section"><td colspan="6">FIXED INCOME</td></tr>
+          <tr><td>AGG</td><td>31</td><td>22</td><td>17</td><td>13</td><td>6</td></tr>
+          <tr><td>PONAX</td><td>16</td><td>12</td><td>9</td><td>7</td><td>5</td></tr>
+          <tr><td>VTIP</td><td>9</td><td>6</td><td>5</td><td>2</td><td>—</td></tr>
+          <tr><td>VCIT</td><td>8</td><td>5</td><td>4</td><td>4</td><td>—</td></tr>
+          <tr class="grid-total"><td>FI Total</td><td>64</td><td>45</td><td>35</td><td>26</td><td>11</td></tr>
+          <tr class="grid-section"><td colspan="6">OTHER</td></tr>
+          <tr><td>GLDM</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td></tr>
+          <tr><td>Cash</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+          <tr class="grid-section grid-tactical"><td colspan="6">TACTICAL (MAX RANGE)</td></tr>
+          <tr class="grid-tactical"><td>Buffered ETF</td><td>0–20%</td><td>0–20%</td><td>0–20%</td><td>0–10%</td><td>0%</td></tr>
+          <tr class="grid-tactical"><td>DD ETF †</td><td>—</td><td>—</td><td>—</td><td>0–10%</td><td>0–10%</td></tr>
+          <tr class="grid-total"><td>Total</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+        </tbody>
+      </table>
+      <div class="ref-note" style="margin-top:0.5rem;">† DD ETFs not yet operational · AVDE/AVEM held ~57%/43% within intl+EM sleeve · Rebalance band ±5%</div>
+    </div>
+
+  </div>
+
+  <!-- ROW 3: Data Sources -->
+  <div class="ref-row">
+    <div class="ref-card ref-card-full">
+      <div class="ref-card-title">DATA SOURCES</div>
+      <div class="ref-sources-grid">
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/SP500" target="_blank">
+          <div class="ref-source-id">M1</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">S&amp;P 500 ↗</div>
+            <div class="ref-source-link">FRED · <code>SP500</code> · Auto · Daily · 30-day momentum %</div>
+            <div class="ref-source-desc">S&amp;P 500 30-day price momentum. Captures the direction of the broad large-cap market. Sustained negative momentum signals deteriorating market conditions.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &lt;−5% <span class="ref-yellow">■</span> −5% to 0% <span class="ref-green">■</span> &gt;0%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/graph/?g=5885" target="_blank">
+          <div class="ref-source-id">M2</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">Yield Curve (10yr − 3mo) ↗</div>
+            <div class="ref-source-link">FRED · <code>DGS10</code> minus <code>DGS3MO</code> · Auto · Daily</div>
+            <div class="ref-source-desc">Inversion (negative spread) has preceded every US recession since 1970. Re-steepening after inversion often marks the most dangerous phase.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &lt;0% <span class="ref-yellow">■</span> 0–1.0% <span class="ref-green">■</span> &gt;1.0%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank">
+          <div class="ref-source-id">M3</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">High Yield Credit Spread ↗</div>
+            <div class="ref-source-link">FRED · <code>BAMLH0A0HYM2</code> · Auto · Daily</div>
+            <div class="ref-source-desc">ICE BofA HY OAS in basis points. Widening spreads signal credit stress and risk-off sentiment. Historically leads equity drawdowns.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;500 bps <span class="ref-yellow">■</span> 300–500 bps <span class="ref-green">■</span> &lt;300 bps</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/BAMLC0A0CM" target="_blank">
+          <div class="ref-source-id">M4</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">Investment Grade Credit Spread ↗</div>
+            <div class="ref-source-link">FRED · <code>BAMLC0A0CM</code> · Auto · Daily</div>
+            <div class="ref-source-desc">ICE BofA US Corporate OAS — investment grade (BBB and above). Complements M3 (HY). When IG spreads widen, stress has moved up the credit quality ladder — a more serious signal than HY alone.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;1.5% <span class="ref-yellow">■</span> 1.0–1.5% <span class="ref-green">■</span> &lt;1.0%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/NFCI" target="_blank">
+          <div class="ref-source-id">M5</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">NFCI Financial Conditions ↗</div>
+            <div class="ref-source-link">FRED · <code>NFCI</code> · Auto · Weekly (Wed)</div>
+            <div class="ref-source-desc">Chicago Fed National Financial Conditions Index. Zero = historical average. Positive values = tighter-than-average financial conditions.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;0.5 <span class="ref-yellow">■</span> 0–0.5 <span class="ref-green">■</span> &lt;0</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/USALOLITOAASTSAM" target="_blank">
+          <div class="ref-source-id">E1</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">OECD Composite Leading Indicator ↗</div>
+            <div class="ref-source-link">FRED · <code>USALOLITOAASTSAM</code> · Auto · Monthly</div>
+            <div class="ref-source-desc">Amplitude-adjusted, centered on 100. Above 100 = expansion ahead. Below 100 = slowdown. Lags ~1–2 months. Replaces discontinued Philadelphia Fed USSLIND (2020).</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &lt;99.0 <span class="ref-yellow">■</span> 99.0–100.5 <span class="ref-green">■</span> &gt;100.5</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/IC4WSA" target="_blank">
+          <div class="ref-source-id">E2</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">Initial Jobless Claims (4-wk MA) ↗</div>
+            <div class="ref-source-link">FRED · <code>IC4WSA</code> · Auto · Weekly (Thu)</div>
+            <div class="ref-source-desc">4-week moving average smooths weekly volatility. Rising trend above 250K signals labor market deterioration. Above 300K historically associated with recession.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;300K <span class="ref-yellow">■</span> 250–300K <span class="ref-green">■</span> &lt;250K</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/NEWORDER" target="_blank">
+          <div class="ref-source-id">E3</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">Core Capex — Nondefense Capital Goods ex-Aircraft ↗</div>
+            <div class="ref-source-link">FRED · <code>NEWORDER</code> · Auto · Monthly · YoY %</div>
+            <div class="ref-source-desc">The institutional benchmark for business investment intent — strips both defense and aircraft orders. YoY % removes inflation distortion. Declining trend signals businesses pulling back on capex — a leading recession indicator.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &lt;−2% YoY <span class="ref-yellow">■</span> −2% to +2% <span class="ref-green">■</span> &gt;+2%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/DRTSCILM" target="_blank">
+          <div class="ref-source-id">E4</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">SLOOS C&amp;I Lending Standards ↗</div>
+            <div class="ref-source-link">FRED · <code>DRTSCILM</code> · Auto · Quarterly</div>
+            <div class="ref-source-desc">Senior Loan Officer Survey. Net % of banks tightening commercial &amp; industrial lending standards. Tightening credit is a leading indicator of reduced business activity.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;20% <span class="ref-yellow">■</span> 0–20% <span class="ref-green">■</span> &lt;0%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/T5YIEM" target="_blank">
+          <div class="ref-source-id">E5</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">5-Year Breakeven Inflation ↗</div>
+            <div class="ref-source-link">FRED · <code>T5YIEM</code> · Auto · Daily</div>
+            <div class="ref-source-desc">Market-implied inflation expectations over 5 years (TIPS vs nominal Treasury). Rising expectations above 3% signal inflation risk that could force Fed tightening.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;3.0% <span class="ref-yellow">■</span> 2.0–3.0% <span class="ref-green">■</span> &lt;2.0%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/DFII10" target="_blank">
+          <div class="ref-source-id">M6</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">10-Year Real Yield (TIPS) ↗</div>
+            <div class="ref-source-link">FRED · <code>DFII10</code> · Auto · Daily</div>
+            <div class="ref-source-desc">The true cost of capital — nominal 10yr yield minus inflation expectations. Rising real yields above 2% historically compress equity P/E multiples and slow investment. A sustained move above 2.5% is a meaningful headwind for risk assets.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &gt;2.5% <span class="ref-yellow">■</span> 1.5–2.5% <span class="ref-green">■</span> &lt;1.5%</div>
+          </div>
+        </a>
+
+        <a class="ref-source ref-source-link-card" href="https://fred.stlouisfed.org/series/PCEC96" target="_blank">
+          <div class="ref-source-id">E6</div>
+          <div class="ref-source-body">
+            <div class="ref-source-name">Real Consumer Spending (PCE) ↗</div>
+            <div class="ref-source-link">FRED · <code>PCEC96</code> · Auto · Monthly · YoY %</div>
+            <div class="ref-source-desc">Real Personal Consumption Expenditures — inflation-adjusted. Covers ~70% of US GDP. YoY % change captures whether the consumer is actually spending. Negative trend confirms economic deterioration already underway.</div>
+            <div class="ref-source-thresh"><span class="ref-red">■</span> &lt;0% YoY <span class="ref-yellow">■</span> 0–1.5% <span class="ref-green">■</span> &gt;1.5%</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- end ref-section -->
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const FRED_KEY = atob('OTNiMzBkZDc4NDBkODA3NzJkMjcwMzMwMWJkMTJhMGM=');
+const STORAGE_KEY = 'qwm_indicator_history';
+
+// Current live readings
+let currentData = {
+  m1: null, m2: null, m3: null, m4: null, m5: null, m6: null,
+  e1: null, e2: null, e3: null, e4: null, e5: null, e6: null
+};
+
+// ============================================================
+// SIGNAL LOGIC — thresholds for each indicator
+// ============================================================
+function getSignal(id, value) {
+  if (value === null || value === undefined) return 'pending';
+  const v = parseFloat(value);
+  switch(id) {
+    case 'm1': // Wilshire 5000 30-day momentum %
+      if (v < -5) return 'red';
+      if (v < 0) return 'yellow';
+      return 'green';
+    case 'm2': // yield curve 10yr-3mo %
+      if (v < 0) return 'red';
+      if (v <= 1.0) return 'yellow';
+      return 'green';
+    case 'm3': // HY spread bps
+      if (v > 500) return 'red';
+      if (v >= 300) return 'yellow';
+      return 'green';
+    case 'm4': // IG credit spread %
+      if (v > 1.5) return 'red';
+      if (v >= 1.0) return 'yellow';
+      return 'green';
+    case 'm5': // NFCI
+      if (v > 0.5) return 'red';
+      if (v >= 0) return 'yellow';
+      return 'green';
+    case 'm6': // 10yr real yield %
+      if (v > 2.5) return 'red';
+      if (v >= 1.5) return 'yellow';
+      return 'green';
+    case 'e1': // OECD CLI amplitude adjusted — centered on 100
+      if (v < 99.0) return 'red';
+      if (v <= 100.5) return 'yellow';
+      return 'green';
+    case 'e2': // jobless claims (thousands)
+      if (v > 300) return 'red';
+      if (v >= 250) return 'yellow';
+      return 'green';
+    case 'e3': // Core capex YoY %
+      if (v < -2) return 'red';
+      if (v < 2) return 'yellow';
+      return 'green';
+    case 'e4': // SLOOS net % tightening
+      if (v > 20) return 'red';
+      if (v >= 0) return 'yellow';
+      return 'green';
+    case 'e5': // 5yr breakeven %
+      if (v > 3.0) return 'red';
+      if (v >= 2.0) return 'yellow';
+      return 'green';
+    case 'e6': // Real PCE YoY %
+      if (v < 0) return 'red';
+      if (v < 1.5) return 'yellow';
+      return 'green';
+  }
+  return 'pending';
+}
+
+function signalLabel(s) {
+  if (s === 'red') return 'Stress';
+  if (s === 'yellow') return 'Caution';
+  if (s === 'green') return 'Healthy';
+  return '—';
+}
+
+function panelScore(signals) {
+  const counts = { red: 0, yellow: 0, green: 0 };
+  signals.forEach(s => { if (counts[s] !== undefined) counts[s]++; });
+  if (counts.red >= 3) return 'red';
+  if (counts.red >= 2 || counts.yellow >= 4) return 'yellow';
+  if (counts.green >= 5) return 'green';
+  if (counts.green >= 4 && counts.red === 0) return 'green';
+  return 'yellow';
+}
+
+// ============================================================
+// FORMAT DISPLAY VALUES
+// ============================================================
+function formatVal(id, v) {
+  if (v === null || v === undefined) return '—';
+  const n = parseFloat(v);
+  switch(id) {
+    case 'm1': return (n >= 0 ? '+' : '') + n.toFixed(1) + '% (30d)';
+    case 'm2': return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+    case 'm3': return n.toFixed(0) + ' bps';
+    case 'm4': return n.toFixed(2) + '%';
+    case 'm5': return (n >= 0 ? '+' : '') + n.toFixed(2);
+    case 'm6': return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+    case 'e1': return n.toFixed(2) + ' CLI';
+    case 'e2': return n.toFixed(0) + 'K';
+    case 'e3': return (n >= 0 ? '+' : '') + n.toFixed(1) + '% YoY';
+    case 'e4': return (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+    case 'e5': return n.toFixed(2) + '%';
+    case 'e6': return (n >= 0 ? '+' : '') + n.toFixed(1) + '% YoY';
+  }
+  return n.toFixed(2);
+}
+
+// ============================================================
+// TEST DATA — loads mock values locally, no API needed
+// ============================================================
+function loadTestData() {
+  currentData.m1 = 3.2;    // Wilshire 30d momentum %
+  currentData.m2 = 0.62;   // Yield curve
+  currentData.m3 = 294;    // HY spread bps
+  currentData.m4 = 1.08;   // IG spread %
+  currentData.m5 = -0.43;  // NFCI
+  currentData.m6 = 2.1;    // 10yr real yield
+  currentData.e1 = 100.85; // OECD CLI
+  currentData.e2 = 208;    // Claims K
+  currentData.e3 = 1.8;    // Core capex YoY %
+  currentData.e4 = 5.3;    // SLOOS
+  currentData.e5 = 2.56;   // Breakeven
+  currentData.e6 = 2.4;    // Real PCE YoY %
+  updateDisplay();
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent = 'TEST DATA — ' + now.toLocaleString();
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  setStatus('Test data loaded — not live.');
+}
+
+// ============================================================
+// FRED API FETCH
+// ============================================================
+async function fredFetch(series, obs = 5) {
+  const isLocal = location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const directUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_KEY}&file_type=json&sort_order=desc&limit=${obs}`;
+  const url = isLocal ? `https://corsproxy.io/?${encodeURIComponent(directUrl)}` : `/.netlify/functions/fred?series=${series}&sort_order=desc&limit=${obs}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${series}`);
+    const data = await res.json();
+    if (!data.observations) throw new Error(`No observations in response for ${series}`);
+    const valid = data.observations.filter(o => o.value !== '.' && o.value !== '');
+    return valid.length > 0 ? valid : null;
+  } catch(e) {
+    console.warn(`fredFetch failed for ${series}:`, e.message);
+    return null;
+  }
+}
+
+// ============================================================
+// FETCH ALL DATA
+// ============================================================
+async function fetchAllData() {
+  const btn = document.getElementById('updateBtn');
+  btn.disabled = true;
+  showLoading(true, 'Connecting to FRED...');
+  setStatus('Fetching data...');
+
+  try {
+    // M1 — Wilshire 5000 30-day momentum (date-matched)
+    setLoadingMsg('Fetching market index...');
+    const will = await fredFetch('SP500', 50);
+    if (will && will.length >= 2) {
+      const latest = will[0];
+      const latestDate = new Date(latest.date);
+      const targetDate = new Date(latestDate);
+      targetDate.setDate(targetDate.getDate() - 30);
+      const ago30obs = will.reduce((best, obs) => {
+        const diff = Math.abs(new Date(obs.date) - targetDate);
+        return diff < Math.abs(new Date(best.date) - targetDate) ? obs : best;
+      });
+      const lv = parseFloat(latest.value), pv = parseFloat(ago30obs.value);
+      if (!isNaN(lv) && !isNaN(pv) && pv !== 0)
+        currentData.m1 = ((lv - pv) / pv) * 100;
+    }
+
+    // M2 — Yield Curve
+    setLoadingMsg('Fetching yield curve...');
+    const dgs10 = await fredFetch('DGS10', 3);
+    const dgs3mo = await fredFetch('DGS3MO', 3);
+    if (dgs10 && dgs3mo)
+      currentData.m2 = parseFloat(dgs10[0].value) - parseFloat(dgs3mo[0].value);
+
+    // M3 — HY Credit Spread
+    setLoadingMsg('Fetching HY spread...');
+    const hy = await fredFetch('BAMLH0A0HYM2', 3);
+    if (hy) currentData.m3 = parseFloat(hy[0].value) * 100;
+
+    // M4 — IG Credit Spread
+    setLoadingMsg('Fetching IG spread...');
+    const ig = await fredFetch('BAMLC0A0CM', 3);
+    if (ig) currentData.m4 = parseFloat(ig[0].value);
+
+    // M5 — NFCI
+    setLoadingMsg('Fetching financial conditions...');
+    const nfci = await fredFetch('NFCI', 3);
+    if (nfci) currentData.m5 = parseFloat(nfci[0].value);
+
+    // M6 — 10yr Real Yield
+    setLoadingMsg('Fetching real yield...');
+    const tips = await fredFetch('DFII10', 3);
+    if (tips) currentData.m6 = parseFloat(tips[0].value);
+
+    // E1 — OECD CLI
+    setLoadingMsg('Fetching leading indicator...');
+    const cli = await fredFetch('USALOLITOAASTSAM', 3);
+    if (cli) currentData.e1 = parseFloat(cli[0].value);
+
+    // E2 — Jobless Claims
+    setLoadingMsg('Fetching jobless claims...');
+    const claims = await fredFetch('IC4WSA', 3);
+    if (claims) currentData.e2 = parseFloat(claims[0].value) / 1000;
+
+    // E3 — Core Capex YoY % (NEWORDER, date-matched)
+    setLoadingMsg('Fetching core capex...');
+    const capex = await fredFetch('NEWORDER', 18);
+    if (capex && capex.length >= 13) {
+      const latest = capex[0];
+      const targetDate = new Date(latest.date);
+      targetDate.setFullYear(targetDate.getFullYear() - 1);
+      const yearAgoObs = capex.reduce((best, obs) =>
+        Math.abs(new Date(obs.date) - targetDate) < Math.abs(new Date(best.date) - targetDate) ? obs : best);
+      const lv = parseFloat(latest.value), yv = parseFloat(yearAgoObs.value);
+      if (!isNaN(lv) && !isNaN(yv) && yv !== 0) currentData.e3 = ((lv - yv) / yv) * 100;
+    }
+
+    // E4 — SLOOS
+    setLoadingMsg('Fetching lending standards...');
+    const sloos = await fredFetch('DRTSCILM', 3);
+    if (sloos) currentData.e4 = parseFloat(sloos[0].value);
+
+    // E5 — Breakeven Inflation
+    setLoadingMsg('Fetching inflation expectations...');
+    const beir = await fredFetch('T5YIEM', 3);
+    if (beir) currentData.e5 = parseFloat(beir[0].value);
+
+    // E6 — Real PCE YoY %
+    setLoadingMsg('Fetching consumer spending...');
+    const pce = await fredFetch('PCEC96', 18);
+    if (pce && pce.length >= 13) {
+      const latest = pce[0];
+      const targetDate = new Date(latest.date);
+      targetDate.setFullYear(targetDate.getFullYear() - 1);
+      const yearAgoObs = pce.reduce((best, obs) =>
+        Math.abs(new Date(obs.date) - targetDate) < Math.abs(new Date(best.date) - targetDate) ? obs : best);
+      const lv = parseFloat(latest.value), yv = parseFloat(yearAgoObs.value);
+      if (!isNaN(lv) && !isNaN(yv) && yv !== 0) currentData.e6 = ((lv - yv) / yv) * 100;
+    }
+
+    updateDisplay();
+    const now = new Date();
+    document.getElementById('lastUpdated').textContent = 'Updated ' + now.toLocaleString();
+    document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    setStatus('Data loaded successfully.');
+
+  } catch(err) {
+    console.error('fetchAllData error:', err);
+    updateDisplay();
+    const now = new Date();
+    document.getElementById('lastUpdated').textContent = 'Updated (partial) ' + now.toLocaleString();
+    setStatus('Some indicators unavailable. Open F12 console for details.');
+  }
+
+  showLoading(false);
+  btn.disabled = false;
+}
+
+// ============================================================
+// UPDATE DISPLAY
+// ============================================================
+function updateDisplay() {
+  const ids = ['m1','m2','m3','m4','m5','m6','e1','e2','e3','e4','e5','e6'];
+  const signals = {};
+
+  ids.forEach(id => {
+    const val = currentData[id];
+    const sig = getSignal(id, val);
+    signals[id] = sig;
+
+    // value cell (m1 and m4 use input fields, not val spans)
+    const valEl = document.getElementById(id + '-val');
+    if (valEl) {
+      valEl.textContent = formatVal(id, val);
+      valEl.className = 'ind-value' + (val === null ? ' pending' : '');
+    }
+
+    // signal dot
+    const sigEl = document.getElementById(id + '-sig');
+    sigEl.className = 'signal-dot ' + sig;
+    sigEl.textContent = sig === 'pending' ? '—' : sig === 'red' ? '▼' : sig === 'green' ? '▲' : '●';
+  });
+
+  // Panel scores
+  const mktSigs = ['m1','m2','m3','m4','m5','m6'].map(id => signals[id]).filter(s => s !== 'pending');
+  const ecoSigs = ['e1','e2','e3','e4','e5','e6'].map(id => signals[id]).filter(s => s !== 'pending');
+
+  const mktScore = mktSigs.length >= 4 ? panelScore(mktSigs) : 'pending';
+  const ecoScore = ecoSigs.length >= 4 ? panelScore(ecoSigs) : 'pending';
+
+  // Badges
+  setBadge('mktBadge', mktScore);
+  setBadge('ecoBadge', ecoScore);
+
+  // Large scores
+  setLargeScore('mktScoreLarge', mktScore);
+  setLargeScore('ecoScoreLarge', ecoScore);
+
+  document.getElementById('mktScoreRead').textContent = mktSigs.length + ' of 6 indicators loaded';
+  document.getElementById('ecoScoreRead').textContent = ecoSigs.length + ' of 6 indicators loaded';
+
+  // Divergence alert
+  updateDivergenceAlert(mktScore, ecoScore);
+  updateNarrative(signals);
+}
+
+function setBadge(elId, score) {
+  const el = document.getElementById(elId);
+  el.className = 'score-badge ' + score;
+  el.textContent = signalLabel(score);
+}
+
+function setLargeScore(elId, score) {
+  const el = document.getElementById(elId);
+  el.className = 'div-score-large ' + score;
+  el.textContent = signalLabel(score);
+}
+
+function updateDivergenceAlert(mkt, eco) {
+  const el = document.getElementById('divergenceAlert');
+  if (mkt === 'pending' || eco === 'pending') {
+    el.innerHTML = 'Press <strong>Update</strong> to load current indicator readings. Market and economic scores will appear here with alignment or divergence noted.';
+    return;
+  }
+  if (mkt === eco) {
+    const msgs = {
+      green: '✓ Market and economic conditions are <strong>aligned — both healthy</strong>. Portfolio positioning can reflect full risk tolerance within client mandates.',
+      yellow: '⚠ Market and economic conditions are <strong>aligned — both cautionary</strong>. Review positioning. Consider quality/value tilt within equity sleeve.',
+      red: '✕ Market and economic conditions are <strong>aligned — both stressed</strong>. Begin defensive sequence: quality/value tilt, then cash/short-duration increase, then evaluate buffered ETF deployment by profile.'
+    };
+    el.innerHTML = msgs[mkt] || '';
+  } else {
+    // All four divergence combinations — specific language for each
+    const div = {
+      'stress-green':  '⚡ <strong>Divergence — market stress, economy healthy.</strong> All six economic indicators are constructive. Market stress against a broad economic foundation is more likely sentiment or technical in nature. Monitor closely — no defensive action warranted until economic indicators confirm.',
+      'stress-yellow': '⚡ <strong>Divergence — market stress, economy cautionary.</strong> Both sides are weakening but market indicators are moving faster. Quality/value tilt is appropriate. Watch for economic indicators to confirm before advancing the defensive sequence.',
+      'yellow-green':  '⚡ <strong>Divergence — early market caution, economy healthy.</strong> Market breadth or credit signals are softening while economic fundamentals remain intact. A common early-cycle warning. Heightened awareness appropriate — no allocation change warranted at this stage.',
+      'yellow-red':    '⚡ <strong>Divergence — economy deteriorating, market complacent.</strong> Economic indicators are stressed while market conditions appear only cautionary. This combination historically carries meaningful risk — markets may not yet be pricing in economic weakness. Review defensive positioning promptly.',
+      'green-yellow':  '⚡ <strong>Divergence — economic softening, market unaware.</strong> Economic indicators are cautionary while market conditions appear healthy. Monitor for confirmation. Quality/value tilt within equity is a low-cost hedge at this stage.',
+      'green-red':     '⚡ <strong>Divergence — economy stressed, markets complacent.</strong> Economic indicators are in stress while market signals remain healthy. This is an elevated-risk combination — deteriorating economic fundamentals that markets have not yet priced in. Begin quality/value tilt and review cash/short-duration positioning immediately.'
+    };
+    const key = `${mkt}-${eco}`;
+    el.innerHTML = div[key] || `⚡ <strong>Divergence.</strong> Market indicators show <strong>${signalLabel(mkt).toLowerCase()}</strong> while economic indicators show <strong>${signalLabel(eco).toLowerCase()}</strong>. Review both scorecard panels before acting.`;
+  }
+}
+
+// ============================================================
+// NARRATIVE GENERATION
+// ============================================================
+function updateNarrative(signals) {
+  const block = document.getElementById('narrativeBlock');
+  const mktEl = document.getElementById('narrativeMkt');
+  const ecoEl = document.getElementById('narrativeEco');
+  const flagsEl = document.getElementById('narrativeFlags');
+
+  const loaded = Object.values(signals).filter(s => s !== 'pending').length;
+  if (loaded < 4) { block.style.display = 'none'; return; }
+  block.style.display = 'block';
+
+  // Count signals per panel
+  const mktIds = ['m1','m2','m3','m4','m5','m6'];
+  const ecoIds = ['e1','e2','e3','e4','e5','e6'];
+  const mktSigs = mktIds.map(id => signals[id]).filter(s => s && s !== 'pending');
+  const ecoSigs = ecoIds.map(id => signals[id]).filter(s => s && s !== 'pending');
+  const mktRed = mktSigs.filter(s => s === 'red').length;
+  const mktYellow = mktSigs.filter(s => s === 'yellow').length;
+  const ecoRed = ecoSigs.filter(s => s === 'red').length;
+  const ecoYellow = ecoSigs.filter(s => s === 'yellow').length;
+
+  // Panel-level summary — market
+  const mktText = (() => {
+    if (mktRed >= 3) return 'Market conditions are under significant stress. Multiple indicators are flashing red simultaneously — credit spreads, financial conditions, or momentum have crossed stress thresholds. Defensive positioning is warranted.';
+    if (mktRed >= 1 && mktYellow >= 2) return 'Market conditions are deteriorating. At least one indicator has crossed into stress territory and several others are cautionary. The weight of evidence favors a defensive posture.';
+    if (mktRed === 1) return 'Market conditions are mixed with one stress signal. The remaining indicators are neutral to healthy. Monitor the flagged indicator closely before taking defensive action.';
+    if (mktYellow >= 4) return 'Market conditions are broadly cautionary. No indicator has crossed into stress territory, but the cluster of caution signals suggests financial conditions are tightening and risk is building.';
+    if (mktYellow >= 2) return 'Market conditions are mostly healthy with pockets of caution. Two or more indicators are in neutral territory — not alarming individually, but worth monitoring collectively for directional movement.';
+    if (mktYellow === 1) return 'Market conditions are healthy with one cautionary signal. The overall posture is constructive. The flagged indicator is in a transitional range — not yet a concern, but worth watching.';
+    return 'Market conditions are broadly healthy. All indicators are in green territory, signaling normal functioning credit markets, constructive financial conditions, and positive market momentum.';
+  })();
+
+  // Panel-level summary — economic
+  const ecoText = (() => {
+    if (ecoRed >= 3) return 'Economic conditions are under significant stress. Leading indicators, labor market data, or lending standards suggest contraction is either underway or approaching. Portfolio defensiveness is appropriate.';
+    if (ecoRed >= 1 && ecoYellow >= 2) return 'Economic conditions are weakening. One indicator has moved into contraction territory and others are softening. The consumer, credit availability, or business investment are showing strain.';
+    if (ecoRed === 1) return 'Economic conditions are mixed with one contraction signal. The broader economic picture remains intact but one area — labor, lending, capex, or consumer spending — has crossed a meaningful threshold.';
+    if (ecoYellow >= 4) return 'Economic conditions are broadly cautionary. No single indicator has broken down, but the cluster of neutral readings suggests the expansion is losing momentum. Forward-looking indicators merit close attention.';
+    if (ecoYellow >= 2) return 'Economic conditions are mostly constructive with some areas of softness. Two or more indicators are in neutral territory, suggesting the economy is healthy but not accelerating.';
+    if (ecoYellow === 1) return 'Economic conditions are healthy with one area of softness. The overall economic picture is constructive. The flagged indicator warrants monitoring but does not alter the baseline view.';
+    return 'Economic conditions are broadly healthy. Leading indicators, labor market, business investment, lending standards, and consumer spending are all signaling expansion.';
+  })();
+
+  mktEl.textContent = mktText;
+  ecoEl.textContent = ecoText;
+
+  // Per-indicator flags — yellow and red only
+  const flagDefs = {
+    m1: {
+      yellow: 'S&P 500 30-day momentum is negative — broad market is in a short-term downtrend.',
+      red:    'S&P 500 30-day momentum has fallen sharply — sustained market weakness underway.'
+    },
+    m2: {
+      yellow: 'Yield curve is flat — the spread between 10yr and 3mo Treasuries is narrow, historically a caution signal for growth.',
+      red:    'Yield curve is inverted — this configuration has preceded every US recession since 1970. Re-steepening after inversion often marks the most dangerous phase.'
+    },
+    m3: {
+      yellow: 'High yield credit spreads are elevated — bond markets are pricing in increased default risk in speculative-grade debt.',
+      red:    'High yield credit spreads are at stress levels — the credit market is signaling significant economic deterioration risk.'
+    },
+    m4: {
+      yellow: 'Investment grade credit spreads are widening — stress is moving up the credit quality ladder beyond speculative names.',
+      red:    'Investment grade credit spreads are at stress levels — a broad-based credit event is being priced. This is a serious signal.'
+    },
+    m5: {
+      yellow: 'Financial conditions (NFCI) are tightening toward historical average — borrowing costs and credit availability are becoming less accommodative.',
+      red:    'Financial conditions (NFCI) are significantly tighter than historical average — a meaningful headwind for growth and risk assets.'
+    },
+    m6: {
+      yellow: 'The 10-year real yield is elevated — the true cost of capital is compressing equity P/E multiples and slowing investment incentives.',
+      red:    'The 10-year real yield has crossed 2.5% — historically a significant headwind for equity valuations and business investment.'
+    },
+    e1: {
+      yellow: 'The OECD Leading Indicator is below 100 — the composite is pointing toward slowing economic momentum in the months ahead.',
+      red:    'The OECD Leading Indicator has dropped materially — the composite is signaling contraction risk across the broad economy.'
+    },
+    e2: {
+      yellow: 'Initial jobless claims are rising toward 250K — labor market resilience is beginning to show cracks.',
+      red:    'Initial jobless claims have exceeded 300K — layoff activity is at levels historically associated with recession.'
+    },
+    e3: {
+      yellow: 'Core capex orders are flat year-over-year — businesses are not expanding investment, suggesting reduced confidence in forward demand.',
+      red:    'Core capex orders are contracting year-over-year — businesses are pulling back on investment, a leading indicator of broader economic weakness.'
+    },
+    e4: {
+      yellow: 'Banks are tightening C&I lending standards (SLOOS positive) — credit is becoming less available to businesses, which historically precedes slowing investment and hiring.',
+      red:    'Banks are aggressively tightening lending standards — credit availability is contracting sharply, a historically reliable leading indicator of recession.'
+    },
+    e5: {
+      yellow: 'Five-year breakeven inflation is elevated — bond markets expect inflation to remain above the Fed\'s target, limiting room for rate cuts.',
+      red:    'Five-year breakeven inflation has crossed 3% — the market is pricing in persistently high inflation, which constrains Fed flexibility and pressures real returns.'
+    },
+    e6: {
+      yellow: 'Real consumer spending growth is slowing — PCE is expanding but below the threshold that supports broad economic momentum.',
+      red:    'Real consumer spending is contracting year-over-year — the largest component of GDP is shrinking, a significant deterioration in economic conditions.'
+    }
+  };
+
+  const flagItems = [];
+  [...mktIds, ...ecoIds].forEach(id => {
+    const sig = signals[id];
+    if ((sig === 'yellow' || sig === 'red') && flagDefs[id] && flagDefs[id][sig]) {
+      flagItems.push({ id: id.toUpperCase(), sig, text: flagDefs[id][sig] });
+    }
+  });
+
+  if (flagItems.length === 0) {
+    flagsEl.style.display = 'none';
+  } else {
+    flagsEl.style.display = 'block';
+    flagsEl.innerHTML = flagItems.map(f =>
+      `<div class="narrative-flag-item">
+        <span class="narrative-flag-label ${f.sig}">${f.id}</span>
+        <span>${f.text}</span>
+      </div>`
+    ).join('');
+  }
+
+  // ── Thematic cluster detection ──────────────────────────────
+  // Only fires when multiple indicators tell the same story
+  const isStressed = id => signals[id] === 'yellow' || signals[id] === 'red';
+
+  const clusters = [];
+
+  // Financial Tightening: M2 + M4 + M5 + M6 + E4 — 3+ stressed
+  const tighteningIds = ['m2','m4','m5','m6','e4'];
+  const tighteningCount = tighteningIds.filter(isStressed).length;
+  if (tighteningCount >= 3) {
+    const severity = tighteningCount >= 4
+      ? 'The cost and availability of capital is tightening across multiple dimensions simultaneously — yield curve, credit spreads, financial conditions, and lending standards are all signaling the same thing. This is not noise; it is a coherent message from the credit market.'
+      : 'Three or more financial tightening indicators are elevated together — yield curve, credit spreads, or lending standards are moving in concert. When these cluster, the effect on growth is compounding, not additive.';
+    clusters.push({ theme: 'Financial Tightening', text: severity });
+  }
+
+  // Growth Deteriorating: E1 + E2 + E3 + E6 — 2+ stressed
+  const growthIds = ['e1','e2','e3','e6'];
+  const growthCount = growthIds.filter(isStressed).length;
+  if (growthCount >= 2) {
+    const severity = growthCount >= 3
+      ? 'Leading indicators, labor market, and either business investment or consumer spending are weakening simultaneously. The growth picture is deteriorating on multiple fronts — this warrants a defensive review.'
+      : 'Two or more growth indicators are softening together — the economy may be losing momentum across both business investment and consumer activity. Watch for confirmation in the weeks ahead.';
+    clusters.push({ theme: 'Growth Softening', text: severity });
+  }
+
+  // Inflation Constraint: M6 + E5 both stressed
+  const inflationIds = ['m6','e5'];
+  const inflationCount = inflationIds.filter(isStressed).length;
+  if (inflationCount === 2) {
+    clusters.push({
+      theme: 'Inflation Constraint',
+      text: 'Both real yields and breakeven inflation are elevated simultaneously — the Fed faces a constrained environment where cutting rates risks reigniting inflation while holding them risks growth. This limits the policy backstop that markets have historically relied on.'
+    });
+  }
+
+  // Render clusters if any
+  const clusterEl = document.getElementById('narrativeClusters');
+  if (clusters.length === 0) {
+    clusterEl.style.display = 'none';
+  } else {
+    clusterEl.style.display = 'block';
+    clusterEl.innerHTML = clusters.map(cl =>
+      `<div class="narrative-cluster-item">
+        <span class="narrative-cluster-label">${cl.theme}</span>
+        <span class="narrative-cluster-text">${cl.text}</span>
+      </div>`
+    ).join('');
+  }
+}
+
+// ============================================================
+// SNAPSHOT & HISTORY
+// ============================================================
+function takeSnapshot() {
+  const ids = ['m1','m2','m3','m4','m5','m6','e1','e2','e3','e4','e5','e6'];
+  const hasData = ids.some(id => currentData[id] !== null);
+  if (!hasData) {
+    setStatus('No data to snapshot. Press Update first.');
+    return;
+  }
+
+  const signals = {};
+  ids.forEach(id => { signals[id] = getSignal(id, currentData[id]); });
+
+  const mktSigs = ['m1','m2','m3','m4','m5','m6'].map(id => signals[id]).filter(s => s !== 'pending');
+  const ecoSigs = ['e1','e2','e3','e4','e5','e6'].map(id => signals[id]).filter(s => s !== 'pending');
+  const mktScore = mktSigs.length >= 4 ? panelScore(mktSigs) : 'pending';
+  const ecoScore = ecoSigs.length >= 4 ? panelScore(ecoSigs) : 'pending';
+
+  const snap = {
+    date: new Date().toISOString().split('T')[0],
+    m1: currentData.m1, m2: currentData.m2, m3: currentData.m3,
+    m4: currentData.m4, m5: currentData.m5, m6: currentData.m6,
+    mktScore,
+    e1: currentData.e1, e2: currentData.e2, e3: currentData.e3,
+    e4: currentData.e4, e5: currentData.e5, e6: currentData.e6,
+    ecoScore
+  };
+
+  const history = loadHistory();
+  // Avoid duplicate same-day snapshots
+  const existing = history.findIndex(h => h.date === snap.date);
+  if (existing >= 0) history[existing] = snap;
+  else history.push(snap);
+
+  saveHistory(history);
+  renderHistory();
+  renderCharts(); // async, no await needed here
+  setStatus('Snapshot saved — ' + snap.date);
+
+  // Auto download CSV
+  exportCSV();
+}
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  } catch(e) { return []; }
+}
+
+function saveHistory(h) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
+}
+
+function clearHistory() {
+  if (!confirm('Clear all snapshot history? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  renderHistory();
+  renderCharts(); // async, no await needed here
+  setStatus('History cleared.');
+}
+
+// ============================================================
+// RENDER HISTORY TABLE
+// ============================================================
+function renderHistory() {
+  const history = loadHistory().slice().sort((a,b) => a.date.localeCompare(b.date)); // oldest left
+  const tbody = document.getElementById('heatmapBody');
+  document.getElementById('historyCount').textContent = history.length + ' snapshot' + (history.length !== 1 ? 's' : '') + ' stored';
+
+  if (history.length === 0) {
+    tbody.innerHTML = '<tr><td class="row-label" colspan="20" style="text-align:center;color:#aaaacc;padding:2rem;background:var(--navy);">No snapshots yet. Update data and take a snapshot.</td></tr>';
+    return;
+  }
+
+  // Row definitions: label, id (for signal/format), type
+  const rows = [
+    { type: 'section', label: 'Market Conditions' },
+    { label: 'M1  S&P 500 Momentum',      id: 'm1' },
+    { label: 'M2  Yield Curve',            id: 'm2' },
+    { label: 'M3  HY Credit Spread',       id: 'm3' },
+    { label: 'M4  IG Credit Spread',       id: 'm4' },
+    { label: 'M5  NFCI',                   id: 'm5' },
+    { label: 'M6  10yr Real Yield',        id: 'm6' },
+    { label: 'Market Score',               id: 'mktScore', type: 'score' },
+    { type: 'section', label: 'Economic Conditions' },
+    { label: 'E1  OECD CLI',               id: 'e1' },
+    { label: 'E2  Jobless Claims',         id: 'e2' },
+    { label: 'E3  Core Capex YoY',         id: 'e3' },
+    { label: 'E4  SLOOS',                  id: 'e4' },
+    { label: 'E5  Breakeven Inflation',    id: 'e5' },
+    { label: 'E6  Real PCE YoY',           id: 'e6' },
+    { label: 'Economic Score',             id: 'ecoScore', type: 'score' },
+  ];
+
+  const hmClass = sig => {
+    if (sig === 'green')  return 'hm-green';
+    if (sig === 'yellow') return 'hm-yellow';
+    if (sig === 'red')    return 'hm-red';
+    return 'hm-pending';
+  };
+
+  let html = '';
+
+  rows.forEach(row => {
+    if (row.type === 'section') {
+      // Section divider spanning all columns
+      html += `<tr class="section-divider">
+        <th class="row-label" scope="row" style="background:#1a1a2e;color:#ccbb88;font-size:0.55rem;letter-spacing:0.1em;">${row.label.toUpperCase()}</th>
+        ${history.map(h => `<td></td>`).join('')}
+      </tr>`;
+      // Date header row immediately after section label
+      html += `<tr>
+        <th class="row-label" scope="row" style="font-size:0.55rem;color:#88aacc;">DATE</th>
+        ${history.map(h => `<th class="date-header" scope="col">${h.date.slice(5)}</th>`).join('')}
+      </tr>`;
+      return;
+    }
+
+    if (row.type === 'score') {
+      html += `<tr class="score-row">
+        <td class="row-label" style="font-size:0.58rem;letter-spacing:0.1em;color:#ccbb88;">${row.label.toUpperCase()}</td>
+        ${history.map(h => {
+          const s = h[row.id] || 'pending';
+          return `<td class="hm-score-${s}">${signalLabel(s).toUpperCase()}</td>`;
+        }).join('')}
+      </tr>`;
+      return;
+    }
+
+    // Standard indicator row
+    html += `<tr>
+      <td class="row-label">${row.label}</td>
+      ${history.map(h => {
+        const v = h[row.id];
+        const sig = getSignal(row.id, v);
+        const display = v !== null && v !== undefined ? formatVal(row.id, v) : '—';
+        return `<td class="hm-cell ${hmClass(sig)}">${display}</td>`;
+      }).join('')}
+    </tr>`;
+  });
+
+  tbody.innerHTML = html;
+}
+
+// ============================================================
+// EXPORT CSV
+// ============================================================
+function exportCSV() {
+  const history = loadHistory();
+  if (history.length === 0) { setStatus('No history to export.'); return; }
+
+  const headers = ['Date','M1 Wilshire30d%','M2 YieldCurve','M3 HYSpread_bps','M4 IGSpread%','M5 NFCI','M6 RealYield%','Mkt_Score','E1 OECD_CLI','E2 Claims_K','E3 CoreCapex_YoY%','E4 SLOOS_pct','E5 Breakeven_pct','E6 RealPCE_YoY%','Eco_Score'];
+  const rows = history.map(h => [
+    h.date,
+    h.m1 ?? '', h.m2 ?? '', h.m3 ?? '', h.m4 ?? '', h.m5 ?? '', h.m6 ?? '', h.mktScore,
+    h.e1 ?? '', h.e2 ?? '', h.e3 ?? '', h.e4 ?? '', h.e5 ?? '', h.e6 ?? '', h.ecoScore
+  ].join(','));
+
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'QWM_Indicators_' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  setStatus('CSV downloaded.');
+}
+
+// ============================================================
+// ============================================================
+// CHARTS — pull 24 months of history directly from FRED
+// ============================================================
+const CHART_INDICATORS = [
+  { id: 'm1', label: 'S&amp;P 500 (30-day momentum %)', unit: '%', series: [{ id:'SP500', mul:1 }], combo: 'momentum30' },
+  { id: 'm2', label: 'Yield Curve (10yr − 3mo)',   unit: '%',  series: [{ id:'DGS10', mul:1 }, { id:'DGS3MO', mul:-1 }], combo: 'diff' },
+  { id: 'm3', label: 'High Yield Credit Spread',   unit: 'bps', series: [{ id:'BAMLH0A0HYM2', mul:100 }] },
+  { id: 'm4', label: 'Investment Grade Credit Spread', unit: '%', series: [{ id:'BAMLC0A0CM', mul:1 }] },
+  { id: 'm5', label: 'NFCI Financial Conditions',  unit: '',   series: [{ id:'NFCI', mul:1 }] },
+  { id: 'm6', label: '10-Year Real Yield (TIPS)',   unit: '%',  series: [{ id:'DFII10', mul:1 }] },
+  { id: 'e1', label: 'OECD CLI — US Leading Indicator', unit: '', series: [{ id:'USALOLITOAASTSAM', mul:1 }] },
+  { id: 'e2', label: 'Initial Jobless Claims 4wk MA', unit:'K', series: [{ id:'IC4WSA', mul:0.001 }] },
+  { id: 'e3', label: 'Core Capex — Nondefense Capital Goods ex-Aircraft (YoY %)', unit: '%', series: [{ id:'NEWORDER', mul:1 }], combo: 'yoy' },
+  { id: 'e4', label: 'SLOOS C&I Lending Standards', unit:'%',  series: [{ id:'DRTSCILM', mul:1 }] },
+  { id: 'e5', label: '5-Year Breakeven Inflation',  unit: '%',  series: [{ id:'T5YIEM', mul:1 }] },
+  { id: 'e6', label: 'Real Consumer Spending — PCE (YoY %)', unit: '%', series: [{ id:'PCEC96', mul:1 }], combo: 'yoy' },
+];
+
+async function renderCharts() {
+  const grid = document.getElementById('chartGrid');
+  grid.innerHTML = CHART_INDICATORS.map(ind =>
+    `<div class="chart-card">
+      <div class="chart-card-title">${ind.label}</div>
+      <div class="chart-canvas-wrap" id="wrap-${ind.id}">
+        <div style="color:#8888aa;font-size:11px;padding:20px 0;text-align:center;">${ind.manual ? 'Manual entry — no chart data' : 'Loading...'}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Two years back (LEI needs extra 6 months for delta calculation)
+  const obsDate = new Date();
+  obsDate.setFullYear(obsDate.getFullYear() - 3);
+  obsDate.setMonth(obsDate.getMonth() - 3); // buffer for monthly publication lag
+  const obsStart = obsDate.toISOString().split('T')[0];
+
+  for (const ind of CHART_INDICATORS) {
+    if (ind.manual) continue; // skip Barchart indicators
+    const wrap = document.getElementById('wrap-' + ind.id);
+    try {
+      // Fetch each series
+      const seriesData = await Promise.all(ind.series.map(s => fredFetchHistory(s.id, obsStart)));
+
+      // If any series failed, show message
+      if (seriesData.some(d => !d)) {
+        wrap.innerHTML = `<div style="color:#8888aa;font-size:11px;padding:20px 0;text-align:center;">Data unavailable</div>`;
+        continue;
+      }
+
+      // Build combined points
+      let points;
+      if (ind.combo === 'diff' && seriesData.length === 2) {
+        // Yield curve: align by date then subtract
+        const map0 = Object.fromEntries(seriesData[0].map(o => [o.date, parseFloat(o.value)]));
+        const map1 = Object.fromEntries(seriesData[1].map(o => [o.date, parseFloat(o.value)]));
+        const dates = Object.keys(map0).filter(d => map1[d] !== undefined).sort();
+        points = dates.map(d => ({ date: d, value: (map0[d] * ind.series[0].mul) + (map1[d] * ind.series[1].mul) }));
+      } else if (ind.combo === 'momentum30') {
+        // Rolling 30-trading-day momentum %
+        const raw = seriesData[0].map(o => ({ date: o.date, value: parseFloat(o.value) }))
+                                  .filter(o => !isNaN(o.value))
+                                  .sort((a, b) => a.date.localeCompare(b.date));
+        points = [];
+        for (let i = 30; i < raw.length; i++) {
+          const mom = ((raw[i].value - raw[i - 30].value) / raw[i - 30].value) * 100;
+          points.push({ date: raw[i].date, value: mom });
+        }
+      } else if (ind.combo === 'yoy') {
+        // YoY % change: need 13+ months of data
+        const raw = seriesData[0].map(o => ({ date: o.date, value: parseFloat(o.value) }))
+                                  .filter(o => !isNaN(o.value))
+                                  .sort((a, b) => a.date.localeCompare(b.date));
+        points = [];
+        for (let i = 12; i < raw.length; i++) {
+          const yoy = ((raw[i].value - raw[i - 12].value) / raw[i - 12].value) * 100;
+          points.push({ date: raw[i].date, value: yoy });
+        }
+      } else {
+        points = seriesData[0].map(o => ({ date: o.date, value: parseFloat(o.value) * ind.series[0].mul }));
+        points.sort((a, b) => a.date.localeCompare(b.date));
+      }
+
+      points = points.filter(p => !isNaN(p.value));
+      if (points.length < 2) {
+        wrap.innerHTML = `<div style="color:#8888aa;font-size:11px;padding:20px 0;text-align:center;">Insufficient data</div>`;
+        continue;
+      }
+
+      // Create canvas and draw
+      wrap.innerHTML = `<canvas id="chart-${ind.id}"></canvas>`;
+      const canvas = document.getElementById('chart-' + ind.id);
+      drawChart(canvas, points.map(p => ({ date: p.date, [ind.id]: p.value })), ind.id);
+
+    } catch(e) {
+      console.warn('Chart failed for', ind.id, e);
+      wrap.innerHTML = `<div style="color:#8888aa;font-size:11px;padding:20px 0;text-align:center;">Error loading data</div>`;
+    }
+  }
+}
+
+async function fredFetchHistory(series, obsStart) {
+  const isLocal = location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const directUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_KEY}&file_type=json&sort_order=asc&observation_start=${obsStart}`;
+  const url = isLocal ? `https://corsproxy.io/?${encodeURIComponent(directUrl)}` : `/.netlify/functions/fred?series=${series}&sort_order=asc&observation_start=${obsStart}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!data.observations) return null;
+    return data.observations.filter(o => o.value !== '.' && o.value !== '');
+  } catch(e) {
+    console.warn(`fredFetchHistory failed for ${series}:`, e.message);
+    return null;
+  }
+}
+
+
+function drawChart(canvas, points, id) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width || 300;
+  const H = 140;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const vals = points.map(p => parseFloat(p[id]));
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const pad = { top: 12, right: 16, bottom: 24, left: 40 };
+  const cW = W - pad.left - pad.right;
+  const cH = H - pad.top - pad.bottom;
+  const range = max - min || 1;
+
+  const xPos = (i) => pad.left + (i / (vals.length - 1)) * cW;
+  const yPos = (v) => pad.top + cH - ((v - min) / range) * cH;
+
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#f0ede6';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 3; i++) {
+    const y = pad.top + (i / 3) * cH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+  }
+
+  // Threshold zones (subtle background)
+  const thresholds = getThresholds(id);
+  if (thresholds) {
+    // green zone
+    const greenY = yPos(Math.min(thresholds.greenMin, max));
+    const greenH = Math.max(0, cH - (greenY - pad.top));
+    ctx.fillStyle = 'rgba(26,107,60,0.06)';
+    ctx.fillRect(pad.left, greenY, cW, greenH);
+
+    // red zone
+    const redY = pad.top;
+    const redH = Math.max(0, yPos(thresholds.redMax) - pad.top);
+    ctx.fillStyle = 'rgba(192,57,43,0.06)';
+    ctx.fillRect(pad.left, redY, cW, redH);
+  }
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#1a1a2e';
+  ctx.lineWidth = 1.5;
+  ctx.lineJoin = 'round';
+  vals.forEach((v, i) => {
+    if (i === 0) ctx.moveTo(xPos(i), yPos(v));
+    else ctx.lineTo(xPos(i), yPos(v));
+  });
+  ctx.stroke();
+
+  // Dots — colored by signal
+  vals.forEach((v, i) => {
+    const sig = getSignal(id, v);
+    const colors = { red: '#c0392b', yellow: '#b8860b', green: '#1a6b3c', pending: '#aaaacc' };
+    ctx.beginPath();
+    ctx.arc(xPos(i), yPos(v), 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = colors[sig] || '#1a1a2e';
+    ctx.fill();
+  });
+
+  // X labels (dates, abbreviated)
+  ctx.fillStyle = '#8888aa';
+  ctx.font = '9px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  const step = Math.max(1, Math.floor(vals.length / 4));
+  points.forEach((p, i) => {
+    if (i % step === 0 || i === vals.length - 1) {
+      const d = p.date.slice(5); // MM-DD
+      ctx.fillText(d, xPos(i), H - 6);
+    }
+  });
+
+  // Y axis labels
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#8888aa';
+  ctx.font = '9px DM Mono, monospace';
+  [0, 0.5, 1].forEach(t => {
+    const v = min + t * range;
+    const y = yPos(v);
+    ctx.fillText(v.toFixed(1), pad.left - 4, y + 3);
+  });
+}
+
+function getThresholds(id) {
+  const t = {
+    m1: { greenMin: 60, redMax: 40 },
+    m2: { greenMin: 1.0, redMax: 0 },
+    m3: { greenMin: 999, redMax: 500 }, // inverted — lower is better
+    m5: { greenMin: 999, redMax: 0.5 },
+    e1: { greenMin: 0, redMax: -1 },
+    e2: { greenMin: 999, redMax: 300 },
+    e3: { greenMin: 52, redMax: 45 },
+    e4: { greenMin: 999, redMax: 20 },
+    e5: { greenMin: 999, redMax: 3.0 },
+  };
+  return t[id] || null;
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function switchView(name, tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  tab.classList.add('active');
+  if (name === 'charts') renderCharts();
+  if (name === 'history') renderHistory();
+}
+
+function showLoading(show, msg) {
+  document.getElementById('loadingOverlay').classList.toggle('active', show);
+  if (msg) document.getElementById('loadingMsg').textContent = msg;
+}
+
+function setLoadingMsg(msg) {
+  document.getElementById('loadingMsg').textContent = msg;
+}
+
+function setStatus(msg) {
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+  });
+  renderHistory();
+});
+</script>
+
+
+</body></html>

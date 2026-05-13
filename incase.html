@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In case of ...everything. | Quarters Wealth Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page {
+    margin: 0.75in;
+  }
+
+  :root {
+    --navy:     #1B2A4A;
+    --gold:     #B8972B;
+    --gold-lt:  #D4AE4E;
+    --cream:    #FAFAF7;
+    --gray:     #555555;
+    --mid-gray: #CCCCCC;
+    --white:    #ffffff;
+    --field-bg: #F7F6F2;
+    --radius:   4px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    font-weight: 300;
+  }
+  /* Dark band behind fixed header bars */
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 160px;
+    background: #0a1628;
+    z-index: 90;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body::before { display: none !important; content: none !important; background: none !important; }
+    .nav-bar, .sidebar, .selector-panel { display: none !important; }
+    .print-header { display: flex !important; visibility: visible !important; }
+    .layout { padding-top: 0 !important; }
+    .main { margin: 0 !important; padding: .25rem 1.5rem 1rem !important; }
+
+    /* Cover: own page, compact */
+    .cover {
+      padding: 2rem 2rem 1rem; margin-bottom: 0;
+      page-break-after: always;
+      min-height: 0 !important;
+    }
+    .cover-title { font-size: 2.2rem; }
+    .cover-sub { font-size: 1.1rem; margin-top: .3rem; }
+    .cover-rule { margin: .6rem auto; }
+    .cover-disclaimer { margin-top: .8rem; font-size: .75rem; }
+    .cover-fields { margin-top: .5rem; }
+
+    /* Section blocks — NO page-break-inside avoid, allow natural flow */
+    .section-block { margin-bottom: .5rem; page-break-inside: auto; }
+    .section-header { page-break-after: avoid; margin-bottom: .4rem; }
+    .section-header-num { font-size: 1.1rem; }
+
+    /* Sub headers */
+    .sub-header { margin: .5rem 0 .25rem; padding-bottom: .15rem; }
+
+    /* Contact cards — keep together but don't force page breaks */
+    .contact-card { page-break-inside: avoid; margin-bottom: .35rem; }
+
+    /* Textareas: flow naturally on print so no answer is silently clipped */
+    textarea {
+      min-height: 0 !important;
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+      resize: none !important;
+      font-size: .78rem !important;
+      line-height: 1.4 !important;
+      padding: .25rem .4rem !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Single-line inputs */
+    input[type="text"] {
+      height: 22px !important;
+      padding: .1rem .35rem !important;
+      font-size: .78rem !important;
+      line-height: 1.2 !important;
+    }
+
+    /* Field spacing */
+    .field-row { gap: .2rem; margin-bottom: .2rem; }
+    .field-full { margin-bottom: .2rem; }
+    .field-group { margin-bottom: .1rem; }
+    .field-label { margin-bottom: .08rem; font-size: .58rem; letter-spacing: .06em; }
+    .section-note { margin-bottom: .3rem; font-size: .73rem; line-height: 1.4; }
+    .prompt-text { margin-bottom: .1rem !important; font-size: .78rem !important; line-height: 1.3 !important; }
+
+    /* Remove continue links */
+    .continue-link { display: none !important; }
+
+    /* Section gaps */
+    .section-block { margin-bottom: .4rem; }
+  }
+
+  .print-header {
+    display: none !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: .6rem 0 .6rem;
+    border-bottom: 2px solid #B8972B;
+    margin-bottom: 1.5rem;
+  }
+  .print-header img {
+    height: 36px; width: auto;
+  }
+  @media print {
+    .print-header {
+      display: flex !important;
+    }
+  }
+
+  /* ── NAV BAR ── */
+  .nav-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 72px;
+  }
+  .nav-logo { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; letter-spacing: .08em; text-decoration: none; }
+  .nav-tagline { color: rgba(255,255,255,.45); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+  .privacy-notice {
+    background: #0a1628;
+    border-top: none;
+    border-bottom: 2px solid var(--gold);
+    text-align: center;
+    padding: .25rem 2rem;
+    font-size: .7rem;
+    letter-spacing: .07em;
+    color: var(--gold);
+    font-weight: 500;
+    position: fixed; top: 72px; left: 0; right: 0; z-index: 100;
+    height: 28px; line-height: 1.6;
+  }
+  .privacy-notice span { margin-right: .35rem; }
+  @media print { .privacy-notice { display: none !important; } }
+  .nav-print {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    font-family: 'Jost', sans-serif; font-size: .7rem; letter-spacing: .1em;
+    text-transform: uppercase; padding: .4rem 1rem; cursor: pointer;
+    transition: all .2s;
+  }
+  .nav-print:hover { background: var(--gold); color: var(--navy); }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; min-height: 100vh; padding-top: 152px; }
+
+  .sidebar {
+    position: fixed; top: 152px; left: 0; bottom: 0;
+    width: 220px; background: var(--navy);
+    overflow-y: auto; padding: 1.5rem 0;
+    border-right: 1px solid rgba(184,151,43,.2);
+  }
+  .sidebar-item {
+    display: block; padding: .55rem 1.5rem;
+    color: rgba(255,255,255,.5); font-size: .72rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    text-decoration: none; transition: all .15s;
+    border-left: 2px solid transparent;
+  }
+  .sidebar-item:hover, .sidebar-item.active {
+    color: var(--gold); border-left-color: var(--gold);
+    background: rgba(184,151,43,.06);
+  }
+  .sidebar-divider {
+    height: 1px; background: rgba(184,151,43,.15);
+    margin: .75rem 1.5rem;
+  }
+
+  .main { margin-left: 220px; padding: 3rem 3rem 6rem; max-width: 860px; }
+
+  /* ── COVER ── */
+  .cover {
+    text-align: center; padding: 5rem 2rem 4rem;
+    border-bottom: 1px solid var(--mid-gray);
+    margin-bottom: 3rem;
+  }
+  .cover-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.6rem; font-weight: 300; color: var(--navy);
+    line-height: 1.15; letter-spacing: -.01em;
+  }
+  .cover-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300; font-style: italic;
+    color: var(--navy); margin-top: .6rem;
+  }
+  .cover-rule {
+    width: 80px; height: 1px; background: var(--gold);
+    margin: 2rem auto;
+  }
+  .cover-fields { max-width: 420px; margin: 0 auto; text-align: left; }
+  .cover-label {
+    font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--gold); text-align: center; display: block; margin-bottom: .4rem;
+  }
+  .cover-disclaimer {
+    margin-top: 2.5rem; font-style: italic; font-size: .82rem;
+    color: var(--gray); line-height: 1.7; max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-block { margin-bottom: 3.5rem; scroll-margin-top: 80px; }
+
+  .section-header {
+    background: var(--navy); color: var(--white);
+    padding: .75rem 1.25rem; margin-bottom: 1rem;
+    display: flex; align-items: baseline; gap: .75rem;
+  }
+  .section-header-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300; color: var(--gold); opacity: .8;
+  }
+  .section-header-title {
+    font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 500;
+  }
+  .section-note {
+    font-style: italic; font-size: .82rem; color: var(--gray);
+    line-height: 1.7; margin-bottom: 1.5rem;
+    padding: 0 .25rem;
+  }
+
+  .sub-header {
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 600; color: var(--navy);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: .3rem; margin: 1.6rem 0 1rem;
+    display: flex; align-items: baseline; gap: .5rem;
+  }
+  .sub-header-note {
+    font-size: .68rem; font-style: italic; font-weight: 300;
+    color: var(--gray); text-transform: none; letter-spacing: 0;
+  }
+
+  /* ── FIELDS ── */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: .6rem; }
+  .field-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .field-full { margin-bottom: .6rem; }
+
+  .field-group { display: flex; flex-direction: column; }
+  .field-label {
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gray); margin-bottom: .25rem; font-weight: 500;
+  }
+  input[type="text"], textarea, select {
+    background: var(--field-bg);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: .45rem .6rem;
+    font-family: 'Jost', sans-serif;
+    font-size: .85rem; font-weight: 300;
+    color: var(--navy); width: 100%;
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2px rgba(27,42,74,.08);
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  textarea.lg  { min-height: 140px; }
+  textarea.xl  { min-height: 200px; }
+  textarea.xxl { min-height: 280px; }
+
+  /* ── CHECKBOX ROW ── */
+  .checkbox-row {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-bottom: .6rem; flex-wrap: wrap;
+  }
+  .checkbox-group { display: flex; align-items: center; gap: .4rem; }
+  .checkbox-group label { font-size: .82rem; color: var(--navy); cursor: pointer; }
+  input[type="checkbox"] {
+    width: 16px; height: 16px; accent-color: var(--gold);
+    cursor: pointer; border: 1px solid var(--gold);
+  }
+  .checkbox-inline-field { display: flex; align-items: center; gap: .5rem; flex: 1; max-width: 180px; }
+  .checkbox-inline-field label { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); white-space: nowrap; }
+  .checkbox-inline-field input { max-width: 100px; }
+
+  /* ── ACCOUNT BLOCK ── */
+  .account-block {
+    border: 1px solid rgba(184,151,43,.25);
+    border-radius: 6px; padding: 1rem 1rem .4rem;
+    margin-bottom: 1rem; background: rgba(250,250,247,.6);
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    height: 1px; background: var(--mid-gray);
+    margin: 2rem 0;
+  }
+
+  /* ── OPENING PROMPTS ── */
+  .prompt-text {
+    font-style: italic; font-size: .88rem; color: var(--gray);
+    margin-bottom: .35rem; line-height: 1.5;
+  }
+
+  /* ── DISCLOSURE ── */
+  .disclosure {
+    margin-top: 4rem; padding: 2rem;
+    border-top: 2px solid var(--gold);
+    background: var(--navy); border-radius: 4px;
+  }
+  .disclosure p {
+    font-size: .75rem; color: rgba(255,255,255,.6);
+    line-height: 1.8; margin-bottom: .75rem;
+  }
+  .disclosure a { color: var(--gold); }
+  @media print {
+    .disclosure {
+      background: #fff !important;
+      border: 1px solid var(--gold);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .disclosure p { color: #333 !important; }
+    .disclosure a { color: #B8972B !important; }
+  }
+
+  /* ── FOOTER NAV ── */
+  .section-nav {
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold); text-align: right; margin-top: 1.5rem;
+    padding-top: 1rem; border-top: 1px solid var(--mid-gray);
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 1.5rem 1rem 4rem; }
+    .field-row { grid-template-columns: 1fr; }
+    .cover-title { font-size: 2rem; }
+
+    /* Privacy notice smaller on mobile */
+    .privacy-notice { font-size: .6rem; padding: .2rem 1rem; letter-spacing: .04em; }
+
+    /* Selector panel wraps compactly */
+    .selector-panel { padding: .4rem .75rem; gap: .3rem .6rem; }
+    .selector-label { display: none; }
+    .selector-check span { font-size: .6rem; }
+    .selector-check input[type="checkbox"] { width: 14px; height: 14px; }
+    .selector-actions { margin-left: 0; width: 100%; justify-content: flex-end; margin-top: .2rem; }
+    .selector-btn { font-size: .6rem; padding: .25rem .6rem; }
+
+    /* Nav on mobile */
+    .nav-tagline { display: none; }
+  }
+
+  /* ── SECTION SELECTOR ── */
+  .selector-panel {
+    position: fixed; top: 100px; left: 0; right: 0; z-index: 99;
+    background: #0a1628;
+    border-bottom: 3px solid var(--gold);
+    padding: .6rem 1.5rem;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .4rem 1rem;
+    min-height: 48px;
+  }
+  .selector-label {
+    color: var(--gold); font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase; font-weight: 600; white-space: nowrap;
+    margin-right: .25rem;
+  }
+  /* Hide native checkbox, replace with styled box */
+  .selector-check {
+    display: flex; align-items: center; gap: .4rem;
+    cursor: pointer; user-select: none;
+  }
+  .selector-check input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px; flex-shrink: 0;
+    border: 2px solid rgba(184,151,43,.6);
+    background: transparent; cursor: pointer;
+    position: relative; transition: all .15s;
+  }
+  .selector-check input[type="checkbox"]:checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .selector-check input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute; top: -2px; left: 1px;
+    color: var(--navy); font-size: 12px; font-weight: 700; line-height: 1;
+  }
+  .selector-check span {
+    color: rgba(255,255,255,.55); font-size: .68rem;
+    letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+    transition: color .15s;
+  }
+  .selector-check input:checked + span { color: #fff; }
+  .selector-actions {
+    margin-left: auto; display: flex; gap: .5rem; align-items: center;
+  }
+  .selector-btn {
+    background: transparent; border: 1px solid var(--gold);
+    color: var(--gold); font-family: 'Jost', sans-serif;
+    font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .35rem .9rem; cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .selector-btn:hover { background: var(--gold); color: var(--navy); }
+  .selector-btn.primary { background: var(--gold); color: var(--navy); font-weight: 600; }
+  .selector-btn.primary:hover { background: var(--gold-lt); }
+  .selector-check input[type="checkbox"]:disabled {
+    opacity: 1; cursor: not-allowed;
+    background: var(--gold); border-color: var(--gold);
+  }
+  .selector-check input[type="checkbox"]:disabled + span {
+    color: var(--gold); cursor: not-allowed;
+  }
+  @media print { .selector-panel { display: none !important; } }
+
+
+  /* ── REPEATING ENTRIES ── */
+  .repeat-add {
+    background: transparent; border: 1px dashed var(--gold); color: var(--navy);
+    font-family: 'Jost', sans-serif; font-size: .72rem; letter-spacing: .08em;
+    text-transform: uppercase; padding: .45rem .9rem; cursor: pointer;
+    margin: .25rem 0 1rem; border-radius: var(--radius);
+    transition: all .15s;
+  }
+  .repeat-add:hover { background: rgba(184,151,43,.08); border-style: solid; }
+  .repeat-remove {
+    position: absolute; top: .35rem; right: .5rem;
+    background: transparent; border: none; color: var(--gray);
+    font-size: .68rem; cursor: pointer; opacity: .55;
+    letter-spacing: .04em; padding: .15rem .35rem;
+    font-family: 'Jost', sans-serif;
+  }
+  .repeat-remove:hover { color: #a83232; opacity: 1; }
+  [data-repeat-item] { position: relative; }
+  @media print { .repeat-add, .repeat-remove { display: none !important; } }
+
+  /* ── PASSWORD MODAL ── */
+  .qwm-modal-overlay {
+    position: fixed; inset: 0; background: rgba(10,22,40,0.58);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+  }
+  .qwm-modal {
+    background: #fff; padding: 1.6rem 1.5rem 1.2rem; border-radius: 6px;
+    width: min(420px, 92vw); border-top: 4px solid var(--gold);
+    font-family: 'Jost', sans-serif;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+  }
+  .qwm-modal h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--navy);
+    margin-bottom: .8rem; font-weight: 400;
+  }
+  .qwm-modal-hint {
+    font-size: .75rem; color: var(--gray); margin-bottom: .9rem;
+    font-style: italic; line-height: 1.55;
+  }
+  .qwm-modal input[type="password"] {
+    width: 100%; padding: .55rem .7rem; margin-bottom: .55rem;
+    border: 1px solid var(--gold); border-radius: 4px;
+    background: var(--field-bg); font-size: .9rem;
+    color: var(--navy); font-family: 'Jost', sans-serif;
+    box-sizing: border-box;
+  }
+  .qwm-modal-err {
+    font-size: .75rem; color: #a83232; min-height: 1rem; margin-bottom: .3rem;
+  }
+  .qwm-modal-actions {
+    display: flex; gap: .5rem; justify-content: flex-end; margin-top: .6rem;
+  }
+  .qwm-modal-actions button {
+    padding: .5rem 1.1rem; font-size: .7rem; letter-spacing: .1em;
+    text-transform: uppercase; cursor: pointer; border-radius: 3px;
+    font-family: 'Jost', sans-serif; border: 1px solid transparent;
+  }
+  .qwm-modal-cancel { background: transparent; border-color: var(--mid-gray); color: var(--gray); }
+  .qwm-modal-cancel:hover { color: var(--navy); border-color: var(--navy); }
+  .qwm-modal-ok { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+  .qwm-modal-ok:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+  /* ── CLOSING NOTE (a personal sign-off before the disclosure) ── */
+  .closing-note {
+    margin-top: 4rem; padding: 2.5rem 2rem 2rem;
+    border-top: 2px solid var(--gold);
+    border-bottom: 1px solid var(--mid-gray);
+    background: var(--cream);
+  }
+  .closing-note h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem; font-weight: 300; font-style: italic;
+    color: var(--navy); margin-bottom: 1.2rem;
+  }
+  .closing-note p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: var(--navy);
+    line-height: 1.75; margin-bottom: 1rem;
+  }
+  .closing-signoff {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-style: italic; color: var(--navy);
+    margin: 1.6rem 0 .6rem;
+  }
+  .closing-signature {
+    border-top: 1px solid var(--gold);
+    padding-top: 1rem; margin-top: .8rem;
+    font-family: 'Jost', sans-serif;
+  }
+  .closing-signature .name {
+    font-size: .95rem; color: var(--navy);
+    font-weight: 600; letter-spacing: .02em;
+  }
+  .closing-signature .title {
+    font-size: .72rem; color: var(--gray);
+    letter-spacing: .08em; text-transform: uppercase;
+    margin-top: .25rem;
+  }
+  .closing-signature .firm {
+    font-size: .82rem; color: var(--navy);
+    font-weight: 500; margin-top: .15rem;
+  }
+  .closing-contact {
+    margin-top: .9rem; font-size: .78rem; color: var(--gray);
+    letter-spacing: .02em; line-height: 1.7;
+  }
+  .closing-contact a { color: var(--gold); text-decoration: none; }
+  .closing-contact a:hover { text-decoration: underline; }
+  @media print { .closing-note { page-break-before: always; page-break-inside: avoid; } }
+
+  /* Cover-page inputs: center the typed text */
+  .cover input[type="text"] { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- PRINT HEADER (hidden on screen, shown on print) -->
+<div class="print-header">
+  <img src="data:image/png;base64,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oF06aTklHlIklbNOnYNTiRIhEWNHmA0uiNAbh2XhxJJCmXCIIu1xtS7q3cNkXDaMlS56ZtyoRpqLLT006A2IHwtgAcGu8T3L07UntVYtcl2XFaFp06mOz28eSq0SNGZy5YaYTQeeO9b6c5QBBoGoFn1Wu6o6d3NJOlhJW5MT0SdESIWvIjQBDZsGDu55zkhadqfo5VanqbRLptOblpenRa1KVOv06M8sZFjS5dsmIeAftha9zXDluw0lTjhMIMZ87PpUfaE2hWLLtap02tGVMeZrU5PMMvEL29nFil7ckgc8HmFIWEwgwFkdUQdUHNERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB//9k=" alt="Quarters Wealth Management">
+</div>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <a href="https://quarterswm.com" class="nav-logo"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcxIgogICB3aWR0aD0iMzM3OSIKICAgaGVpZ2h0PSI3OTQiCiAgIHZpZXdCb3g9IjAgMCAzMzc5IDc5NCIKICAgc29kaXBvZGk6ZG9jbmFtZT0idHJhbnNwYXJlbnQgcXdtIGxvZ28gdmVjdG9yIGZvcm1hdC5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuNC4zICgwZDE1Zjc1LCAyMDI1LTEyLTI1KSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMSIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzEiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjY2NjY2NjIgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgaW5rc2NhcGU6c2hvd3BhZ2VzaGFkb3c9IjAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjEiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkZXNrY29sb3I9IiNkMWQxZDEiCiAgICAgc2hvd2d1aWRlcz0iZmFsc2UiCiAgICAgc2hvd2JvcmRlcj0iZmFsc2UiCiAgICAgYm9yZGVybGF5ZXI9ImZhbHNlIgogICAgIGlua3NjYXBlOnpvb209IjAuNTI0NzExNDUiCiAgICAgaW5rc2NhcGU6Y3g9IjE2ODkuNSIKICAgICBpbmtzY2FwZTpjeT0iMzk3LjM2MTI1IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI5OTEiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9Ii05IgogICAgIGlua3NjYXBlOndpbmRvdy15PSItOSIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9ImcxIiAvPgogIDxnCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpbmtzY2FwZTpsYWJlbD0iSW1hZ2UiCiAgICAgaWQ9ImcxIj4KICAgIDxwYXRoCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmIgogICAgICAgZD0ibSA0NzUuNTM3OTQsNzM1LjE4MzMgLTUzLjU4NTQsLTAuMjU4NiAtMC42NjQsLTgzLjI0MTQgYyAtMC4zNjUyLC00NS43ODI3NiAtMC42NjQyLC0yMDYuMjAzODkgLTAuNjY0NiwtMzU2LjQ5MTM5IGwgLTdlLTQsLTI3My4yNDk5OTggNTAuMjUsLTAuMTUyMTQgYyAyNy42Mzc1LC0wLjA4MzcgNTIuMzkyMSwtMC4xOTYxNyA1NS4wMTAyLC0wLjI1IGwgNC43NjAyLC0wLjA5NzkgLTAuMDE3LDM1Ni40NTY4NjggYyAtMC4wMSwxOTYuMDUxMjYgLTAuMzUxNCwzNTYuNzAxMjYgLTAuNzYwMiwzNTYuOTk5OTkgLTAuNDA4NywwLjI5ODczIC0yNC44NTY1LDAuNDI2NzcgLTU0LjMyODUsMC4yODQ1MyB6IE0gNDguMDg5MzE0LDczMy43MDA1MyBjIC0wLjI2MjgsLTAuNjkyMjQgLTAuMzYyNjcsLTE2MS4wMDg2MiAtMC4yMjE5MywtMzU2LjI1ODYyIGwgMC4yNTU5LC0zNTQuOTk5OTk4IDUxLjk5OTk5NiwtMC41IGMgMjguNiwtMC4yNzUgNTMuMjM4MTYsLTAuMzM2MzMgNTQuNzUxMzYsLTAuMTM2MyBsIDIuNzUxNCwwLjM2MzcxIC0wLjI1MTQsMzU2LjEzNjI4OCAtMC4yNTE0LDM1Ni4xMzYzIC01NC4yNzgwNCwwLjI1ODYyIGMgLTQyLjg5MTQwNiwwLjIwNDM4IC01NC4zNzgzMDYsLTAuMDA1IC01NC43NTU4ODYsLTEgeiBNIDIzNC42MjMyNCwzNzkuNDQxOTEgYyAwLC0xOTUuNTI1IC0xZS00LC0zNTUuODM3NDk4IC0yZS00LC0zNTYuMjQ5OTk4IC0xZS00LC0wLjQxMjUgMjQuOTc0OSwtMC44NjYyOCA1NS41LC0xLjAwODQgbCA1NS41MDAyLC0wLjI1ODM5IC0wLjAxNCwzNTQuMjU4Mzg4IGMgLTAuMDEsMTk0Ljg0MjEyIC0wLjI4NDksMzU1LjI3MDkgLTAuNjE2NiwzNTYuNTA4NCBsIC0wLjYwMywyLjI1IGggLTU0Ljg4MzMgLTU0Ljg4MzQgeiBtIDM3My42NzUxLDM1NC44NDE3MiBjIC0wLjM3MTMsLTAuMzcxMjggLTAuNjc1MSwtMTYwLjgwMDA1IC0wLjY3NTEsLTM1Ni41MDgzOSBWIDIxLjk0MTkxMiBsIDUyLjc1LC0wLjEwMDcyIGMgMjkuMDEyNSwtMC4wNTU0IDUzLjk5NTgsLTAuMTY3OSA1NS41MTg1LC0wLjI1IGwgMi43Njg0LC0wLjE0OTI4IDAuMDEzLDM1Ni40OTk5OTggMC4wMTMsMzU2LjUgLTU0Ljg1NjcsMC4yNTgzOCBjIC0zMC4xNzEyLDAuMTQyMTIgLTU1LjE2MDUsLTAuMDQ1NCAtNTUuNTMxOCwtMC40MTY2NiB6IE0gMjUxNS4xODM5LDY4OC4zMzg3OCBjIC0xNy42OTU3LC00LjI3OTkzIC0yOS43NTA2LC0xNy4yOTM5IC0zNC4wNzMyLC0zNi43ODM5OSAtMy41NTQ5LC0xNi4wMjgzMiAtMC4zOTM4LC0zMS45ODMzOCA4LjkyMzYsLTQ1LjA0MDUyIDEyLjA2MywtMTYuOTA0NzUgMzYuNjIwNSwtMjIuOTk0MjYgNjAuNTg4OSwtMTUuMDI0MjMgNy43MjEzLDIuNTY3NTEgOS4xNTQ1LDMuNDc2MzIgMTUuNjQ0NCw5LjkyMDY0IDUuMTQ4LDUuMTExODUgNy41MDQxLDguMjk0OTYgOC40MzE4LDExLjM5MTMyIDEuNTM4Niw1LjEzNTM1IDEuMDI1NSw1LjY2MzE3IC02LjUxMjksNi42OTk5OCAtNC43MzExLDAuNjUwNjggLTUuMTUzMiwwLjUyMzc4IC03LjA0NzksLTIuMTE4OTIgLTQuNDU2MSwtNi4yMTUyOSAtOC42NjY1LC0xMC4yMDgwNSAtMTMuNzExOCwtMTMuMDAzMDggLTQuOTI3NCwtMi43Mjk2NyAtNi4wNDg0LC0yLjkzNzQ5IC0xNS44MDM2LC0yLjkyOTg5IC05LjgwMTQsMC4wMDggLTEwLjk0MjMsMC4yMjQwNCAtMTcuMTQ4OSwzLjI1MjgyIC03LjMzNjksMy41ODA0IC0xMi4wNDQ2LDguMjcwNDEgLTE1LjI0NTQsMTUuMTg4MTkgLTMuMDExNCw2LjUwODE3IC0zLjA3NTMsMjcuOTM0OTEgLTAuMTA3MywzNS45NDIyIDIuNjYyMyw3LjE4MjU4IDguMDA0NSwxMy4wMzIwMiAxNS41OTg2LDE3LjA3OTYxIDEwLjk4ODYsNS44NTY5IDI4LjE5MzcsNS4zNTI0NCAzOS42MzM3LC0xLjE2MjA5IDcuNzk3NywtNC40NDA0NiA4LjI2OTMsLTUuMjY2NDEgOC4yNjkzLC0xNC40ODMyMyB2IC04LjMyNTY4IGggLTEzLjU0OTkgLTEzLjU0OTkgbCAwLjI5OTksLTUuNzUgMC4yOTk5LC01Ljc1IDIwLjg1MjgsMC4xMDUwNiAyMC44NTI5LDAuMTA1MDUgLTAuMTUxNiwyMy44MTkzIGMgLTAuMDgzLDEzLjEwMDYxIC0wLjM5OTUsMjQuMjIwMzggLTAuNzAyNCwyNC43MTA1OCAtMC4zMDMsMC40OTAyMSAtMi40MTg1LDAuNzM3MjYgLTQuNzAxMywwLjU0OTAxIC0zLjg3NzQsLTAuMzE5NzggLTQuMTcxMywtMC41NTgyOCAtNC40NjgzLC0zLjYyNjM1IC0wLjE3NDgsLTEuODA2MjMgLTAuNjI0OCwtMy4xMjQwNSAtMSwtMi45Mjg0NyAtNy40NzAzLDMuODk0MjkgLTE0Ljg4MDIsNi45OTgwMSAtMTkuNjQyMiw4LjIyNzI3IC03LjQ0NCwxLjkyMTYgLTIzLjkwNDYsMS44ODgzNiAtMzEuOTc5MiwtMC4wNjQ2IHogTSAxMDgzLjg4MDMsNjg4LjIwMTcgYyAtNS40NTQ4LC0wLjMxMDA2IC02LjMxMTYsLTAuNjMyODcgLTYuNzg3NywtMi41NTczMiAtNS4wMjk5LC0yMC4zMzM3MiAtMTUuNzU3OCwtNTcuNDg2MzEgLTIyLjk5MTMsLTc5LjYyMzAyIC0yLjQxMTksLTcuMzgxMzEgLTQuMTU0NiwtMTMuNzkzODEgLTMuODcyNywtMTQuMjUgMC4yODIsLTAuNDU2MiAzLjYyMDMsLTAuODI5NDUgNy40MTg0LC0wLjgyOTQ1IDUuNTcxMSwwIDcuMDc4LDAuMzM4MjQgNy43OTY0LDEuNzUgMC40ODk4LDAuOTYyNSAyLjM0NTIsNy4xNSA0LjEyMywxMy43NSAxLjc3NzksNi42IDQuNTE3NiwxNi4yNzUgNi4wODgzLDIxLjUgMS41NzA3LDUuMjI1IDQuMjQ1NywxNS4xMjUgNS45NDQ1LDIyIDMuMzIzNywxMy40NTA3IDQuODQwOCwxOCA2LjAwMjksMTggMC40MDQ5LDAgMS45NTE1LC00LjYxMjUgMy40MzY4LC0xMC4yNSAxLjQ4NTMsLTUuNjM3NSA1Ljc5NCwtMTkuOTI1IDkuNTc0OSwtMzEuNzUgMy43ODA5LC0xMS44MjUgNy43MTUsLTI0LjQyNSA4Ljc0MjQsLTI4IGwgMS44NjgyLC02LjUgOC43OTc2LC0wLjUgYyA0LjgzODcsLTAuMjc1IDguOTE2LC0wLjI3NSA5LjA2MDYsMCAwLjM0OTEsMC42NjM4NCAxMy44OTI2LDQ2LjA1MTg4IDE3LjE1NzYsNTcuNSA0LjExMDgsMTQuNDEzNTggNS40OTU5LDE4LjUgNi4yNzA2LDE4LjUgMC4zOTk4LDAgMS41NDE1LC0zLjI2MjUgMi41MzcyLC03LjI1IDAuOTk1NiwtMy45ODc1IDMuODQ0OSwtMTQuMjI1IDYuMzMxOCwtMjIuNzUgMi40ODY5LC04LjUyNSA2LjE5NzksLTIyLjI1IDguMjQ2NywtMzAuNSBsIDMuNzI1MSwtMTUgNy42MzU4LC0wLjI5MjA3IGMgNS43MjM2LC0wLjIxODkyIDcuNjM2OSwwLjAzMTUgNy42NDAyLDEgMCwwLjcxMDY0IC0yLjg3MjMsMTAuMjkyMDcgLTYuMzg4MywyMS4yOTIwNyAtOC4wNDcyLDI1LjE3NjQxIC0xNC41NzEyLDQ3LjQ1MjYyIC0yMC41NzQxLDcwLjI1IGwgLTEuMTE5MSw0LjI1IGggLTcuOTg2MiBjIC05LjM4NzQsMCAtOC4wNzQsMS43OTM4IC0xMy45MTEsLTE5IC0yLjA4NDIsLTcuNDI1IC01LjQ3MTQsLTE4LjY3NSAtNy41MjcsLTI1IC0yLjA1NTYsLTYuMzI1IC01LjMzNjQsLTE2Ljc4NzUgLTcuMjkwNiwtMjMuMjUgLTEuOTU0MiwtNi40NjI1IC0zLjg2NDQsLTExLjc1IC00LjI0NDcsLTExLjc1IC0wLjgzNjgsMCAtMy4yMTcyLDYuMzQ3ODIgLTUuNDM3NiwxNC41IC0wLjg5ODcsMy4zIC0zLjU4MTQsMTIuMyAtNS45NjE0LDIwIC03LjI0MDksMjMuNDI2MjMgLTEwLjM1OTQsMzMuNzg3NjMgLTExLjU4NzMsMzguNSAtMS4zODYzLDUuMzIwMDEgLTIuNjMyOCw3LjA2OTc1IC00Ljg0OTUsNi44MDczMiAtMC44OTUyLC0wLjEwNTk3IC00LjQzNjksLTAuMzUyMzYgLTcuODcwNSwtMC41NDc1MyB6IG0gMTUwLjk5MjksMC4wODI4IC0yLjI1LC0wLjQ4MTY2IHYgLTQ4LjQwNjgzIC00OC40MDY4MyBsIDM3LjU0NDEsLTAuMjczNjIgYyAzNy4zMDM4LC0wLjI3MTg3IDM3LjU0NzUsLTAuMjYwMzEgMzguMDY1OCwxLjgwNjU5IDAuMjg2OSwxLjE0NDEyIDAuMzc5Niw0LjA2OTEyIDAuMjA1OSw2LjUgbCAtMC4zMTU4LDQuNDE5NzkgLTMwLjI1LC0wLjM3ODA5IC0zMC4yNSwtMC4zNzgwOSB2IDE1LjIwMzg1IDE1LjIwMzg2IGwgMjguMDUxNiwtMC43MjM2MSAyOC4wNTE1LC0wLjcyMzYgLTAuMzAxNSw2LjM3MDgyIC0wLjMwMTYsNi4zNzA4MiAtMjcuNzUsLTAuMjc1NjkgLTI3Ljc1LC0wLjI3NTY5IHYgMTYuMDUyNzEgMTYuMDUyNzEgaCAzMS4wNDc3IDMxLjA0NzcgbCAtMC4yOTc3LDYuMTc3NjkgLTAuMjk3Nyw2LjE3NzcgLTM2LDAuMjM0NDIgYyAtMTkuOCwwLjEyODkzIC0zNy4wMTI1LDAuMDE3NyAtMzguMjUsLTAuMjQ3MjUgeiBtIDExMS4yNDk3LC0wLjM0MzEgYyAtMC4zNjg3LC0wLjU5NjU5IDIuOTI3LC04LjgyODAzIDcuMzIzNywtMTguMjkyMDkgOC40NTM4LC0xOC4xOTY1NSAzMC40MTY2LC02OS4zMjE2NCAzMy41MDY2LC03Ny45OTY1NCAwLjU1NzUsLTEuNTY1MjcgMS43MjkyLC0xLjc1Mjk5IDkuMzYxOCwtMS41IGwgOC43MjQ2LDAuMjg5MTcgMi4xOTQxLDYgYyAyLjY1NTgsNy4yNjI3NiA5LjAxMTYsMjIuNDUzODkgMTMuMzg4NCwzMiAxLjc2NTIsMy44NSA1LjY4NTksMTIuODUgOC43MTI3LDIwIDMuMDI2Nyw3LjE1IDguMzc5OCwxOC41NzUzMSAxMS44OTU4LDI1LjM4OTU3IDMuNTE1OSw2LjgxNDI3IDYuMzkyNiwxMy4wMDE3NyA2LjM5MjYsMTMuNzUgMCwwLjk5Mjg2IC0xLjU4NzMsMS4zNjA0MyAtNS44NzUsMS4zNjA0MyAtOS41MzY2LDAgLTExLjg5OTksLTAuNzg4OSAtMTMuMDgzMSwtNC4zNjcyMyAtMC41Njk3LC0xLjcyMzAyIC0yLjk0OTcsLTcuNTM2NDEgLTUuMjg4OSwtMTIuOTE4NjQgbCAtNC4yNTMsLTkuNzg1ODYgLTIzLjI2MjEsLTAuMjE0MTQgLTIzLjI2MjEsLTAuMjE0MTMgLTQuNTE1MywxMSBjIC03LjExMTksMTcuMzI1NzYgLTUuOTIwMSwxNS45NTQ1NiAtMTQuMTU5OSwxNi4yOTIwOSAtNC4zNTYyLDAuMTc4NDUgLTcuMzkxNCwtMC4xMjk5NCAtNy44MDA5LC0wLjc5MjYzIHogbSA2NS44NTg3LC0zOC45ODk0NyBjIDIuNTUzMSwtMC4wMTM3IDEuNzMwOSwtMy4xMTI4IC0zLjkyNzIsLTE0LjgwMjUxIC0yLjQ3MzgsLTUuMTEwODggLTUuODc1LC0xMy40MzU4OCAtNy41NTgzLC0xOC41IC0zLjU0MDgsLTEwLjY1MjcyIC00LjM5OTMsLTExLjkzNjIyIC01Ljc1ODksLTguNjA5NjEgLTAuNTM5OSwxLjMyMTE3IC00LjYxNDIsMTAuOTUyMTMgLTkuMDU0LDIxLjQwMjEzIC00LjQzOTcsMTAuNDUgLTguMDY5NSwxOS4zMDQ1IC04LjA2NjEsMTkuNjc2NjcgMC4wMTEsMS4yMDU4MyAzLjI1MjQsMS40MDgwNCAxOC4wMDYxLDEuMTIzMjMgNy45NzUsLTAuMTUzOTUgMTUuMzM2MywtMC4yODQ0MSAxNi4zNTg0LC0wLjI4OTkxIHogbSA4MC4zODIxLDM5LjM2MTI1IGMgLTEuNjUyNiwtMC40ODk4NSAtMS43NDM4LC0zLjQ1MTUzIC0xLjUsLTQ4LjY5NjQxIGwgMC4yNTk1LC00OC4xNzQ4MyA2Ljc1ODYsLTAuNSBjIDMuNzE3MywtMC4yNzUgNy4wOTIzLC0wLjM4Nzc3IDcuNSwtMC4yNTA2IDAuNDA3OCwwLjEzNzE3IDAuNjAyMywxOS4zNjcyNyAwLjQzMjMsNDIuNzMzNTUgbCAtMC4zMDkyLDQyLjQ4NDE2IDI2LjgwOTIsMC4yNjY0NCAyNi44MDkxLDAuMjY2NDUgLTAuMTQyLDUuMzA4NjMgYyAtMC4wNzgsMi45MTk3NSAtMC40MTU0LDUuNTgyMTEgLTAuNzQ5Niw1LjkxNjM2IC0wLjc1MjIsMC43NTIxOCAtNjMuNDM1OCwxLjM2NzE5IC02NS44Njc5LDAuNjQ2MjUgeiBtIDEzNC4wMDk1LC0wLjEyMzEgLTYuNzUsLTAuMzM5NTIgN2UtNCwtNDIuMjA0MzEgNmUtNCwtNDIuMjA0MzEgaCAtMTcuNzUwNiAtMTcuNzUwNyBsIC0wLjI5OCwtNi4yNjA2NiAtMC4yOTgsLTYuMjYwNjYgNDMuMjk4LDAuMjYwNjYgNDMuMjk4LDAuMjYwNjYgMC4yOTg4LDMuNTU2NDcgYyAwLjE2NDQsMS45NTYwNiAtMC4xMjI5LDQuNjY1NyAtMC42MzgzLDYuMDIxNDIgbCAtMC45MzcyLDIuNDY0OTQgLTE2LjYwMDksLTAuMjE4MTcgLTE2LjYwMSwtMC4yMTgxNyAtMC4yNjA3LDQyLjYxMzYyIGMgLTAuMTY4LDI3LjQ2MTE2IC0wLjYxNjMsNDIuNjU4NzYgLTEuMjYwNyw0Mi43NDA1OCAtMC41NSwwLjA2OTggLTQuMDM3NSwtMC4wMjU4IC03Ljc1LC0wLjIxMjU1IHogbSA4OS4yNSwtNDguMTY2MDggdiAtNDguOTE3OTQgbCA3LjAyMjIsLTAuMzMyMDYgYyAzLjg2MjMsLTAuMTgyNjMgNy4zNDk4LC0wLjIxOTkxIDcuNzUsLTAuMDgyOSAwLjQwMDMsMC4xMzcwNyAwLjU3NTMsOS40NzQ1NyAwLjM4ODksMjAuNzUgbCAtMC4zMzg5LDIwLjUwMDc5IGggMjguMjMyMSAyOC4yMzIxIGwgLTAuNTEyNiwtMjAuNTEzNzIgYyAtMC41MDk2LC0yMC4zOTEyIC0wLjQ5OTcsLTIwLjUxNjk3IDEuNjQ4NSwtMjEuMDU2MTIgMy4wMDc1LC0wLjc1NDg0IDE0LjEzMjcsLTAuMDk1MiAxMy44Mjc3LDAuODE5ODQgLTAuMTM3NSwwLjQxMjUgLTAuMjUsMjIuNTc1IC0wLjI1LDQ5LjI1IHYgNDguNSBsIC01Ljc1LC0wLjAxMzcgYyAtMTEuMTQxLC0wLjAyNjQgLTEwLjI1LDEuOTc1ODggLTEwLjI1LC0yMy4wMzMzMiB2IC0yMS44MTM3MiBsIC0yNy42MzE5LDAuMTgwMzUgLTI3LjYzMTksMC4xODAzNSAwLjQ3NTgsMjIuMjUgMC40NzU5LDIyLjI1IGggLTcuODQ0IC03Ljg0MzkgeiBtIDIxMC44MjY0LDQ4LjI2NDg3IGMgLTEuNTM4NSwtMC40MjY2OCAtMS42NTk2LC00LjM3NzYxIC0xLjUsLTQ4LjkzNDQ4IGwgMC4xNzM2LC00OC40NzAzMyAxMC4zMjQzLDAuMjc4OTQgMTAuMzI0MiwwLjI3ODk0IDQuOTg1NCwxMiBjIDExLjE5NTcsMjYuOTQ4NSAxNy45Mzc3LDQ0LjAwOTg3IDIxLjQyNTUsNTQuMjE5OTIgMi4wMjU0LDUuOTI5MDQgNC4wMDcyLDExLjEzNjY1IDQuNDA0LDExLjU3MjQ2IDEuMDg5NCwxLjE5NjU3IDIuNTc3NSwtMS4xODk3OSA0LjU0NzQsLTcuMjkyMzggMS44MDk2LC01LjYwNTk3IDUuODcxMywtMTUuNzgyNzggMTYuOTYyMSwtNDIuNSAzLjQyNDcsLTguMjUgNy4yMzEsLTE4LjAzNzUgOC40NTg1LC0yMS43NSBsIDIuMjMxNywtNi43NSBoIDEwLjAyNTQgYyA4LjI5OSwwIDkuOTMwNywwLjI0NzEzIDkuNDc0OCwxLjQzNTAyIC0wLjMwMjksMC43ODkyNyAtMC4xNjUzLDIyLjUwMTc3IDAuMzA1Nyw0OC4yNSAwLjQ3MSwyNS43NDgyNCAwLjQ3OTYsNDcuMjA4NTQgMC4wMTksNDcuNjg5NTUgLTAuNDYwNSwwLjQ4MTAyIC0zLjc5NjIsMC41NTc3IC03LjQxMjcsMC4xNzA0MSBsIC02LjU3NTQsLTAuNzA0MTcgdiAtMzcuNDIwNDEgYyAwLC0yMS4xMTczOSAtMC4zODY2LC0zNy40MjA0IC0wLjg4NzUsLTM3LjQyMDQgLTAuOTc0MiwwIC0zLjE3MTksNS4xNzAyNSAtMTEuNDc2NiwyNyAtMy4wMzM5LDcuOTc1IC04LjM2NTQsMjEuOTI1IC0xMS44NDc4LDMxIGwgLTYuMzMxNSwxNi41IC02Ljk3ODMsMC4yNjgzNCAtNi45NzgzLDAuMjY4MzQgLTEwLjczNTUsLTI3LjI2ODM0IGMgLTUuOTA0NiwtMTQuOTk3NTkgLTEyLjM5MDUsLTMyLjEwNTg0IC0xNC40MTMxLC0zOC4wMTgzNCAtMi4wMjI2LC01LjkxMjUgLTQuMDU0MSwtMTAuNzUgLTQuNTE0NCwtMTAuNzUgLTAuNzAxOSwwIC0xLjI4NjEsMjkuNzE0OTIgLTEuMzI3Miw2Ny41IGwgLTAuMDEsOSAtNS41LDAuMTU1NTQgYyAtMy4wMjUsMC4wODU2IC02LjI1MzEsLTAuMDUzMyAtNy4xNzM2LC0wLjMwODYxIHogbSAxNTAuNDIzNiwtMC4wODQyIGMgLTIuODg3NSwtMC4yMDIwMSAtNS4yNSwtMC41ODE2IC01LjI1LC0wLjg0MzU0IDAsLTAuMjYxOTQgMS4zODgsLTMuMjI1NzUgMy4wODQzLC02LjU4NjI1IDMuNTcwNywtNy4wNzM1NSAxNi4zNTgsLTM3LjEyMTY0IDI4LjY1NDIsLTY3LjMzMjk3IDQuNzAwOSwtMTEuNTUgOS4wMDIxLC0yMS41Nzk1OCA5LjU1ODMsLTIyLjI4Nzk2IDAuNzEyMiwtMC45MDcxNyAzLjM5NzIsLTEuMjAyODIgOS4wODE3LC0xIGwgOC4wNzA3LDAuMjg3OTYgMi44NzA1LDcgYyAzLjA0MDgsNy40MTUyMyA3LjY5NTYsMTguMTQ0OTkgMTMuMjMxNywzMC41IDEuODQ4NCw0LjEyNSA2LjI2MDcsMTQuNDc1IDkuODA1MywyMyAzLjU0NDYsOC41MjUgOC42OTU1LDIwLjMwNjQgMTEuNDQ2NCwyNi4xODA5IDIuNzUxLDUuODc0NSA0Ljc0NTcsMTAuOTM3IDQuNDMyNywxMS4yNSAtMC43NTczLDAuNzU3MjcgLTcuNzgwNCwwLjYyNDQ2IC0xMi42MTI5LC0wLjIzODUzIGwgLTMuODc3MSwtMC42OTIzNyAtNS4xNzc1LC0xMy41IC01LjE3NzQsLTEzLjUgLTIzLjI5OTgsMC4xNTkyIC0yMy4yOTk3LDAuMTU5MiAtNC4yMzE4LDkuODQwOCBjIC0yLjMyNzUsNS40MTI0NCAtNC41MzEzLDExLjA0NjgzIC00Ljg5NzIsMTIuNTIwODcgLTAuODMzMSwzLjM1NTU3IC0zLjI4NjksNS44NzcwNSAtNS40ODM4LDUuNjM0OTUgLTAuOTIzMiwtMC4xMDE3NCAtNC4wNDExLC0wLjM1MDI2IC02LjkyODYsLTAuNTUyMjYgeiBtIDYyLjc1LC0zOS43NzYzNSBjIDAsLTAuMjgyNDggLTIuNDIzLC02LjAxOTk4IC01LjM4NDQsLTEyLjc1IC04Ljk1NzgsLTIwLjM1NjkgLTExLjMzNCwtMjYuMTAzMzkgLTEyLjA0NTgsLTI5LjEzMTA2IC0wLjM3NDMsLTEuNTkyMDUgLTEuMDM3NSwtMi40OTIwNSAtMS40NzM4LC0yIC0wLjQzNjMsMC40OTIwNiAtMi44NjEzLDYuMDY5NjUgLTUuMzg4OSwxMi4zOTQ2NSAtNC43MzU3LDExLjg1MDMgLTguNDg4NiwyMC41NzMxNCAtMTEuODA0OCwyNy40Mzc4MyAtMS4wNDYzLDIuMTY1OCAtMS45MDIzLDQuMDc4MyAtMS45MDIzLDQuMjUgMCwwLjE3MTY5IDguNTUsMC4zMTIxNyAxOSwwLjMxMjE3IDEwLjQ1LDAgMTksLTAuMjMxMTIgMTksLTAuNTEzNTkgeiBtIDc2LjM3NTksLTguNDgzNDMgYyAwLjA4MSwtMzEuODUzODcgMC40NzQsLTQ5LjAyNTYzIDEuMTI0MSwtNDkuMDc4NzggNC40NTU4LC0wLjM2NDMxIDE0LjIxNDgsMC40MjQxMyAxNS4xODE2LDEuMjI2NTQgMC42NTk3LDAuNTQ3NDkgNC45MTM2LDYuMjUwMDQgOS40NTMyLDEyLjY3MjM1IDQuNTM5Niw2LjQyMjMgMTIuMTAzOCwxNi45ODY4IDE2LjgwOTUsMjMuNDc2NjYgNC43MDU2LDYuNDg5ODYgMTEuNTY1OCwxNi4xNjQ4NiAxNS4yNDQ3LDIxLjUgOS4xMjQ1LDEzLjIzMjE3IDEwLjg1NTQsMTUuMzUyMTkgMTIuMTc0NywxNC45MTE5OCAwLjgyOTgsLTAuMjc2ODcgMS4wMzc0LC0xMC4yNjkyNCAwLjc2OTgsLTM3LjA0NTQzIGwgLTAuMzY2NSwtMzYuNjY2MyBoIDcuMTE2NSA3LjExNjUgdiA0OC40NDA5OCBjIDAsMjYuNjQyNTQgLTAuMzM3NSw0OC42MDYyMSAtMC43NSw0OC44MDgxNCAtMC40MTI1LDAuMjAxOTQgLTQuMDEsMC4xMTYgLTcuOTk0NSwtMC4xOTA5OCBsIC03LjI0NDYsLTAuNTU4MTQgLTMuMjU1NCwtNC42OTc5NSBjIC02LjE1NTgsLTguODgzMzcgLTI0LjIyMTgsLTMzLjMxNDc1IC0zMS42NTA1LC00Mi44MDIwNSAtNC4wOTEyLC01LjIyNSAtOS44NjY5LC0xMy4yMTI1IC0xMi44MzQ4LC0xNy43NSAtMi45Njc5LC00LjUzNzUgLTUuODU5OCwtOC4yNSAtNi40MjY1LC04LjI1IC0wLjY5NDcsMCAtMC45MTg1LDEyLjA0ODk5IC0wLjY4NywzNi45ODkzMyAwLjI3OTYsMzAuMTIwODYgMC4wOTYsMzcuMDg0MTYgLTAuOTg4NSwzNy41IC0wLjczMjUsMC4yODA4NyAtMy45MzgzLDAuNTEwNjcgLTcuMTI0LDAuNTEwNjcgaCAtNS43OTIzIHogbSAxMjguOTM2NSw0OC4zNTU1MiBjIC0xLjIwNzYsLTAuNDkxNzEgLTAuNjE1NywtMi4yNTIxMiA0LjQ5MTEsLTEzLjM1ODUgMS4xMzgxLC0yLjQ3NSAzLjI2MjksLTcuNDI1IDQuNzIxOCwtMTEgMS40NTg5LC0zLjU3NSA2LjE3MTMsLTE0LjgyNSAxMC40NzIsLTI1IDcuMzEyNiwtMTcuMzAwOTIgMTYuMDQ3NCwtMzguMzc3MjIgMTguOTM3NSwtNDUuNjk0MzQgbCAxLjI2MTcsLTMuMTk0MzQgOC41MiwwLjE5NDM0IDguNTE5OSwwLjE5NDM0IDEuOTUxOCw1IGMgNS45NjM4LDE1LjI3NzQzIDI4Ljg4MDYsNjkuNjU2NTkgMzMuNDg0OSw3OS40NTYxMyAyLjk2MDUsNi4zMDA4NyA1LjE1OTMsMTIuMDM4MzcgNC44ODYyLDEyLjc1IC0wLjUzMTQsMS4zODQ4MiAtNy45NTgyLDEuNzY0MDkgLTEzLjM2NTgsMC42ODI1NiAtMi45MDUzLC0wLjU4MTA2IC0zLjI5MjUsLTEuMjczNyAtNy44MjQ4LC0xNCBsIC00Ljc2ODIsLTEzLjM4ODY5IC0yMC44MDAyLC0wLjE3ODU3IGMgLTExLjQ0MDIsLTAuMDk4MiAtMjEuNzMwMywtMC4yMTA3MiAtMjIuODY3LC0wLjI1IC0xLjY4MzYsLTAuMDU4MiAtMi44MDkxLDEuNjg5ODcgLTYuMDcxMSw5LjQyODU3IC0yLjIwMjMsNS4yMjUgLTQuNDY5MSwxMS4wNzUgLTUuMDM3MiwxMyAtMS42MDc5LDUuNDQ4NDMgLTIuNDc2Niw2LjAwNzY0IC05LjE5NzQsNS45MjEwNSAtMy4zNzAyLC0wLjA0MzQgLTYuNjYyLC0wLjI5NjU3IC03LjMxNTIsLTAuNTYyNTUgeiBtIDY1LjY4NzYsLTQwLjMzNTY3IGMgMCwtMS4yODE1NSAtMy43MTk3LC0xMC44NjQ5MiAtOS41MTg0LC0yNC41MjI4MyAtMi41Njg2LC02LjA1IC01LjEyNTksLTEyLjU3NSAtNS42ODI5LC0xNC41IC0yLjAyNzYsLTcuMDA3MzggLTIuMzM4MSwtNi42MTc3MiAtOS4zOTc3LDExLjc5NTQgLTIuNDY4MSw2LjQzNzUzIC01LjExMTIsMTMuMDU1NDggLTUuODczNSwxNC43MDY1NyAtMy43NDM1LDguMTA4NDUgLTUuMzIzNCwxMi4zNjg4MyAtNC43ODU5LDEyLjkwNjI0IDEuMDQsMS4wNDAwNSAzNS4yNTg0LDAuNjY2MDMgMzUuMjU4NCwtMC4zODUzOCB6IG0gMjIwLjgyMjUsNDAuNDY2MzYgYyAtMC4yODA5LC0wLjI4MDk0IC0wLjM2NzgsLTIyLjMzMzgzIC0wLjE5MywtNDkuMDA2NDEgbCAwLjMxNzgsLTQ4LjQ5NTYxIDM2LjE2MzksLTAuNDY3NjIgYyAxOS44OTAxLC0wLjI1NzE5IDM2LjQzOTQsLTAuMjk4NDcgMzYuNzc2MywtMC4wOTE3IDAuMzM2OSwwLjIwNjc1IDAuNDY2OCwzLjIzMjU3IDAuMjg4Nyw2LjcyNDA0IGwgLTAuMzIzOCw2LjM0ODEzIC0yOC41NTkzLC0wLjM0MzY4IGMgLTIzLjEwNDksLTAuMjc4MDUgLTI4LjcyMTksLTAuMDg3MSAtMjkuNDEwOSwxIC0wLjQ2ODMsMC43MzkwMiAtMC44NTg1LDcuMzE5NiAtMC44NjY5LDE0LjYyMzUxIGwgLTAuMDE1LDEzLjI3OTgzIDI2LjI1LC0wLjA2MDYgYyAxNC40Mzc1LC0wLjAzMzMgMjYuODEyNSwtMC4wNDY3IDI3LjUsLTAuMDI5OCAwLjg2MDIsMC4wMjEyIDEuMjUsMS45MzUwNCAxLjI1LDYuMTM3MDQgdiA2LjEwNjMxIGwgLTI2Ljk4OSwtMC4zNTYzMSBjIC0yMS44MDMsLTAuMjg3ODQgLTI3LjA4NzIsLTAuMTAwNCAtMjcuNSwwLjk3NTQ4IC0wLjI4MTEsMC43MzI0OCAtMC41MTEsOC4wNjM5MSAtMC41MTEsMTYuMjkyMDcgdiAxNC45NjAyOCBsIDMwLjAwMDcsLTAuMjkyMDcgMzAuMDAwNywtMC4yOTIwNyAtN2UtNCw2Ljc1IC03ZS00LDYuNzUgaCAtMzYuODMzMyBjIC0yMC4yNTg0LDAgLTM3LjA2MzIsLTAuMjI5ODcgLTM3LjM0NDIsLTAuNTEwODEgeiBtIDI4NC4xNzc1LC00OC44MDgwNyB2IC00OS4zMTg4NyBsIDM3LjUsLTAuMjMzNTUgMzcuNSwtMC4yMzM1NSB2IDcuMTYzNzIgNy4xNjM3MSBsIC0zLjI1LC0wLjU3NDA4IGMgLTEuNzg3NSwtMC4zMTU3NCAtMTUuMTc1LC0wLjY2MTEgLTI5Ljc1LC0wLjc2NzQ3IGwgLTI2LjUsLTAuMTkzMzkgLTAuMjc2NywxNC42NTYxOCAtMC4yNzY4LDE0LjY1NjE4IGggMjguMDc2NyAyOC4wNzY2IGwgLTAuMjk5OSw1Ljc1IC0wLjI5OTksNS43NSBoIC0yNy4xNTk4IC0yNy4xNTk3IGwgLTAuMzU5NSwxNCBjIC0wLjE5NzgsNy43IC0wLjE3OTgsMTUuMDQ0NjkgMC4wNCwxNi4zMjE1MyBsIDAuMzk5NSwyLjMyMTU0IDMwLjExOTgsLTAuMjI5MjUgYyAxNi41NjU4LC0wLjEyNjA5IDMwLjIzMjIsMC4wNjY3IDMwLjM2OTcsMC40Mjg0NiAwLjEzNzUsMC4zNjE3NSAwLjI1LDMuMzU3NzIgMC4yNSw2LjY1NzcyIHYgNiBoIC0zOC41IC0zOC41IHogbSAxMjcuNDU4Miw0OC4wNjg4OCBjIC0wLjI2MzUsLTAuNjg3NSAtMC4zNjE5LC0yMi42MjUgLTAuMjE4NywtNDguNzUgbCAwLjI2MDUsLTQ3LjUgOC41LC0wLjI3NTY1IDguNSwtMC4yNzU2NiAyLjk2ODEsNC43NzU2NiBjIDQuODQ1MSw3Ljc5NTc2IDM1LjQyMDcsNTAuNzU1NjEgMzguMzEwMSw1My44MjcxNiAxLjA2MTQsMS4xMjgzMyAzLjk0NTksNC45Mjg0NCA2LjQwOTksOC40NDQ2OSAyLjQ2NCwzLjUxNjI1IDUuMDA0Nyw2LjU2ODA3IDUuNjQ2LDYuNzgxODIgMC44NzM5LDAuMjkxMyAxLjE2NTksLTguODc5MTMgMS4xNjU5LC0zNi42MTI2MyB2IC0zNy4wMDEyNyBsIDcuMDk4NCwtMC4zMzIwNiBjIDMuOTA0MSwtMC4xODI2MyA3LjE2NjYsLTAuMTA3MDYgNy4yNSwwLjE2Nzk0IDAuMDgzLDAuMjc1IDAuMDIzLDIyLjQ1NjEzIC0wLjEzNDksNDkuMjkxNDEgbCAtMC4yODY1LDQ4Ljc5MTQgLTcuNjk4NiwtMC4yOTE0IC03LjY5ODUsLTAuMjkxNDEgLTYuMDE0OSwtOC4xNTcxNiBjIC0zLjMwODMsLTQuNDg2NDMgLTkuODQsLTEzLjQ2ODMyIC0xNC41MTUsLTE5Ljk1OTc1IC00LjY3NSwtNi40OTE0MyAtMTAuOTEwOSwtMTQuNzQ1NzEgLTEzLjg1NzUsLTE4LjM0Mjg1IC0yLjk0NjcsLTMuNTk3MTMgLTguNzE3MywtMTEuNjAyNzQgLTEyLjgyMzcsLTE3Ljc5MDI0IC00LjEwNjQsLTYuMTg3NSAtNy45NDg4LC0xMS4yNSAtOC41Mzg4LC0xMS4yNSAtMC43NTM5LDAgLTAuOTE4MiwxMS4yOTQwMSAtMC41NTI5LDM4IGwgMC41MTk4LDM4IGggLTYuOTA0OCBjIC00LjYwMTcsMCAtNy4wNjQ3LC0wLjQxNjk1IC03LjM4MzksLTEuMjUgeiBtIDE2NC4yMDg1LDAuNTgzMzMgYyAtMC4zNjY3LC0wLjM2NjY2IC0wLjY2NjcsLTE5LjQ5MTY2IC0wLjY2NjcsLTQyLjUgdiAtNDEuODMzMzMgaCAtMTcuNSAtMTcuNSB2IC02LjUgLTYuNSBsIDQyLC0wLjE1IGMgMjMuMSwtMC4wODI1IDQyLjU0MiwtMC4xOTUgNDMuMjA0NSwtMC4yNSAwLjgzMzUsLTAuMDY5MiAxLjEyNTcsMS41OTQwNyAwLjk0ODYsNS40IC0wLjQyODEsOS4xOTk2NSAxLjAzMDMsOC41NDQ1MiAtMTguMTQwOCw4LjE0OTE3IGwgLTE3LjAxMjMsLTAuMzUwODMgdiA0Mi42MDA4MyA0Mi42MDA4MyBoIC03LjMzMzMgYyAtNC4wMzM0LDAgLTcuNjMzNCwtMC4zIC04LC0wLjY2NjY3IHogbSAtNDUwLjE2NjcsLTQ4LjgzMjIyIHYgLTQ4LjQ5OTU0IGwgMTEuNzExNSwtNy45ZS00IDExLjcxMTQsLTcuOGUtNCAxLjA4MjIsNC4wMTg4NiBjIDAuNTk1MiwyLjIxMDM4IDIuMDEzNCw2LjE0Nzg4IDMuMTUxNSw4Ljc1IDEuMTM4MSwyLjYwMjEzIDQuMDAwNCw5LjY4MTE0IDYuMzYwNywxNS43MzExNCAyLjM2MDIsNi4wNSA1Ljk1OTgsMTQuODI1IDcuOTk5MSwxOS41IDIuMDM5Myw0LjY3NSA1LjE3MzQsMTMuMjA1MzQgNi45NjQ3LDE4Ljk1NjMyIDEuNzkxMiw1Ljc1MDk3IDMuNzAxNywxMC42MDQ2MSA0LjI0NTUsMTAuNzg1ODYgMC41NDM3LDAuMTgxMjUgMi4yMjA5LC0zLjE3NDA5IDMuNzI3LC03LjQ1NjMyIDEuNTA2MSwtNC4yODIyMiA3LjM4MDMsLTE5LjQ4NTg2IDEzLjA1MzksLTMzLjc4NTg2IDUuNjczNiwtMTQuMyAxMC44NzgyLC0yNy45MTc4NSAxMS41NjU5LC0zMC4yNjE4OCAwLjY4NzcsLTIuMzQ0MDMgMS43NDk2LC00LjY3NjIzIDIuMzU5OCwtNS4xODI2NiAwLjg3MjEsLTAuNzIzODIgMTMuNzU4NCwtMS40ODI4NCAxOS4wNzgyLC0xLjEyMzczIDAuNjEyNCwwLjA0MTMgMS4wMDY4LDQuMTExODIgMSwxMC4zMTgyNyAtMC4wMSw1LjYzNzUgMC4xNjgsMjcuMzUgMC4zODczLDQ4LjI1IGwgMC4zOTg3LDM4IC03LjE0ODcsMC4yOTM4MSAtNy4xNDg3LDAuMjkzODEgLTAuMDk0LC0yMC43OTM4MSBjIC0wLjA1MiwtMTEuNDM2NiAtMC4wMTYsLTI3LjA5OTgyIDAuMDc5LC0zNC44MDcxNyAwLjE2OSwtMTMuNzQ0MyAtMC40MTc5LC0xOS40ODY2NCAtMS45OTE1LC0xOS40ODY2NCAtMC40MzQ2LDAgLTIuMDA5NiwzLjQ4NzUgLTMuNDk5OSw3Ljc1IC0xLjQ5MDQsNC4yNjI1IC0zLjk4NiwxMS4xMjUgLTUuNTQ1OCwxNS4yNSAtMi42NTY0LDcuMDI0ODMgLTE0LjIzNDEsMzguMzA4NDMgLTE3LjY3MTcsNDcuNzUgbCAtMS41NDc0LDQuMjUgaCAtNi43OTIzIC02Ljc5MjMgbCAtMS45ODIzLC01LjI1IGMgLTEuMDkwMywtMi44ODc1IC00LjcxMjUsLTExLjYzOTc3IC04LjA0OTUsLTE5LjQ0OTQ5IC0zLjMzNjksLTcuODA5NzIgLTkuMjI2MSwtMjIuNDExMDUgLTEzLjA4NjksLTMyLjQ0NzQxIC0zLjg2MDksLTEwLjAzNjM2IC03LjQ3MSwtMTguNjk5MDkgLTguMDIyNCwtMTkuMjUwNTEgLTAuNjcwMSwtMC42NzAxMiAtMS4wMDI2LDExLjgzMDc1IC0xLjAwMjYsMzcuNjk3NDEgdiAzOC43IGwgLTcuMjUsMy4yZS00IC03LjI1LDMuM2UtNCB6IE0gMTE4My4xODgxLDUyMy4zNTk0MyBjIC00OS4zMDYyLC03LjY2MzYzIC05Mi44NzE1LC0yNi4yMDYyMiAtMTMyLjQ2MDQsLTU2LjM3ODkgLTYuNjI2NSwtNS4wNTAzNiAtMTQuMTk4NCwtMTEuMDk0ODYgLTE2LjgyNjMsLTEzLjQzMjIyIC02LjYzNjUsLTUuOTAyNTYgLTIyLjA2NDksLTE3LjgyMSAtMjYuMjc4MiwtMjAuMjk5OTIgLTIuMjY5MiwtMS4zMzUwOSAtNi4yMDk5LC0yLjI5MTgxIC0xMS4yMDYxNiwtMi43MjA1OSAtOS4zOTU1LC0wLjgwNjMzIC0zMi4yNzIsLTYuMzI3NTkgLTQzLjcwMDEsLTEwLjU0NzA2IC01MS4wODc1LC0xOC44NjI1MiAtODcuMjM3MywtNTMuODE2NDMgLTEwNS41Mjk4LC0xMDIuMDM4ODMgLTkuNTUwMywtMjUuMTc2MjYgLTEzLjA2MzEsLTYxLjAyNjI1IC04LjU3MzksLTg3LjUgMS4yMTI0LC03LjE1IDIuNDk4MiwtMTMuMjI1IDIuODU3MiwtMTMuNSAwLjM1OSwtMC4yNzUgMC43NzAyLC0xLjk4NTk2IDAuOTEzNywtMy44MDIxMyAwLjQ1NjYsLTUuNzc5OTYgNy4zMTA2LC0yNS4zMTEzIDEyLjk1OTksLTM2LjkzMDggMTUuOTM5OSwtMzIuNzg1NTUgNDEuNDgyNCwtNTkuMTkwNyA3Ni4xNjAxLC03OC43MzIxODggMzMuNDM5NywtMTguODQzODggNzkuMDQ1NDYsLTI4LjU1NTcyIDExOS44NTA5NiwtMjUuNTIyNDggNDkuOTIyOSwzLjcxMDk4IDkyLjk5NTgsMjIuMjQxODMgMTI0LjkzNDEsNTMuNzQ5MjQ4IDIxLjI4MzMsMjAuOTk2MTkgMzkuNjA3OSw1Mi40ODE5NiA0Ni45MzIzLDgwLjY0MDIgNi45MzYxLDI2LjY2NTUzIDcuMDY5OCw2MS4yMDE5NSAwLjMzOTcsODcuNzc4MTcgLTEwLjYzNzUsNDIuMDA2NTEgLTQwLjMxODYsODMuNzcyMDYgLTc3LjIzNzgsMTA4LjY4NDg5IC0yMC4wMDg4LDEzLjUwMTgyIC01My4wNjE5LDI2LjA3OTk0IC02OC43MDAyLDI2LjE0MzQgLTguMzYzLDAuMDMzOSAtOS4zNTksMS4yODE4NSAtNC41LDUuNjM4IDQuMzYyNCwzLjkxMDk0IDEzLjAxNTcsMTAuNzMzMzkgMjcsMjEuMjg3NCAyNy43MTQzLDIwLjkxNjEzIDYyLjI3NDgsMzguMDcwNTYgOTQuNSw0Ni45MDU5NiAxMy4xNjUzLDMuNjA5NjIgMzMuNzcwNSw3LjE2MDMzIDQxLjU1MjIsNy4xNjAzMyBoIDcuNTM5MiBsIC0wLjI5NTcsNi43NSAtMC4yOTU3LDYuNzUgLTYuNSwwLjYzMzExIGMgLTExLjg5NDksMS4xNTg2IC00NC4xNTY2LDAuNzI2NTUgLTUzLjQzNTEsLTAuNzE1NTkgeiBtIC0xMjcuNzE4MywtMTAzLjA1MTMgYyAxOC45NDc1LC0zLjgzNTIyIDM3LjY1NTYsLTExLjI3MzUxIDUxLjI4MzYsLTIwLjM5MDE1IDguMTYwOCwtNS40NTkzIDI1LjEzOTQsLTIyLjU4NjU3IDMxLjgyMTYsLTMyLjEwMDIgMTUuNjc4MywtMjIuMzIxNjQgMjUuNjYzNSwtNTAuMjUwOTIgMjkuNjI5NSwtODIuODc1ODcgMi4yNzU5LC0xOC43MjE2NSAxLjUzODMsLTU0LjQ4MDQ2IC0xLjQ3MTEsLTcxLjMyMzY0IC03LjM4OTMsLTQxLjM1NTUzIC0yMi4wMzYsLTcxLjcxMTU0IC00NS4xMDU2LC05My40ODM4NSAtMjEuNTU4NiwtMjAuMzQ2MTg4IC01MC43MDk2LC0zMS43NTYwNjggLTg0LjAwNDYsLTMyLjg3OTgyOCAtMTMuMjUzMywtMC40NDczMyAtMTcuMTY2OSwtMC4yMDU3NiAtMjcsMS42NjY2MyAtMjEuMzk4MDYsNC4wNzQ1NSAtMzYuODEwNDYsOS45MzY5NiAtNTEuNTY0NTYsMTkuNjEzNTE4IC0yOC4wNjY3LDE4LjQwNzg0IC00OS42NTk4LDUwLjk4MDA5IC01OC4yNzYyLDg3LjkwNzE3IC00LjQ1NDYsMTkuMDkwOSAtNS42MDMsMzAuNzMxNzUgLTUuNTczOCw1Ni41IDAuMDQ4LDQyLjQzNjUyIDUuODY0Miw2OS4wMTQwMSAyMS42NjQ4LDk5IDIwLjU5MjksMzkuMDgwNzggNTQuMDk3Niw2My44NTMyMiA5My4yNDk3Niw2OC45NDYyNyA0LjQsMC41NzIzNiA5LjM1LDEuMjI2NjggMTEsMS40NTQwNCA1LjQzODcsMC43NDk0MiAyNi44NjM1LC0wLjUxOTQxIDM0LjM0NjYsLTIuMDM0MDkgeiBtIDM1My42NTM0LDEzLjU5Njk5IGMgLTMxLjEwMDMsLTIuMzQ0MTUgLTU1LjI1MDMsLTEwLjMwNzY1IC03My4yMjY1LC0yNC4xNDY1NCAtMTIuNzAyNSwtOS43Nzg5NyAtMjMuODM3NSwtMjUuMjUwOTMgLTI3LjgxNywtMzguNjUxMTkgLTQuMTgzLC0xNC4wODU2NiAtNC40NDQ0LC0yMC44MDA2NiAtNC40NTA2LC0xMTQuMzAwNjUgLTAuMDEsLTEwMC4zMzExMyAwLjI0NCwtOTYuNjE0OTIgLTcuMDA0MywtMTAzLjg2MzIgLTQuNzY3OCwtNC43Njc4MyAtMTAuMTQ4NCwtNi4yNjAxNiAtMjUuMDAxNiwtNi45MzQzIGwgLTEyLjUsLTAuNTY3MzMgdiAtNiAtNiBsIDY3LDAuMjUyNTYgNjcsMC4yNTI1NyAtMC4zNTQxLDUuMjQ3NDMgYyAtMC40NDM0LDYuNTcwMTggLTAuNzE5Niw2Ljk5OTk3IC00LjAzMTgsNi4yNzI1IC0zLjAzMjgsLTAuNjY2MTEgLTE5LjYwNjIsMS4wMDM5MSAtMjUuNDE2MiwyLjU2MTA5IC00LjM1MTgsMS4xNjYzMyAtMTAuNzc2Miw3LjI4ODIyIC0xNC4wMzQ3LDEzLjM3MzkyIC0yLjE2MzEsNC4wMzk3NyAtMi4xNjMyLDQuMDQzMzkgLTIuNDYyOSw5MS4wMzk5MyAtMC4zMTA5LDkwLjIxMTUzIC0wLjEyNjQsOTUuNDUwOTYgMy44ODcxLDExMC4zOTUwMyA3LjU1NzksMjguMTQxNTkgMjMuOTY0Niw0My44NTQ2IDUzLjYwNTYsNTEuMzM5MjUgNy42ODIzLDEuOTM5ODYgMTEuNDI0OSwyLjIyMzc4IDI5LjMwNywyLjIyMzMzIDIyLjUyNDEsLTUuN2UtNCAzMC4wOTc1LC0xLjA3NzU4IDQ1LjI5MzYsLTYuNDQxMTIgMTIuNTg5NiwtNC40NDM1NyAyMS4zNjY1LC05LjcwNDIyIDI5LjI3MzYsLTE3LjU0NTY4IDEwLjQxNzYsLTEwLjMzMTIxIDE2LjczNjEsLTIyLjY4MzYzIDIxLjYxNjksLTQyLjI2IDIuMTIyOCwtOC41MTQyMSAyLjE4MDEsLTEwLjU0ODY0IDIuNTQzMSwtOTAuMTM5NzcgMC4yNDkzLC01NC42Nzc4IDAuMDIsLTgzLjY5NDAzIC0wLjY5ODQsLTg4LjMyMzcxIC0yLjg5NzgsLTE4LjY3NjU3IC0xMi40MDU4LC0yNS43Mzc5MSAtMzcuMDI1NywtMjcuNDk4MDggLTExLjU2NTksLTAuODI2ODkgLTExLjgzMSwtMS4wMjI1OSAtMTAuNTYwNSwtNy43OTUwMSBsIDAuNjI3NywtMy4zNDYwMyA1My45NjQ5LDAuMTQzNjMgNTMuOTY0OCwwLjE0MzYzIHYgMy44NjgwMSBjIDAsNi4wODMwOCAtMS4yODQyLDcuNjQyMjEgLTUuNzk2NCw3LjAzNyAtNS42ODI2LC0wLjc2MjIgLTE3LjY4NjYsMS40MDM4NiAtMjMuMTY1Miw0LjE4MDA0IC02LjAwOTQsMy4wNDUyMSAtMTEuNDI3NCw5LjI2NTQzIC0xMy4wMTc2LDE0Ljk0NTE3IC0wLjkwMTcsMy4yMjA3NiAtMS4yNjQ5LDI1LjYxMTA4IC0xLjQwNjUsODYuNzA4MTQgLTAuMTY5Nyw3My4yNzU0OCAtMC4zODY3LDgzLjYzNTQxIC0xLjk2NTYsOTMuODY2MTcgLTEuNzQ2NywxMS4zMTgxMSAtNi45MjU0LDI4LjY1NiAtMTAuOTAyMiwzNi41IC04LjEyMjgsMTYuMDIxNSAtMjIuOTc2NywzMC41MDAyNyAtNDAuMTY4NiwzOS4xNTQyNiAtMjEuNjYxLDEwLjkwMzYxIC01Ni40Mzg1LDE2LjYxODM3IC04Ny4wNzc5LDE0LjMwODk1IHogbSAxODE2LC0wLjY1ODc1IGMgLTI4Ljc1ODIsLTIuNTgzNDYgLTUwLjk2MzUsLTguOTgzOTcgLTcxLjI2MzEsLTIwLjU0MTA0IGwgLTcuMjYzLC00LjEzNTA2IDAuMjYzLC0zMy41NjQxOCAwLjI2MzEsLTMzLjU2NDE4IDYuNzE5NywtMC4yOTUgYyA3LjY5MjQsLTAuMzM3NzEgNy4yNDU1LC0wLjkzNzE1IDguMTcwNywxMC45NTg4MyAwLjMwNiwzLjkzNDAzIDEuNzc3OSw5LjkzMDA0IDMuNTkzMSwxNC42MzcxNSA5LjQxNTMsMjQuNDE0NjIgMzEuMjU3NSw0Mi43Mjk2NyA1OC4yOTU1LDQ4Ljg4MTc0IDEwLjg2NiwyLjQ3MjQgMzEuODg5MSwyLjIwMTExIDQyLjIyMSwtMC41NDQ4NCAxMi4yMTA4LC0zLjI0NTMyIDI0LjA0NTUsLTkuNDg3NzggMzAuMjc0MiwtMTUuOTY4ODQgOS42NTgxLC0xMC4wNDk0NSAxNi4xNDc3LC0yNy44MTA3NSAxNC43NjE3LC00MC40MDA4MyAtMS44NDk1LC0xNi43OTkwNCAtMTAuMTg1LC0yOS43NjA4OSAtMjYuNTI1NSwtNDEuMjQ3NzQgLTcuMzEzMywtNS4xNDA5NiAtMjkuODkyMywtMTYuOTM5MjIgLTQ1LjAxMDQsLTIzLjUxOTM2IC0xMy42NjE0LC01Ljk0NjEyIC00MC4zNTU5LC0xOS41NzU5NSAtNTAsLTI1LjUyOTI4IC0xMi40NTI1LC03LjY4NzAzIC0yNS4xNzg4LC0yMC4zMjU2MSAtMzAuMjI1MiwtMzAuMDE2OSAtNi4yMjU4LC0xMS45NTYyMyAtOC4xMDU1LC0yMC43ODkzMiAtNy41NDEzLC0zNS40MzcwOCAwLjM4OTIsLTEwLjEwNDc2IDEuMDA0MiwtMTQuMDYwMDMgMy4xOTAzLC0yMC41MTc4NSA4LjQ2NTMsLTI1LjAwNzQ0IDI5LjcxMDEsLTQzLjEzMzMgNTkuNjIxLC01MC44NjgyMiAyOC45NDU0LC03LjQ4NTIyIDU0LjcwMjksLTYuMTIwMjIgODQuNjcyOCw0LjQ4NzE4IDQuODMwMywxLjcwOTYzIDEyLjM4MjQsNC4zODY4MiAxNi43ODI0LDUuOTQ5MzEgbCA4LDIuODQwOSAwLjI0ODcsMjkuNTk3NjMgMC4yNDg3LDI5LjU5NzYzIC01LjExNywtMC4zMDIyMiAtNS4xMTY5LC0wLjMwMjIxIC0xLjgxODQsLTcuMTc4NDYgYyAtMi4zMDE0LC05LjA4NTI0IC03LjY4ODMsLTIwLjc5NTUyIC0xMi40MTIsLTI2Ljk4MjAzIC0xOS42MjU1LC0yNS43MDI3IC01OS41MzMyLC0zNC4yMjU5MiAtOTEuMDk3NSwtMTkuNDU2MDEgLTguNjQ2Nyw0LjA0NjA2IC0xOC42MDcsMTMuNjg4MDIgLTIyLjY3NDEsMjEuOTQ5MzUgLTMuMDI0OSw2LjE0NDYgLTMuMjYxNSw3LjM1MjYyIC0zLjI2MTUsMTYuNjU2MzggdiAxMC4wMzEyOSBsIDQuNDI4Myw3LjczOTc0IGMgMi40MzU2LDQuMjU2ODYgNC43OTgxLDcuNzM5NzQgNS4yNSw3LjczOTc0IDEuNTYxMywwIDAuODE2MSwxLjg1NDgzIC0wLjkyODMsMi4zMTA2NyAtMS4zMDgxLDAuMzQxODQgLTEuMTc3OSwwLjQ4NjYyIDAuNTE1NiwwLjU3MzMzIDEuMjQ2LDAuMDYzOCA1LjUyMSwyLjc1NDk3IDkuNSw1Ljk4MDM4IDEwLjkxNjEsOC44NDg4MyAyNC41MjAzLDE2LjIxNTI4IDQzLjczNDQsMjMuNjgxNDUgNjcuNDcyOSwyNi4yMTg0NiA5Ni4zMTE5LDUxLjgzMTM2IDEwMS4wMzU1LDg5LjczMzExIDIuMjE2NCwxNy43ODM4NyAtMC44MDQ3LDMxLjA5OTA3IC0xMS4zMjQsNDkuOTA5MzMgLTcuNjY5OCwxMy43MTQ3NSAtMjMuOTA4LDI3LjgwODg4IC00MS43MzYyLDM2LjIyNTI4IC0xNy42NTgsOC4zMzYwNyAtNDYuMjY1NywxMi44ODYwOCAtNjguNDc1MywxMC44OTA5MSB6IG0gLTg3MS43OTk3LC03LjA2MDkyIC03My43OTk3LC0wLjI1NjQ2IDAuMjk5NywtNS42NjA2IDAuMjk5NywtNS42NjA2IDksLTAuMzA4MTggYyAyNC42NDI4LC0wLjg0MzgzIDM2LjE3NDEsLTYuMTYwNTkgNDEuMTA4NiwtMTguOTU0MTEgMS44MTYsLTQuNzA4MDMgMS44OTE0LC05LjUwOTk5IDEuODkxNCwtMTIwLjQwMzU5IHYgLTExNS41IGwgLTM1LjUsMC4wMjI0IGMgLTM0LjA0OTMsMC4wMjE0IC0zNS43Mzk0LDAuMTExODcgLTQxLjM1OTMsMi4yMTI3NCAtNy44MDc5LDIuOTE4ODEgLTE1LjY2OTEsOS4xNDYwMyAtMjAuOTk5NywxNi42MzQ3OSAtNS45NDY5LDguMzU0NjkgLTguMTc1NywxMi45OTQyNSAtMTEuMTE1NSwyMy4xMzg3OSAtMS4zNzkyLDQuNzU5MzYgLTIuNzYzMiw5LjA2NjkyIC0zLjA3NTYsOS41NzIzNSAtMC42OTU5LDEuMTI2MTIgLTguNDcwMiwxLjE5Mjg3IC0xMC4yMTExLDAuMDg3NyAtMC45ODcsLTAuNjI2NTMgLTAuMzg2LC01LjQ2MjEzIDIuNzYzNSwtMjIuMjM0NjkgMi4yMTM3LC0xMS43ODg3MiA1LjY5NDksLTMwLjU0NjUzIDcuNzM2LC00MS42ODQwMyBsIDMuNzExMiwtMjAuMjUgaCA1LjI3NTIgYyA0LjM3NzcsMCA1LjI3NTMsMC4zMDA3OSA1LjI3NTMsMS43Njc4NiAwLDMuMjgzNzkgNC44MDY4LDkuMDA5NjkgOC43Mjg1LDEwLjM5NzUgMy4wNTc5LDEuMDgyMDkgMjQuNzE0MywxLjMzNDY0IDExNC40NDg1LDEuMzM0NjQgMTA5Ljg4NzYsMCAxMTAuNjk3MSwtMC4wMTQ2IDExMy41LC0yLjA0NDIyIDEuNTUyNywtMS4xMjQzMSA0LjA3NzEsLTQuNjExODEgNS42MSwtNy43NSBsIDIuNzg3LC01LjcwNTc4IGggNS43Njk2IDUuNzY5NiBsIC0wLjA1NywxMy43NSBjIC0wLjAzMSw3LjU2MjUgMC4xNjg0LDI2LjU3NSAwLjQ0MzQsNDIuMjUgbCAwLjUsMjguNSAtNC4xMTU3LC0wLjA5MTUgYyAtNi40ODQ5LC0wLjE0NDEzIC03LjM4NDMsLTAuODExOTYgLTcuMzg0MywtNS40ODI3OSAwLC00Ljk2MDMzIC0yLjE2NDgsLTEzLjg4MTE2IC01LjY4NDgsLTIzLjQyNTczIC0yLjA2OTcsLTUuNjEyMjggLTMuODAzNiwtOC4yMDk2NSAtOC43NDYsLTEzLjEwMTczIC04LjkzNDMsLTguODQzMyAtOS4zNTkzLC04LjkxNDUzIC01Mi42NDIsLTguODIzMjYgLTE5LjU2NSwwLjA0MTMgLTM2LjMyNzUsMC4zNjQ2NCAtMzcuMjUsMC43MTg2MiAtMS41NTYsMC41OTcwOSAtMS42NzcyLDguODYwNDMgLTEuNjc3MiwxMTQuMzQzMDcgMCw3OS44MTkzMiAwLjMzNTcsMTE1LjYyNzEzIDEuMTI2NiwxMjAuMTY4NTggMi40ODY2LDE0LjI3OTMzIDEzLjIyMTMsMTkuNzUwMDIgNDAuNjAzMSwyMC42OTI1MSBsIDExLjc3MDMsMC40MDUxNCAwLjMwNDUsNC41NDAwNCBjIDAuMTY3NCwyLjQ5NzAyIC0wLjA1OCw1LjEwNjM2IC0wLjUsNS43OTg1MyAtMC42MzcsMC45OTY1MyAtMTYuMTY2OSwxLjIwNTExIC03NC42MDQyLDEuMDAyMDQgeiBtIDczNS43MDI3LC0wLjAwNSAtNDEuMDk3MSwtMC4yNjA5NyAtMi44MTg5LC01LjIzOTAzIGMgLTMuMzQ0OSwtNi4yMTYzOCAtOC4zOTAxLC0xNC4wNzQ5NCAtMzAuMDA2OCwtNDYuNzM5MDMgLTE2LjkyNzYsLTI1LjU3ODc3IC0yMC40ODQ0LC0zMS4wNjE4MSAtMzcuNDEwOSwtNTcuNjcyNTcgLTUuNjU3OSwtOC44OTQ5MSAtMTIuNDkzNCwtMTguNjQ4MDIgLTE1LjE5MDEsLTIxLjY3MzU3IC02Ljc0MDQsLTcuNTYyNjYgLTEwLjEwNywtOC41MzM1NiAtMzAuMzc5MiwtOC43NjEyMiBsIC0xNiwtMC4xNzk2NyAtMC4yNzQxLDUwLjM5MzUxIGMgLTAuMTU5OCwyOS4zNjgxNCAwLjEzNCw1My4wNTYxIDAuNzA0Miw1Ni43NzUxOSAxLjAzNDksNi43NTAxOCA0LjM2NzQsMTIuOTU2NjggOC4zNjI0LDE1LjU3NDI5IDQuNDQ0NiwyLjkxMjI2IDE3Ljc1MSw1LjUxMjY0IDI4LjI5MDgsNS41Mjg2OSA1LjU0NTksMC4wMDggMTAuMjg1NSwwLjIxNzUgMTAuNTMyNiwwLjQ2NDU2IDAuMjQ3MSwwLjI0NzA3IDAuMjA5NiwyLjgwMDMxIC0wLjA4Myw1LjY3Mzg3IGwgLTAuNTMyNiw1LjIyNDY2IC02OS4yNSwwLjEzNTUyIGMgLTYyLjExNDYsMC4xMjE1NSAtNjkuMjUxMSwtMC4wMjUyIC02OS4yNjEsLTEuNDIzODggLTAuMDEsLTAuODU3NjYgLTAuMjg5OSwtMy4yNDY4OCAtMC42MzA4LC01LjMwOTM4IGwgLTAuNjE5OSwtMy43NSBoIDcuNDU0NyBjIDkuNjkzOCwwIDI1LjIzMzUsLTIuNjg3MjkgMzAuMzA3LC01LjI0MSA0LjgyNjMsLTIuNDI5MjcgOC45OTgsLTcuMDE2OTIgMTAuNjkyOCwtMTEuNzU5IDEuNjU5NiwtNC42NDM0NSAyLjQ1MDksLTIxNi4zNDkxNSAwLjg1MzcsLTIyOC40MTMwOCAtMS4yMjQsLTkuMjQ1NjMgLTQuMzU2LC0xNS4zNzkwMyAtOS40NjU5LC0xOC41MzcxMSAtNC44OTU4LC0zLjAyNTggLTE1LjUwNTcsLTUuMDEyMjkgLTI2Ljg3ODMsLTUuMDMyNDUgbCAtOS43OTc3LC0wLjAxNzQgMC4yOTc3LC02LjA1NDYgMC4yOTc3LC02LjA1NDU5IDc4LC0wLjA0MTcgYyA1My42ODg4LC0wLjAyODcgODAuNjQ5MywwLjMxODc4IDg2LjUsMS4xMTQ3NyAyNy45NywzLjgwNTMzIDUwLjA1NjYsMTQuNTk4NDggNjEuMzk2NywzMC4wMDI5NyAxNS43MTE1LDIxLjM0MjQ4IDE4LjEzMzQsNDcuMTYxODggNi41NzQxLDcwLjA4NTAzIC04Ljg3OTEsMTcuNjA4MTUgLTMxLjQwMTgsMzYuMTE5NzIgLTUwLjQ3MDgsNDEuNDgyMjIgLTMuMywwLjkyODAxIC02LjM5MDUsMi4wNTA1MyAtNi44Njc5LDIuNDk0NDggLTAuNDc3MywwLjQ0Mzk1IDEuNTkzMSw0LjEwNjYzIDQuNjAxLDguMTM5MjkgMy4wMDc5LDQuMDMyNjUgOS4yOTg5LDEzLjE4MjEgMTMuOTgsMjAuMzMyMSA0LjY4MTEsNy4xNSAxMi45NCwxOS43NSAxOC4zNTMyLDI4IDUuNDEzMiw4LjI1IDEwLjQ0MzQsMTYuMDk5MDggMTEuMTc4NCwxNy40NDI0MSAyLjkyODcsNS4zNTI4MSAyMi4wMTA0LDMxLjQ4NjM5IDI5LjEzMzUsMzkuOTAwMjEgMTAuODIxMywxMi43ODIxNyAzMi42MSwyMy4wNzQ4NSA0OC45ODU0LDIzLjE0MDAyIGwgNC4zNjM1LDAuMDE3NCAtMC42OTU4LDQuNzUgYyAtMC4zODI3LDIuNjEyNSAtMC45OTYzLDQuOTc1IC0xLjM2MzYsNS4yNSAtMC4zNjcyLDAuMjc1IC0xOS4xNjE0LDAuMzgyNTYgLTQxLjc2NDcsMC4yMzkwMyB6IE0gMjk1MC42ODczLDI2OS45MjkzNiBjIDI1LjM1ODcsLTEuNDA2NDggMzcuMDc3NCwtNC45MTc2MyA0OS42OTE1LC0xNC44ODg0NyAxOS4wMDY1LC0xNS4wMjM3OCAyNC41NzgxLC00Ni41NTA4IDEyLjUzNDYsLTcwLjkyNzQyIC01LjE4MzIsLTEwLjQ5MTA4IC0xNi45NTAyLC0yMi4zOTI5NCAtMjYuNzkwMiwtMjcuMDk3MzYgLTkuOTI3OSwtNC43NDY0IC0xNi4zODg5LC02LjgxMzIyIC0yNS4wNzU1LC04LjAyMTQyIC0xMi42NTY4LC0xLjc2MDQgLTQwLjkxODgsLTAuODkwMzggLTQzLjEzOTQsMS4zMjgwMiAtMC43ODkxLDAuNzg4MyAtMi4zMzM5LDExOC40NjYyNCAtMS41NzM1LDExOS44NjkyIDAuNTQ3OCwxLjAxMDkxIDEzLjEyNTQsMC45MTQ3OCAzNC4zNTI1LC0wLjI2MjU1IHogTSAxNTcxLjA0NjcsNDI0Ljk2ODk0IGMgLTEuNTM1LC0wLjQyMDU3IC0xLjkyMzUsLTEuNDM2IC0xLjkyMzUsLTUuMDI3MDMgMCwtNS4xMTQxMyAwLjkzMTUsLTUuNjY1NzcgOS45MzE5LC01Ljg4MTY5IDcuNzc5NywtMC4xODY2MyAxOS45ODg5LC0zLjk0NDM2IDI2LjUxMDEsLTguMTU5MjQgMTMuNDA3LC04LjY2NTMxIDE4Ljg1MjMsLTE5LjI4NTg0IDUzLjU1NzgsLTEwNC40NTkwNyA4Ljk2NDQsLTIyIDE5Ljk4MDcsLTQ4Ljc3NSAyNC40ODA3LC01OS41IDQuNSwtMTAuNzI1IDguNjM5NCwtMjAuNzM3NSA5LjE5ODUsLTIyLjI1IDAuNTU5MiwtMS41MTI1IDEuNzYwMSwtMi43NTY4OSAyLjY2ODgsLTIuNzY1MzEgMS4wNzUzLC0wLjAxIDEuMjUzNiwtMC4yNzE4NiAwLjUxMDYsLTAuNzUgLTEuMTU0NiwtMC43NDMxIDEwLjY4MDEsLTMxLjM2Mjg1IDI2LjU2NjMsLTY4LjczNDY5IDMuOTc0NiwtOS4zNSA3Ljg0NDMsLTE5LjM2NzkgOC41OTkzLC0yMi4yNjIwMSAwLjc1NSwtMi44OTQxIDEuNjQ3NiwtNS43MDY2IDEuOTgzNCwtNi4yNSAwLjMzNTksLTAuNTQzMzkgNC44MjMzLC0wLjk4Nzk5IDkuOTcyMiwtMC45ODc5OSBoIDkuMzYxNSBsIDAuNjg4MSwzLjI1IGMgMC42OTIyLDMuMjY5MjggMy4yMjU0LDkuMzgzNjYgMTYuNDY4NywzOS43NSAxNy42MzMsNDAuNDMxNzEgMjMuMDM4Myw1My4zOTA0NCAyMi42OTQ4LDU0LjQwODY5IC0wLjIwMjUsMC42MDAyMiAwLjIxNjEsMS41NDEzMSAwLjkzMDIsMi4wOTEzMSAxLjEzOTgsMC44Nzc4IDI5LjYxOTksNjcuODg3NDMgNDMuNTY0LDEwMi41IDEwLjI5NjEsMjUuNTU3MTEgMjcuMTY5Miw2NS43NjE0MiAzMC45MDk0LDczLjY0ODkzIDIuOTI4Nyw2LjE3NjIgNC44ODYyLDguOTAwNTcgOC4wODYxLDExLjI1Mzc4IDUuNjg2LDQuMTgxNTYgMTMuNTgwMiw3LjA1Mjc0IDIzLjgxNzYsOC42NjI2NCA0LjY3NSwwLjczNTE4IDguNjEyNSwxLjM1ODczIDguNzUsMS4zODU2NyAwLjEzNzUsMC4wMjY5IDAuMjUsMi4yMjgxNCAwLjI1LDQuODkxNTYgdiA0Ljg0MjU4IGwgLTY2LjYxODYsMC41ODA1MSBjIC0zNi42NDAzLDAuMzE5MjggLTY3LjI0MDMsMC4zNDE5NyAtNjgsMC4wNTA0IC0wLjkzODksLTAuMzYwMjggLTEuMzgxNCwtMi4yNTc2NiAtMS4zODE0LC01LjkyMzA5IHYgLTUuMzkzMDEgbCAxMC43NSwtMC4wMTc0IGMgMTEuNDc1NiwtMC4wMTg1IDIzLjAyMTEsLTEuOTQ3NDQgMjYuOTEwNiwtNC40OTU5MiAxLjMwODUsLTAuODU3MzYgMy43MjAyLC0zLjQxMDEzIDUuMzU5MywtNS42NzI4MiAzLjY3NSwtNS4wNzMxOCAzLjkyMjIsLTEwLjU4OTE2IDAuODkyLC0xOS44OTg3NSAtMS44MzMyLC01LjYzMjAzIC0yOC44MzEzLC03NC40OTkwNiAtMzIuMzA5NCwtODIuNDE1MTUgbCAtMS4zMTgxLC0zIC01Mi44OTIyLDAuMjc0ODggLTUyLjg5MjIsMC4yNzQ4NyAtOC43Nzk3LDIxLjcyNTEzIGMgLTQuODI4OCwxMS45NDg4MSAtMTAuMzIyOSwyNS43NzUxMiAtMTIuMjA5MiwzMC43MjUxMiAtMS44ODYzLDQuOTUgLTUuNzY1MiwxNS4wNzUgLTguNjE5OSwyMi41IC00LjQxNjUsMTEuNDg3NyAtNS4yMDUyLDE0LjU2OTU3IC01LjI5MDcsMjAuNjc1NDYgLTAuMTE5OSw4LjU2MDc0IDEuNjAzOSwxMS42Mjg1NyA4LjQ1MTUsMTUuMDQxNDUgNS4zODQsMi42ODM0MiAxOS42OTMsNS4yODMwOSAyOS4wNzksNS4yODMwOSBoIDYuODY5IGwgLTAuMDE0LDMuMjUgYyAtMC4wMSwxLjc4NzUgLTAuMjU1Nyw0LjE1IC0wLjU1MTQsNS4yNSAtMC41Mjk2LDEuOTY5NTMgLTEuMzk1MiwyLjAwMDQxIC01Ni44MTI5LDIuMDI3MDMgLTMwLjk1MTMsMC4wMTQ5IC01Ny4xNDA2LC0wLjIxMDE0IC01OC4xOTg2LC0wLjUgeiBtIDIwNy41NzY1LC0xNDEuMTMyMTMgYyAwLC0wLjUzNjAyIC0wLjkyMjgsLTIuNzgzMzkgLTIuMDUwNiwtNC45OTQxNSAtMS4xMjc5LC0yLjIxMDc3IC0zLjc4MTEsLTguMzgwMzQgLTUuODk2LC0xMy43MTAxNiAtMi4xMTQ5LC01LjMyOTgzIC01Ljc0MDIsLTE0LjE5MDU5IC04LjA1NjIsLTE5LjY5MDU5IC0yLjMxNjEsLTUuNSAtNS43Njk2LC0xMy44MjUgLTcuNjc0NywtMTguNSAtMS45MDUsLTQuNjc1IC00LjA5OTksLTguOTk0NSAtNC44Nzc2LC05LjU5ODg4IC0wLjc3NzYsLTAuNjA0MzggLTEuMTI2MSwtMS4zODY2MiAtMC43NzQ0LC0xLjczODMyIDAuNzcwOSwtMC43NzA4MyAtMi44NzA2LC05LjYyMDI3IC0xMS4yNjYyLC0yNy4zNzkwOCAtMy40MzY1LC03LjI2ODk1IC02LjUzODYsLTE0LjEzMTQ1IC02Ljg5MzYsLTE1LjI1IC0wLjg4MDQsLTIuNzczNzggLTEuOTQ5MiwtMi41NTI3NCAtMy40NjM2LDAuNzE2MjggLTQuODA4MywxMC4zNzkxMyAtMTcuMDI0NCw0MC44MTU2IC0xNi43MzEsNDEuNjg1MDcgMC4xOTc3LDAuNTg1NzEgLTAuMTY3MywxLjUxNDkzIC0wLjgxMTEsMi4wNjQ5MyAtMC42NDM4LDAuNTUgLTQuNTkwMiw5LjEgLTguNzY5OSwxOSAtNC4xNzk3LDkuOSAtMTAuNTEyMSwyNC42MTE4MSAtMTQuMDcyMSwzMi42OTI5MiAtNi4xODksMTQuMDQ5MDYgLTYuMzc4MiwxNC43MTEwMiAtNC4zMTc4LDE1LjEwNTk1IDQuODE2NiwwLjkyMzI0IDk1LjY1NDgsMC41Mzk2MSA5NS42NTQ4LC0wLjQwMzk3IHogbSAxNDcuNDk2MSwxNDEuMjY3ODYgYyAtMC4yNzI4LC0wLjI3Mjg1IC0wLjQ5NjEsLTIuNjcxMDkgLTAuNDk2MSwtNS4zMjk0MyB2IC00LjgzMzMzIGggNi4zNjkgYyA4LjM5ODksMCAyMi43MDMzLC0yLjU0NTMyIDI4LjYyNzksLTUuMDk0MDMgNi4yMDM1LC0yLjY2ODY1IDEwLjU0NzMsLTcuMzI4NTIgMTIuMDMwOCwtMTIuOTA1OTcgMS41MzMsLTUuNzYzODIgMi4zOTAzLC0yMTIuNzM0NTIgMC45Mzk0LC0yMjYuNzgxNjcgLTIuMDAzNiwtMTkuMzk3NDYgLTcuNTg1OSwtMjMuNDM3MTcgLTM0LjU3NDQsLTI1LjAyMDU5IGwgLTExLjg5MjcsLTAuNjk3NzQgLTAuMzA0MSwtNS4zMDMxIC0wLjMwNDEsLTUuMzAzMSA4Mi44MDQxLDAuMzg4ODcgYyA3Mi40NTg1LDAuMzQwMjcgODMuNzM4MSwwLjU5NTkgOTAuMjc5MywyLjA0NTk3IDkuMTM5NiwyLjAyNjA4IDIyLjEzNDksNi4yNTE3NiAyNy41MjQ4LDguOTUwMjQgMjQuMzYyNywxMi4xOTczMyAzOS4xNzE1LDM1Ljk2ODQ0IDM4LjM5NjEsNjEuNjMzNDcgLTAuMTU5Myw1LjI3MzIxIC0wLjU5MjQsMTAuMDM3NjUgLTAuOTYyNSwxMC41ODc2NSAtMC4zNywwLjU1IC0wLjk1NjUsMi41NzUgLTEuMzAzMSw0LjUgLTEuOTA4NCwxMC41OTY1OSAtMTMuMTk1OSwyNy4xNjI3NiAtMjUuODkyOCwzOC4wMDE4MSAtOS4yNjg0LDcuOTEyMTkgLTIzLjQ2NjMsMTUuNDk1NTYgLTMxLDE2LjU1NzYxIC0yLjYxOTMsMC4zNjkyNCAtNS4wMjU4LDEuMDk3OCAtNS4zNDgsMS42MTkwMSAtMC4zMjIxLDAuNTIxMjIgMS40MjA3LDMuNTA2NzkgMy44NzI5LDYuNjM0NjIgMi40NTIzLDMuMTI3ODIgNi4xNjgzLDguMzg2OTUgOC4yNTc4LDExLjY4Njk1IDMzLjM4MjEsNTIuNzIwOSA1OC43MDQxLDg4Ljg4NzUzIDY5LjczNjYsOTkuNjAyODYgMTAuMjc0OCw5Ljk3OTUgMjQuNzU2OSwxNi43MTUxMiAzOS41NDE3LDE4LjM5MDg5IGwgNi4yOTg2LDAuNzEzOTIgLTAuMjk4Niw1LjE0NjE2IC0wLjI5ODcsNS4xNDYxNyBoIC0zOCBjIC00Mi43NzIsMCAtNDUuNSwtMC4xMzIxIC00NS41LC0yLjIwMzM0IDAsLTEuNzE4NDMgLTUuOTEzOCwtMTEuOTkwNTcgLTE0LjY4MTcsLTI1LjUwMTk1IC05LjA5NDUsLTE0LjAxNDU0IC0xOC4wMzQxLC0yOC4yMTU1MyAtMzkuNTI5NiwtNjIuNzk0NzEgLTIxLjQxMjcsLTM0LjQ0NTkgLTIzLjg4MTMsLTM4LjE5NjU1IC0yOC4xMjg4LC00Mi43Mzc2MyAtNC43NjU0LC01LjA5NDg1IC05LjA5OTIsLTYuMTA3ODIgLTI3Ljk0MDksLTYuNTMwNzMgbCAtMTYuNzgxLC0wLjM3NjY2IDAuMjgxLDU3LjE0NjU2IDAuMjgxLDU3LjE0NjU1IDIuNjg0LDQuMDU0ODEgYyAxLjYyNjIsMi40NTY3NyA0LjQyODMsNC44OTkxOSA3LjEwOTksNi4xOTczMiA2LjAyMywyLjkxNTY3IDE4LjE0MDYsNS4wOTk3OCAyOC4yOTQxLDUuMDk5NzggOS4zMDAzLDAgOS4zNTM2LDAuMDUxOSA3LjgzNTgsNy42MjUgbCAtMC41NzYyLDIuODc1IC02OC40Mjc3LDAuMDc5NCBjIC0zNy42MzUyLDAuMDQzNyAtNjguNjUwOSwtMC4xNDM4MSAtNjguOTIzOCwtMC40MTY2NyB6IG0gMTMwLjMxNiwtMTU1LjIwODU4IGMgMjIuNzI4LC0xLjYyOTM4IDM2LjY2NTQsLTcuMjM0ODQgNDcuNzU4NSwtMTkuMjA3OTUgMTAuMjc2OCwtMTEuMDkyMSAxNC4wNTM2LC0yMy40NDk0MiAxMy4xNzQ0LC00My4xMDUzNiAtMC42MTY3LC0xMy43ODc3NSAtMy4wMDk2LC0yMS43MjU5MSAtOS41ODU0LC0zMS43OTkwOSAtNS45MDY1LC05LjA0Nzc2IC0xMi4zODc4LC0xNC44MTc3MiAtMjEuNzgxNCwtMTkuMzkwODkgLTEyLjg2NjksLTYuMjY0MDUgLTIwLjE3ODEsLTcuNTM4NjIgLTQzLjAyNTMsLTcuNTAwNjIgLTE5Ljg2NjYsMC4wMzMgLTIzLjE0LDAuMzYyNzggLTI0LjU4NzYsMi40NzY3OSAtMC45MTY3LDEuMzM4NzUgLTEuMDEzNSwxMTcuOTkxNDQgLTAuMDk5LDExOC45MDYyNyAwLjk5NDcsMC45OTQ3MSAyMS44NzY4LDAuNzg3MTUgMzguMTQ1NCwtMC4zNzkxNSB6IG0gNDUwLjcyNTUsMTU0LjI4MzE2IGMgLTAuMjk1NywtMC43NzA1IC0wLjUzNzYsLTMuMDk1NTMgLTAuNTM3NiwtNS4xNjY3MyB2IC0zLjc2NTgxIGwgMTIuNTMyOCwtMC42NyBjIDI0LjQ1OTcsLTEuMzA3NiAzMS45Mzk0LC00LjcxMDQ3IDM3LjY2MzYsLTE3LjEzNDggbCAyLjMwMzYsLTUgdiAtMTE0IC0xMTQgbCAtMi43OTgyLC01LjY5ODI1IGMgLTQuNTA5LC05LjE4MjAyIC0xMC4zNDA5LC0xMS42Mjg4NyAtMzAuMjAxOCwtMTIuNjcxNjggbCAtMTIsLTAuNjMwMDcgLTAuMjk5OSwtNS43NSAtMC4yOTk5LC01Ljc1IGggMTIzLjQwMzIgYyA2Ny44NzE4LDAgMTI2LjE3NTIsLTAuMjg5NzMgMTI5LjU2MzIsLTAuNjQzODUgbCA2LjE2LC0wLjY0Mzg0IC0wLjI2MzMsMzQuMzkzODQgLTAuMjYzMywzNC4zOTM4NSAtMy4wODUyLDAuMzAxMDYgYyAtMy41ODgsMC4zNTAxNCAtNC41NTA4LC0wLjY2NjQ0IC02LjQ0MTQsLTYuODAxMDYgLTIuMjU1NCwtNy4zMTgyOCAtOC43NzU5LC0yMi45OTIxIC0xMS40MDA4LC0yNy40MDQ4IC0zLjcwMjgsLTYuMjI0NzkgLTExLjI2ODQsLTEzLjUyMzQ2IC0xNi40Mzk1LC0xNS44NTk1MiAtNC4zNDg0LC0xLjk2NDQxIC03LjI0NDMsLTIuMTQ5NiAtNDcuMTMyMywtMy4wMTQxNCAtNTAuOTMyOSwtMS4xMDM5MiAtNzUuNjYyNiwtMC4yMjY0OSAtNzkuMDYzNCwyLjgwNTIyIC00LjkwNTQsNC4zNzMwOCAtNC45Mzc0LDQuNzc3NzkgLTQuOTM3NCw2Mi40NDExMiB2IDU0LjAzMjEyIGwgNDUuMjUsLTAuMDA4IGMgNTIuMzk0NywtMC4wMDkgNjAuMDU4MSwtMC41NzUxNSA2NS44OTg0LC00Ljg3MDE4IDIuMjA2MSwtMS42MjIzMiA1LjExNTUsLTQuNDQ2NzIgNi40NjU0LC02LjI3NjQ2IDMuMDgzMSwtNC4xNzg5OCA2LjMwNTMsLTE0LjQ3MTk4IDYuOTkwMiwtMjIuMzMwMDEgMC45NTQ5LC0xMC45NTU5MyAwLjc2NDUsLTEwLjY1ODczIDYuNjA5NywtMTAuMzE2OTEgbCA1LjE0OTksMC4zMDExNSA0ZS00LDUxLjUgNGUtNCw1MS41IC00LjYwMzgsMC4zMDE1OSAtNC42MDM4LDAuMzAxNTkgLTAuNjUyOSwtNS44MDE1OSBjIC0yLjUxNTQsLTIyLjM1MTM0IC04LjE4MzEsLTMyLjc5Mjk4IC0yMC4yNTA2LC0zNy4zMDgwMyAtNS4wNjY2LC0xLjg5NTY0IC03LjgzMTYsLTEuOTkzNTYgLTU2LjI5MDgsLTEuOTkzNTYgaCAtNTAuOTYyNSBsIDAuMDMzLDUwLjI1IGMgMC4wMTgsMjcuNjM3NSAwLjQyOTcsNTMuMzMwMjcgMC45MTQ5LDU3LjA5NTA1IDEuMTMxNiw4Ljc4MTAzIDQuOTU3NSwxNS4yMTQ4MSAxMS4wOTM0LDE4LjY1NDk1IGwgNC40NTksMi41IDQ0LDAuMzE2OTggYyA1Ni42ODQyLDAuNDA4MzcgNzEuOTQxOCwtMS4xMzYwNiA4Ny44NDk4LC04Ljg5MjQ4IDE2Ljg2MiwtOC4yMjE2IDMwLjU1NDUsLTI1LjM1OTk0IDM3LjczMzksLTQ3LjIyOTk3IDEuMjA4NywtMy42ODE5OSAyLjY5NjksLTYuNzM2NDkgMy4zMDcsLTYuNzg3NzcgOC41MDYyLC0wLjcxNDk3IDkuNzgwMSwtMC42MjUzNSAxMC4yOTgsMC43MjQ0NyAwLjY1NjgsMS43MTE1NCAtMC43MzY3LDkuNDA2MjkgLTQuNjg0NywyNS44Njg3NyAtMS41ODI4LDYuNiAtNC41MDc4LDIwLjMxNDA3IC02LjQ5OTksMzAuNDc1NzEgLTEuOTkyMiwxMC4xNjE2NCAtMy43MjAzLDE4LjU3Mzg0IC0zLjg0MDIsMTguNjkzNzcgLTAuMTIsMC4xMTk5NCAtNjMuMDc2NSwwLjM4Njk4IC0xMzkuOTAzNCwwLjU5MzQyIC0xMTkuMDk5MywwLjMyMDA0IC0xMzkuNzY0NiwwLjE2ODkgLTE0MC4yMjI5LC0xLjAyNTU2IHogbSAtMjk1LjI4NzYsLTIwNy45NTM2IGMgMS41MTI1LC0wLjIyOTEyIDMuOTg3NSwtMC4yMjkxMiA1LjUsMCAxLjUxMjUsMC4yMjkxMyAwLjI3NSwwLjQxNjU5IC0yLjc1LDAuNDE2NTkgLTMuMDI1LDAgLTQuMjYyNSwtMC4xODc0NiAtMi43NSwtMC40MTY1OSB6IgogICAgICAgaWQ9InBhdGgxIiAvPgogIDwvZz4KPC9zdmc+Cg==" alt="Quarters Wealth Management" style="height:48px; width:auto; display:block;"></a>
+  <span class="nav-tagline">We help people.</span>
+
+</nav>
+
+<!-- PRIVACY NOTICE -->
+<div class="privacy-notice">
+  <span>🔒</span> Nothing you enter is stored, transmitted, or seen by us. Optionally save an encrypted copy to your own device to resume later.
+</div>
+
+<!-- SECTION SELECTOR -->
+<div class="selector-panel" id="selectorPanel">
+  <span class="selector-label">Include sections:</span>
+  <label class="selector-check"><input type="checkbox" data-section="opening" checked><span>Opening</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s1" checked><span>1 · About Me</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s2" checked><span>2 · People</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s3" checked><span>3 · Financial</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s4" checked><span>4 · Legal</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s5"><span>5 · Medical</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s6"><span>6 · Digital</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s7"><span>7 · Property</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s8"><span>8 · Business</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s9" checked><span>9 · Final Wishes</span></label>
+  <label class="selector-check"><input type="checkbox" data-section="s10" checked><span>10 · Personal Note</span></label>
+  <label class="selector-check" title="Required"><input type="checkbox" data-section="disclosure" checked disabled><span>Disclosure ⚑</span></label>
+  <div class="selector-actions">
+    <button class="selector-btn" onclick="setAll(true)">All</button>
+    <button class="selector-btn" onclick="setAll(false)">None</button>
+    <button class="selector-btn" onclick="saveProgress()" title="Download an encrypted copy of your answers to your own device">Save Progress</button>
+    <button class="selector-btn" onclick="loadProgress()" title="Resume from a previously saved file">Resume</button>
+    <button class="selector-btn primary" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</div>
+
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="#cover"   class="sidebar-item active">Cover</a>
+  <a href="#opening" class="sidebar-item">Opening</a>
+  <div class="sidebar-divider"></div>
+  <a href="#s1" class="sidebar-item">1 · About Me</a>
+  <a href="#s2" class="sidebar-item">2 · People in My Life</a>
+  <a href="#s3" class="sidebar-item">3 · Financial Life</a>
+  <a href="#s4" class="sidebar-item">4 · Legal Documents</a>
+  <a href="#s5" class="sidebar-item">5 · Medical Life</a>
+  <a href="#s6" class="sidebar-item">6 · Digital Life</a>
+  <a href="#s7" class="sidebar-item">7 · Property</a>
+  <a href="#s8" class="sidebar-item">8 · Business</a>
+  <a href="#s9" class="sidebar-item">9 · Final Wishes</a>
+  <a href="#s10" class="sidebar-item">10 · Personal Note</a>
+  <div class="sidebar-divider"></div>
+  <a href="#disclosure" class="sidebar-item">Disclosure</a>
+</aside>
+
+<div class="layout">
+<main class="main">
+
+  <!-- ══ COVER ══ -->
+  <section id="cover" class="cover">
+    <div class="cover-title">In case of &nbsp;...everything.</div>
+    <div class="cover-sub">A map and a message</div>
+    <div class="cover-rule"></div>
+    <div class="cover-fields">
+      <label class="cover-label">Prepared by</label>
+      <div class="field-group" style="margin-bottom:1rem">
+        <input type="text" placeholder="">
+      </div>
+      <label class="cover-label">Prepared on</label>
+      <div class="field-group">
+        <input type="text" placeholder="">
+      </div>
+    </div>
+    <p class="cover-disclaimer">This document is not a will, a trust, or any other legal or financial instrument. It is simply a gift — a map and a message, written with intention, so that the people who matter most to me do not have to guess.</p>
+  </section>
+
+  <!-- ══ OPENING ══ -->
+  <section id="opening" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">◆</span>
+      <span class="section-header-title">Opening · Why I'm Writing This</span>
+    </div>
+
+    <div class="field-full">
+      <p class="prompt-text">I am writing this for... and more than anything, I want them to know...</p>
+      <textarea class="xl"></textarea>
+    </div>
+    <div class="field-full">
+      <p class="prompt-text">I took the time to write this because... and my hope is that this document gives them...</p>
+      <textarea class="xl"></textarea>
+    </div>
+
+    <div class="section-divider"></div>
+    <p class="section-note"><strong>A note on how to use this document:</strong> Read it fully before acting on anything. Some sections reference legal documents — those documents govern. This letter is meant to give you context, comfort, and direction — not legal instruction. If something here conflicts with a formal document, the formal document controls.</p>
+
+    <div class="sub-header">Some Other Thoughts</div>
+    <div class="field-full">
+      <p class="prompt-text">Anything else I want you to know before you read on...</p>
+      <textarea class="xl"></textarea>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 1 ══ -->
+  <section id="s1" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">1</span>
+      <span class="section-header-title">About Me</span>
+    </div>
+    <p class="section-note">This section is not your resume. It is who you are — in your own words. Write as much or as little as feels right.</p>
+
+    <div class="field-full">
+      <p class="prompt-text">A bit about me... what I believe... and what has brought me joy...</p>
+      <textarea class="xl"></textarea>
+    </div>
+    <div class="field-full">
+      <p class="prompt-text">Some things I am proud of... and my life's work and what it meant to me...</p>
+      <textarea class="xl"></textarea>
+    </div>
+    <div class="field-full">
+      <p class="prompt-text">Causes and charities that matter to me... and my faith, spirituality, or guiding philosophy...</p>
+      <textarea class="xl"></textarea>
+    </div>
+    <div class="field-full">
+      <p class="prompt-text">How I want to be remembered...</p>
+      <textarea class="lg"></textarea>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2 ══ -->
+  <section id="s2" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">2</span>
+      <span class="section-header-title">The People in My Life</span>
+    </div>
+    <p class="section-note">The people listed here matter to me. Please reach out to them, keep them informed, and treat them with the same care they showed me.</p>
+
+    <!-- Person block helper via repeated markup -->
+    <div class="sub-header">My Spouse / Partner</div>
+    <div class="account-block">
+      <div class="field-row">
+        <div class="field-group"><label class="field-label">Name</label><input type="text"></div>
+        <div class="field-group"><label class="field-label">Relationship</label><input type="text"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label class="field-label">Phone</label><input type="text"></div>
+        <div class="field-group"><label class="field-label">Email</label><input type="text"></div>
+      </div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">My Children</div>
+    <div data-repeat="children" data-repeat-label="child">
+      <div class="account-block" data-repeat-item>
+        <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+      </div>
+    </div>
+
+    <div class="sub-header">My Grandchildren</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Other Family Members</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Relationship</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Anyone else in my family I want to mention...</label><textarea></textarea></div></div>
+
+    <div class="sub-header">Close Friends Who Should Be Notified</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text"></div><div class="field-group"><label class="field-label">Notes</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text"></div><div class="field-group"><label class="field-label">Notes</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text"></div><div class="field-group"><label class="field-label">Notes</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">My Advisors</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Financial Advisor — Name</label><input type="text" value="Duane Johnson, ChFC&reg;, CLU&reg;"></div><div class="field-group"><label class="field-label">Firm</label><input type="text" value="Quarters Wealth Management LLC"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" value="(810) 224-2008"></div><div class="field-group"><label class="field-label">Email</label><input type="text" value="DJohnson@Vanderbiltsecurities.com"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Attorney — Name</label><input type="text"></div><div class="field-group"><label class="field-label">Firm</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">CPA / Tax Advisor — Name</label><input type="text"></div><div class="field-group"><label class="field-label">Firm</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Agent — Name</label><input type="text"></div><div class="field-group"><label class="field-label">Firm</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">My Clergy / Spiritual Advisor</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Organization</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Anyone Else Who Should Be Contacted</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Others I want notified or involved...</label><textarea class="lg"></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 3 ══ -->
+  <section id="s3" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">3</span>
+      <span class="section-header-title">My Financial Life</span>
+    </div>
+    <p class="section-note">This section is a map of my financial world. Account numbers are here for reference — always verify with the institution directly.</p>
+
+    <div class="sub-header">Wealth Manager / Investment Advisor <span class="sub-header-note">(Primary contact for financial matters)</span></div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" value="Duane Johnson, ChFC&reg;, CLU&reg;"></div><div class="field-group"><label class="field-label">Firm</label><input type="text" value="Quarters Wealth Management LLC"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" value="(810) 224-2008"></div><div class="field-group"><label class="field-label">Email</label><input type="text" value="DJohnson@Vanderbiltsecurities.com"></div></div>
+    </div>
+
+    <div class="sub-header">Investment Accounts</div>
+    <div id="inv-accounts">
+      <div class="account-block">
+        <div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text"></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+      </div>
+      <div class="account-block">
+        <div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text"></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+      </div>
+      <div class="account-block">
+        <div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text"></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text"></div></div>
+        <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text"></div></div>
+        <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+      </div>
+    </div>
+
+    <div class="sub-header">Banking</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text"></div><div class="field-group"><label class="field-label">Account Type (Checking, Savings, CD, IRA)</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text"></div><div class="field-group"><label class="field-label">Account Type (Checking, Savings, CD, IRA)</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Pension &amp; Social Security</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Pension Provider</label><input type="text"></div><div class="field-group"><label class="field-label">Monthly Benefit</label><input type="text"></div></div>
+      <div class="field-row" style="align-items:center">
+        <div class="field-group">
+          <label class="field-label">Survivor Option</label>
+          <div class="checkbox-row">
+            <div class="checkbox-group"><input type="checkbox" id="surv_yes"><label for="surv_yes">Yes</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="surv_no"><label for="surv_no">No</label></div>
+            <div class="checkbox-inline-field"><label>Percentage</label><input type="text" placeholder="%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Pension Contact / Notes</label><textarea></textarea></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Social Security Number Stored At</label><input type="text"></div><div class="field-group"><label class="field-label">Monthly Benefit (if applicable)</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Long Term Care Insurance</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Type (Reimbursement or Indemnity)</label><input type="text"></div><div class="field-group"><label class="field-label">Elimination Period</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Daily / Monthly Benefit</label><input type="text"></div><div class="field-group"><label class="field-label">Benefit Period</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Type (Reimbursement or Indemnity)</label><input type="text"></div><div class="field-group"><label class="field-label">Elimination Period</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Daily / Monthly Benefit</label><input type="text"></div><div class="field-group"><label class="field-label">Benefit Period</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Life Insurance</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Death Benefit</label><input type="text"></div><div class="field-group"><label class="field-label">Beneficiary</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Death Benefit</label><input type="text"></div><div class="field-group"><label class="field-label">Beneficiary</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text"></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Other Financial Assets <span class="sub-header-note">(Crypto, Annuities, Storage Facility, Safety Deposit Box, etc.)</span></div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Description and location of other financial assets...</label><textarea class="lg"></textarea></div></div>
+
+    <div class="sub-header">Safe / Lockbox / Important Documents Location</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location</label><input type="text"></div><div class="field-group"><label class="field-label">Combination / Key Location</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">What is stored there...</label><textarea></textarea></div></div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4 ══ -->
+  <section id="s4" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">4</span>
+      <span class="section-header-title">My Legal Documents</span>
+    </div>
+    <p class="section-note">These are my formal legal documents. The documents themselves govern — this section simply tells you where they are and who prepared them.</p>
+
+    <div class="sub-header">Last Will &amp; Testament</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text"></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Executor</label><input type="text"></div><div class="field-group"><label class="field-label">Alternate Executor</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Trust Agreement</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text"></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Trustee</label><input type="text"></div><div class="field-group"><label class="field-label">Successor Trustee(s)</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Durable Power of Attorney (Financial)</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text"></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Assignee</label><input type="text"></div><div class="field-group"><label class="field-label">Alternate Assignee</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Healthcare Power of Attorney</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text"></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Healthcare Agent</label><input type="text"></div><div class="field-group"><label class="field-label">Alternate Agent</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Advance Directive / Living Will</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text"></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Designated Decision Maker</label><input type="text"></div><div class="field-group"><label class="field-label">Alternate</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">My Attorney</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Firm</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Email</label><input type="text"></div></div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5 ══ -->
+  <section id="s5" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">5</span>
+      <span class="section-header-title">My Medical Life</span>
+    </div>
+    <p class="section-note">My medical providers, insurance, and personal healthcare wishes are documented here.</p>
+
+    <div class="sub-header">Primary Care Physician</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Practice / Hospital</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Address</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Specialists</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Specialty</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Practice</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text"></div><div class="field-group"><label class="field-label">Specialty</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text"></div><div class="field-group"><label class="field-label">Practice</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Current Medications</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">List of medications, dosages, and prescribing physicians...</label><textarea class="xl"></textarea></div></div>
+
+    <div class="sub-header">Health Insurance</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text"></div><div class="field-group"><label class="field-label">Member ID</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Group Number</label><input type="text"></div><div class="field-group"><label class="field-label">Phone</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Medicare / Medicaid Number</label><input type="text"></div><div class="field-group"><label class="field-label">Part B / D Info Location</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Organ Donation</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Donor Status</label><input type="text"></div><div class="field-group"><label class="field-label">Documented On</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">My wishes regarding organ donation...</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">My Healthcare Wishes</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">What I want my family and caregivers to know about my wishes for my care...</label><textarea class="xl"></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 6 ══ -->
+  <section id="s6" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">6</span>
+      <span class="section-header-title">My Digital Life</span>
+    </div>
+    <p class="section-note">Do not store passwords here in plain text. Instead, note where passwords are kept. This section helps loved ones access and close accounts.</p>
+
+    <div class="sub-header">Devices</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Computer / Laptop (make &amp; model)</label><input type="text"></div><div class="field-group"><label class="field-label">PIN / Password Location</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Phone (make &amp; model)</label><input type="text"></div><div class="field-group"><label class="field-label">PIN / Password Location</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Password Manager / Stored Passwords</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Password Manager Used</label><input type="text"></div><div class="field-group"><label class="field-label">Master Password Location</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Any other notes on accessing my accounts...</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Email Accounts</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Primary Email Address</label><input type="text"></div><div class="field-group"><label class="field-label">Provider</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Secondary Email Address</label><input type="text"></div><div class="field-group"><label class="field-label">Provider</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Social Media Accounts</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Platforms I use and my wishes for each account (memorialize, delete, leave)...</label><textarea class="lg"></textarea></div></div>
+
+    <div class="sub-header">Subscriptions &amp; Recurring Payments to Cancel</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Services, subscriptions, and memberships that should be cancelled...</label><textarea class="lg"></textarea></div></div>
+
+    <div class="sub-header">Online Banking &amp; Bill Pay</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Notes on automatic payments, online banking, and bills in my name...</label><textarea class="lg"></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 7 ══ -->
+  <section id="s7" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">7</span>
+      <span class="section-header-title">My Property &amp; Possessions</span>
+    </div>
+    <p class="section-note">This section describes my property and any wishes I have about specific possessions. My will and trust are the legal authority — this is my personal guidance.</p>
+
+    <div class="sub-header">Primary Residence</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Address</label><input type="text"></div><div class="field-group"><label class="field-label">Ownership Type</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Mortgage Lender</label><input type="text"></div><div class="field-group"><label class="field-label">Account Number</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Deed Location</label><input type="text"></div><div class="field-group"><label class="field-label">Homeowners Insurance</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Other Real Estate</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Address / Description</label><input type="text"></div><div class="field-group"><label class="field-label">Ownership Type</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Deed / Title Location</label><input type="text"></div><div class="field-group"><label class="field-label">Notes</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Vehicles</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Year / Make / Model</label><input type="text"></div><div class="field-group"><label class="field-label">Title Location</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Provider</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+    </div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Year / Make / Model</label><input type="text"></div><div class="field-group"><label class="field-label">Title Location</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Insurance Provider</label><input type="text"></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Storage Units</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Facility Name &amp; Address</label><input type="text"></div><div class="field-group"><label class="field-label">Unit Number / Key Location</label><input type="text"></div></div>
+    </div>
+
+    <div class="sub-header">Meaningful Personal Items &amp; My Wishes</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Items that are important to me and who I would like to have them...</label><textarea class="xl"></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 8 ══ -->
+  <section id="s8" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">8</span>
+      <span class="section-header-title">My Business &amp; Professional Life</span>
+    </div>
+    <p class="section-note">Complete this section if you are employed, self-employed, or have business interests. Skip any items that do not apply.</p>
+
+    <div class="sub-header">Employer / Current Employment</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Employer Name</label><input type="text"></div><div class="field-group"><label class="field-label">HR Contact</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">HR Phone / Email</label><input type="text"></div><div class="field-group"><label class="field-label">Employee ID</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Benefits, pension, or accounts through employer...</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Business Ownership</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">Business Name</label><input type="text"></div><div class="field-group"><label class="field-label">My Role</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Business Attorney</label><input type="text"></div><div class="field-group"><label class="field-label">Accountant</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Key contacts, partners, and what should happen to the business...</label><textarea class="lg"></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Professional Licenses &amp; Associations</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Any licenses, certifications, or professional memberships...</label><textarea></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 9 ══ -->
+  <section id="s9" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">9</span>
+      <span class="section-header-title">My Final Wishes</span>
+    </div>
+    <p class="section-note">These are my personal wishes. They are not legally binding, but they reflect what matters to me. I hope they make difficult decisions a little easier.</p>
+
+    <div class="sub-header">Burial or Cremation</div>
+    <div class="account-block">
+      <div class="field-row"><div class="field-group"><label class="field-label">My Preference</label><input type="text"></div><div class="field-group"><label class="field-label">Pre-Arrangements Made With</label><input type="text"></div></div>
+      <div class="field-row"><div class="field-group"><label class="field-label">Location / Cemetery</label><input type="text"></div><div class="field-group"><label class="field-label">Documents Located At</label><input type="text"></div></div>
+      <div class="field-full"><div class="field-group"><label class="field-label">Any other wishes regarding burial or cremation...</label><textarea></textarea></div></div>
+    </div>
+
+    <div class="sub-header">Funeral or Memorial Service</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">My wishes for my funeral or memorial service — type of service, location, tone, music, readings...</label><textarea class="xl"></textarea></div></div>
+
+    <div class="sub-header">Obituary</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">What I would want said about me, or notes for whoever writes my obituary...</label><textarea class="xl"></textarea></div></div>
+
+    <div class="sub-header">Celebration of Life</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">If I want a celebration of life — what that looks like, who to invite, what to serve, what music to play...</label><textarea class="xl"></textarea></div></div>
+
+    <div class="sub-header">Notifications</div>
+    <div class="field-full"><div class="field-group"><label class="field-label">Organizations, clubs, institutions, or publications that should be notified...</label><textarea class="lg"></textarea></div></div>
+  </section>
+
+  <!-- ══ SECTION 10 ══ -->
+  <section id="s10" class="section-block">
+    <div class="section-header">
+      <span class="section-header-num">10</span>
+      <span class="section-header-title">A Personal Note</span>
+    </div>
+    <p class="section-note">This is your space. Write what you want the people you love to know — in your own voice, without prompts. There is no right way to do this.</p>
+
+    <div class="field-full">
+      <p class="prompt-text">To the people I love most...</p>
+      <textarea class="xxl"></textarea>
+    </div>
+    <div class="field-full"><textarea class="xxl"></textarea></div>
+    <div class="field-full"><textarea class="xxl"></textarea></div>
+
+    <div class="section-divider"></div>
+    <p class="section-note" style="text-align:center; font-style:italic;">This document was completed with care and intention. Please keep it somewhere safe and tell the people who need it where to find it.</p>
+  </section>
+
+  <!-- ══ DISCLOSURE ══ -->
+  
+<!-- CLOSING NOTE -->
+<div class="closing-note" id="closing">
+  <h2>A note from Duane</h2>
+  <p>Thank you for the trust you've placed in me by working through this. I hope this document sits quietly in a drawer for many years &mdash; but having it ready is one of the kindest things you can do for the people who love you.</p>
+  <p>If a question comes up as you fill it out, or any time after, please reach out.</p>
+  <div class="closing-signoff">~ Duane</div>
+  <div class="closing-signature">
+    <div class="name">Duane Johnson, ChFC&reg;, CLU&reg;</div>
+    <div class="title">Founder &amp; Principal</div>
+    <div class="firm">Quarters Wealth Management LLC</div>
+    <div class="closing-contact">
+      (810) 224-2008 &nbsp;&middot;&nbsp; <a href="mailto:DJohnson@Vanderbiltsecurities.com">DJohnson@Vanderbiltsecurities.com</a> &nbsp;&middot;&nbsp; <a href="https://quarterswm.com">quarterswm.com</a>
+    </div>
+  </div>
+</div>
+
+<div id="disclosure" class="disclosure">
+    <p>Duane Johnson is an investment advisor representative of Consolidated Portfolio Review. Quarters Wealth Management and Vanderbilt Financial Group are separate and unaffiliated entities.</p>
+    <p>Vanderbilt Financial Group is the marketing name for Consolidated Portfolio Review and its affiliates. Advisory Services offered through Consolidated Portfolio Review.</p>
+    <p>For additional information on services, disclosures, fees, and conflicts of interest, please visit <a href="https://www.vanderbiltfg.com/disclosures" target="_blank">www.vanderbiltfg.com/disclosures</a></p>
+    <p style="margin-top:.5rem; font-size:.7rem; opacity:.5;">This document is personal in nature and is not a legal or financial instrument. It is intended solely to provide guidance and information to the named individual's designated heirs and representatives. Nothing contained herein constitutes investment, legal, or tax advice.</p>
+  </div>
+
+</main>
+</div>
+
+<script>
+  // Active sidebar state on scroll
+  const sections = document.querySelectorAll('section[id], div[id="disclosure"]');
+  const links    = document.querySelectorAll('.sidebar-item');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-56px 0px 0px 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+<script>
+  // Section show/hide based on checkboxes
+  function applySelections() {
+    document.querySelectorAll('[data-section]').forEach(cb => {
+      if (cb.disabled) return;
+      const el = document.getElementById(cb.dataset.section);
+      if (el) el.style.display = cb.checked ? '' : 'none';
+    });
+    // Sync sidebar items
+    document.querySelectorAll('[data-section]').forEach(cb => {
+      const link = document.querySelector('.sidebar-item[href="#' + cb.dataset.section + '"]');
+      if (link) link.style.opacity = cb.checked ? '1' : '0.3';
+    });
+  }
+
+  function setAll(state) {
+    document.querySelectorAll('[data-section]').forEach(cb => { if (!cb.disabled) cb.checked = state; });
+    applySelections();
+  }
+
+  // Apply on every checkbox change
+  document.querySelectorAll('[data-section]').forEach(cb => {
+    cb.addEventListener('change', applySelections);
+  });
+
+  // Apply defaults on load
+  applySelections();
+</script>
+
+
+<script>
+/* ============================================================
+   QWM In Case of Everything — prototype features
+   - Generic repeating entries (data-repeat / data-repeat-item)
+   - Encrypted Save / Resume (Web Crypto: PBKDF2 + AES-GCM)
+   - Fillable PDF generation (pdf-lib via CDN, on-demand)
+   All client-side. Nothing transmitted.
+   ============================================================ */
+(function() {
+  'use strict';
+
+  // ─── Repeating entries ────────────────────────────────────
+  function setupRepeaters() {
+    document.querySelectorAll('[data-repeat]').forEach(container => {
+      const items = container.querySelectorAll(':scope > [data-repeat-item]');
+      if (!items.length) return;
+      const template = items[0].cloneNode(true);
+      template.querySelectorAll('.repeat-remove').forEach(b => b.remove());
+      template.querySelectorAll('input, textarea').forEach(el => {
+        if (el.type === 'checkbox') el.checked = false;
+        else el.value = '';
+      });
+      container._template = template;
+
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'repeat-add';
+      addBtn.dataset.repeatAdd = '';
+      const label = container.dataset.repeatLabel || 'entry';
+      addBtn.textContent = '+ Add another ' + label;
+      addBtn.addEventListener('click', () => addItem(container));
+      container.appendChild(addBtn);
+      refreshRemoveButtons(container);
+    });
+  }
+
+  function addItem(container) {
+    if (!container._template) return;
+    const clone = container._template.cloneNode(true);
+    const addBtn = container.querySelector(':scope > [data-repeat-add]');
+    container.insertBefore(clone, addBtn);
+    refreshRemoveButtons(container);
+  }
+
+  function refreshRemoveButtons(container) {
+    const items = container.querySelectorAll(':scope > [data-repeat-item]');
+    items.forEach(item => {
+      let existing = item.querySelector(':scope > .repeat-remove');
+      if (items.length <= 1) {
+        if (existing) existing.remove();
+      } else if (!existing) {
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'repeat-remove';
+        rm.textContent = '× remove';
+        rm.addEventListener('click', () => {
+          item.remove();
+          refreshRemoveButtons(container);
+        });
+        item.appendChild(rm);
+      }
+    });
+  }
+
+  function getRepeaterCounts() {
+    const counts = {};
+    document.querySelectorAll('[data-repeat]').forEach(c => {
+      counts[c.dataset.repeat] = c.querySelectorAll(':scope > [data-repeat-item]').length;
+    });
+    return counts;
+  }
+
+  function setRepeaterCounts(counts) {
+    Object.entries(counts || {}).forEach(([name, count]) => {
+      const c = document.querySelector('[data-repeat="' + name + '"]');
+      if (!c || !c._template) return;
+      let cur = c.querySelectorAll(':scope > [data-repeat-item]').length;
+      while (cur < count) { addItem(c); cur++; }
+      while (cur > count) {
+        const items = c.querySelectorAll(':scope > [data-repeat-item]');
+        items[items.length - 1].remove();
+        cur--;
+      }
+      refreshRemoveButtons(c);
+    });
+  }
+
+  // ─── Snapshot / restore ───────────────────────────────────
+  function getDataInputs() {
+    const list = [];
+    document.querySelectorAll('input[type="text"], input[type="checkbox"], textarea').forEach(el => {
+      if (el.closest('.selector-panel, .nav-bar, .qwm-modal-overlay')) return;
+      list.push(el);
+    });
+    return list;
+  }
+
+  function snapshot() {
+    return {
+      v: 1,
+      repeaters: getRepeaterCounts(),
+      vals: getDataInputs().map(el => el.type === 'checkbox' ? !!el.checked : el.value)
+    };
+  }
+
+  function restore(data) {
+    setRepeaterCounts(data.repeaters || {});
+    const inputs = getDataInputs();
+    (data.vals || []).forEach((v, i) => {
+      if (i >= inputs.length) return;
+      if (inputs[i].type === 'checkbox') inputs[i].checked = !!v;
+      else inputs[i].value = v;
+    });
+  }
+
+  // ─── Web Crypto (PBKDF2 → AES-GCM) ────────────────────────
+  const enc = new TextEncoder();
+  const dec = new TextDecoder();
+  const b64 = u8 => btoa(String.fromCharCode.apply(null, u8));
+  const ub64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+  async function deriveKey(password, salt) {
+    const km = await crypto.subtle.importKey(
+      'raw', enc.encode(password), { name: 'PBKDF2' }, false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+      km,
+      { name: 'AES-GCM', length: 256 },
+      false, ['encrypt', 'decrypt']
+    );
+  }
+
+  async function encryptPayload(obj, password) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv   = crypto.getRandomValues(new Uint8Array(12));
+    const key  = await deriveKey(password, salt);
+    const ct = new Uint8Array(await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv }, key, enc.encode(JSON.stringify(obj))
+    ));
+    return {
+      app: 'QWM-InCaseOfEverything', v: 1,
+      kdf: 'pbkdf2-sha256-250000', cipher: 'aes-gcm-256',
+      salt: b64(salt), iv: b64(iv), ct: b64(ct)
+    };
+  }
+
+  async function decryptPayload(file, password) {
+    const key = await deriveKey(password, ub64(file.salt));
+    const plain = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: ub64(file.iv) }, key, ub64(file.ct)
+    );
+    return JSON.parse(dec.decode(plain));
+  }
+
+  // ─── File helpers ─────────────────────────────────────────
+  function downloadFile(content, filename, mime) {
+    const blob = content instanceof Blob ? content : new Blob([content], { type: mime || 'application/octet-stream' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 200);
+  }
+
+  function readJSONFile() {
+    return new Promise((resolve, reject) => {
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = '.qwm,.json,application/json';
+      inp.onchange = () => {
+        const f = inp.files && inp.files[0];
+        if (!f) { reject(new Error('No file selected')); return; }
+        const r = new FileReader();
+        r.onload = () => {
+          try { resolve(JSON.parse(r.result)); }
+          catch { reject(new Error('That file is not a valid QWM progress file.')); }
+        };
+        r.onerror = () => reject(new Error('Could not read the selected file.'));
+        r.readAsText(f);
+      };
+      inp.click();
+    });
+  }
+
+  // ─── Password modal ───────────────────────────────────────
+  function askPassword(title, requireConfirm, initialError, hint) {
+    return new Promise((resolve, reject) => {
+      const ov = document.createElement('div');
+      ov.className = 'qwm-modal-overlay';
+      ov.innerHTML =
+        '<div class="qwm-modal" role="dialog" aria-modal="true">' +
+          '<h3></h3>' +
+          (hint ? '<div class="qwm-modal-hint"></div>' : '') +
+          '<input type="password" class="qwm-pw1" placeholder="Password" autocomplete="new-password">' +
+          (requireConfirm ? '<input type="password" class="qwm-pw2" placeholder="Confirm password" autocomplete="new-password">' : '') +
+          '<div class="qwm-modal-err"></div>' +
+          '<div class="qwm-modal-actions">' +
+            '<button type="button" class="qwm-modal-cancel">Cancel</button>' +
+            '<button type="button" class="qwm-modal-ok">OK</button>' +
+          '</div>' +
+        '</div>';
+      ov.querySelector('h3').textContent = title;
+      if (hint) ov.querySelector('.qwm-modal-hint').textContent = hint;
+      const errEl = ov.querySelector('.qwm-modal-err');
+      errEl.textContent = initialError || '';
+      const pw1 = ov.querySelector('.qwm-pw1');
+      const pw2 = requireConfirm ? ov.querySelector('.qwm-pw2') : null;
+      document.body.appendChild(ov);
+      const cleanup = () => { if (ov.parentNode) ov.parentNode.removeChild(ov); };
+      const cancel = () => { cleanup(); reject(new Error('Cancelled')); };
+      const submit = () => {
+        const v1 = pw1.value;
+        const v2 = pw2 ? pw2.value : v1;
+        if (!v1) { errEl.textContent = 'Password required.'; return; }
+        if (requireConfirm && v1 !== v2) { errEl.textContent = "Passwords don't match."; return; }
+        if (requireConfirm && v1.length < 8) { errEl.textContent = 'Use at least 8 characters.'; return; }
+        cleanup();
+        resolve(v1);
+      };
+      ov.querySelector('.qwm-modal-cancel').addEventListener('click', cancel);
+      ov.querySelector('.qwm-modal-ok').addEventListener('click', submit);
+      ov.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); submit(); }
+        else if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+      });
+      pw1.focus();
+    });
+  }
+
+  // ─── Save / Resume ────────────────────────────────────────
+  async function saveProgress() {
+    let pw;
+    try {
+      pw = await askPassword(
+        'Save your progress',
+        true,
+        '',
+        'Choose a password to encrypt your saved file. You will need this same password to resume later. No one — including Quarters Wealth Management — can recover it for you if lost.'
+      );
+    } catch { return; }
+    try {
+      const payload = await encryptPayload(snapshot(), pw);
+      const stamp = new Date().toISOString().slice(0, 10);
+      downloadFile(JSON.stringify(payload, null, 2), 'QWM-Progress-' + stamp + '.qwm', 'application/json');
+    } catch (e) {
+      console.error(e);
+      alert('Could not save: ' + (e.message || e));
+    }
+  }
+
+  async function loadProgress() {
+    let file;
+    try { file = await readJSONFile(); }
+    catch (e) { if (e.message && e.message !== 'No file selected') alert(e.message); return; }
+    if (!file || !file.ct || !file.salt || !file.iv) {
+      alert('That file does not look like a QWM progress file.');
+      return;
+    }
+    let err = '';
+    for (let attempt = 0; attempt < 5; attempt++) {
+      let pw;
+      try {
+        pw = await askPassword('Enter password to resume', false, err, 'Enter the password you set when you saved this file.');
+      } catch { return; }
+      try {
+        const data = await decryptPayload(file, pw);
+        restore(data);
+        return;
+      } catch {
+        err = 'Wrong password. Try again.';
+      }
+    }
+    alert('Too many failed attempts.');
+  }
+
+
+  // Expose to global scope so onclick handlers can call them
+  window.saveProgress = saveProgress;
+  window.loadProgress = loadProgress;
+
+  // Init repeaters when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupRepeaters);
+  } else {
+    setupRepeaters();
+  }
+})();
+</script>
+</body>
+</html>
