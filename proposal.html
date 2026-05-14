@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QWM — Prospect Proposal Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1a2340; --navy-light:#243058; --gold:#846d1e; --gold-light:#b09040;
+  --cream:#f7f5f0; --cream-dark:#ede9e0; --white:#fff;
+  --text:#1a2340; --muted:#6b7280; --border:#d4cfc4;
+  --sidebar-w:360px; --done:#2d6a4f; --done-bg:#e8f5ee;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Quattrocento Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* HEADER */
+.header{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;border-bottom:3px solid var(--gold);flex-shrink:0;}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--white);letter-spacing:.06em;}
+.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);}
+.hdr-sub{font-size:.65rem;color:var(--gold-light);letter-spacing:.14em;text-transform:uppercase;}
+.btn-print{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:4px;cursor:pointer;border:1px solid var(--gold-light);background:transparent;color:var(--gold-light);transition:all .15s;}
+.btn-print:hover{background:var(--gold);color:var(--white);border-color:var(--gold);}
+
+/* LAYOUT */
+.app-body{display:flex;height:calc(100vh - 58px);overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;position:relative;}
+.sb-inner{flex:1;overflow-y:auto;padding:20px 18px 20px;}
+.sb-sec{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px;}
+.sb-sec:last-child{border-bottom:none;}
+.sb-ttl{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.field{margin-bottom:10px;}
+.field label{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:4px;font-family:'Quattrocento Sans',sans-serif;font-size:.83rem;color:var(--text);background:var(--cream);transition:border-color .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy);background:var(--white);}
+.field textarea{resize:vertical;min-height:64px;line-height:1.5;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* TOGGLE */
+.tog-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.tog-lbl{font-size:.76rem;font-weight:700;color:var(--text);}
+.tog{position:relative;width:38px;height:20px;cursor:pointer;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-sl{position:absolute;inset:0;background:var(--border);border-radius:20px;transition:background .2s;}
+.tog-sl::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:white;border-radius:50%;transition:transform .2s;}
+.tog input:checked+.tog-sl{background:var(--gold);}
+.tog input:checked+.tog-sl::before{transform:translateX(18px);}
+.tog-sub{display:none;}.tog-sub.on{display:block;}
+
+/* ACCOUNT TABLE */
+.acct-tbl{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:6px;}
+.acct-tbl th{background:var(--navy);color:var(--cream);padding:5px 7px;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;text-align:left;}
+.acct-tbl td{padding:5px 7px;border-bottom:1px solid var(--border);}
+.acct-tbl td input{width:100%;border:none;background:transparent;font-size:.76rem;font-family:'Quattrocento Sans',sans-serif;color:var(--text);padding:0;}
+.acct-tbl td input:focus{outline:1px solid var(--gold);border-radius:2px;}
+.add-row{font-size:.66rem;color:var(--gold);background:none;border:none;cursor:pointer;margin-top:6px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.add-row:hover{color:var(--navy);}
+
+/* PROFILE BADGE */
+.pb{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:6px;background:var(--cream);border:1px solid var(--border);margin-top:8px;}
+.pb-pct{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--navy);}
+.pb-bar{height:6px;border-radius:3px;overflow:hidden;display:flex;margin-bottom:3px;width:100px;}
+.pb-eq{background:var(--navy);}.pb-fi{background:var(--gold);}.pb-oth{background:var(--border);}
+.pb-det{font-size:.68rem;color:var(--muted);line-height:1.5;}
+
+/* STEP CONFIG */
+.step-cfg{display:flex;flex-direction:column;gap:8px;}
+.step-item{background:var(--cream);border:1px solid var(--border);border-radius:5px;padding:8px 10px;}
+.step-top{display:flex;align-items:center;gap:8px;}
+.step-top input[type=checkbox]{width:15px;height:15px;accent-color:var(--navy);cursor:pointer;flex-shrink:0;}
+.step-name{font-size:.78rem;font-weight:700;flex:1;}
+.step-done{display:flex;align-items:center;gap:5px;font-size:.66rem;color:var(--muted);margin-left:auto;white-space:nowrap;}
+.step-done input[type=checkbox]{width:13px;height:13px;accent-color:var(--done);cursor:pointer;}
+.step-note{font-size:.67rem;color:var(--muted);margin-top:4px;padding-left:23px;font-style:italic;}
+.step-warn{font-size:.67rem;color:#9a3412;margin-top:5px;padding:4px 8px 4px 23px;background:#fff7ed;border-radius:3px;}
+
+/* PREVIEW */
+.preview{flex:1;overflow-y:auto;background:#c8c4bc;padding:28px;}
+.doc{background:var(--white);max-width:800px;margin:0 auto 28px;box-shadow:0 6px 32px rgba(0,0,0,.18);min-height:800px;}
+
+/* ── COVER ── */
+.cov{background:var(--white);padding:0;position:relative;min-height:520px;display:flex;flex-direction:column;}
+.cov-top{background:var(--navy);padding:20px 64px;display:flex;align-items:center;justify-content:space-between;}
+.cov-firm{font-family:'Cormorant Garamond',serif;font-size:.85rem;font-weight:400;color:var(--white);letter-spacing:.22em;text-transform:uppercase;}
+.cov-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 64px;}
+.cov-doc-type{font-size:.68rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.cov-title{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:var(--navy);line-height:1;letter-spacing:.01em;margin-bottom:8px;text-align:center;}
+.cov-rule{width:48px;height:1px;background:var(--gold);margin:28px auto;}
+.cov-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;text-align:center;}
+.cov-client{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--navy);text-align:center;line-height:1.2;margin-bottom:28px;}
+.cov-meta-row{display:flex;gap:48px;justify-content:center;}
+.cov-meta-item{text-align:center;}
+.cov-meta-item .cov-label{margin-bottom:4px;}
+.cov-meta-item .cov-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--navy);}
+.cov-bottom{padding:20px 64px 28px;display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--border);margin-top:auto;}
+.cov-advisor{font-size:.78rem;color:var(--muted);line-height:1.7;}
+.cov-advisor strong{color:var(--navy);display:block;font-size:.86rem;}
+.cov-date-block{text-align:right;}
+.cov-date-block .cov-label{text-align:right;}
+.cov-date-block .cov-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--navy);}
+.cov-disc{background:var(--cream);padding:12px 64px;font-size:.58rem;color:var(--muted);line-height:1.7;border-top:1px solid var(--border);}
+
+/* BODY */
+.doc-body{padding:48px 64px;}
+.doc-sec{margin-bottom:36px;}
+.sec-ttl{font-family:'Cormorant Garamond',serif;font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
+
+/* EDITABLE PROSE */
+.prose{font-size:.87rem;line-height:1.75;color:#2a2a2a;}
+.prose p{margin-bottom:12px;}
+.prose p:last-child{margin-bottom:0;}
+.editable{border:1px dashed transparent;border-radius:4px;padding:6px 8px;margin:-6px -8px;transition:border-color .2s,background .2s;cursor:text;min-height:48px;}
+.editable:empty::before{content:attr(data-ph);color:var(--muted);font-style:italic;pointer-events:none;}
+.editable:hover{border-color:var(--border);background:rgba(246,244,240,.6);}
+.editable:focus{outline:none;border-color:var(--gold);border-style:solid;background:rgba(255,255,255,.8);}
+.edit-hint{font-size:.63rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;opacity:0;}
+.doc-body:hover .edit-hint{opacity:1;}
+
+/* PROFILE SNAP */
+.prof-snap{background:var(--cream);border-radius:6px;padding:20px 22px;margin-bottom:20px;display:flex;gap:24px;align-items:center;}
+.snap-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--navy);line-height:1;}
+.snap-alloc{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.alloc-bar{height:10px;border-radius:5px;overflow:hidden;display:flex;width:100%;margin-bottom:6px;}
+.ab-eq{background:var(--navy);flex-shrink:0;}.ab-fi{background:var(--gold);flex-shrink:0;}.ab-oth{background:var(--border);flex-shrink:0;}
+.legend{display:flex;gap:14px;}
+.leg-i{display:flex;align-items:center;gap:5px;font-size:.68rem;color:var(--muted);}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ETF TABLE */
+.etf-tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:12px;}
+.etf-tbl th{background:var(--navy);color:var(--cream);padding:7px 10px;text-align:left;font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;}
+.etf-tbl th.hl{background:var(--gold);}
+.etf-tbl td{padding:6px 10px;border-bottom:1px solid var(--border);}
+.etf-tbl tr:last-child td{border-bottom:none;}
+.etf-tbl tr.shdr td{background:var(--cream-dark);font-weight:700;font-size:.67rem;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);border-top:2px solid var(--border);}
+.etf-tbl td.hl{background:rgba(132,109,30,.07);font-weight:700;color:var(--navy);}
+.etf-tbl td.tk{font-weight:700;color:var(--navy);}
+.etf-note{font-size:.68rem;color:var(--muted);line-height:1.6;font-style:italic;}
+
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:16px;}
+.ig-i{padding:9px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);}
+.ig-i:nth-child(even){border-right:none;}
+.ig-i label{font-size:.60rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px;}
+.ig-i .iv{font-size:.82rem;font-weight:700;color:var(--navy);}
+
+/* FEE */
+.fee-tbl{width:100%;border-collapse:collapse;font-size:.82rem;}
+.fee-tbl th{background:var(--navy);color:var(--cream);padding:8px 14px;text-align:left;font-size:.63rem;letter-spacing:.07em;text-transform:uppercase;}
+.fee-tbl td{padding:9px 14px;border-bottom:1px solid var(--border);}
+.fee-tbl tr:last-child td{border-bottom:none;}
+
+/* PROCESS */
+.proc-steps{display:flex;flex-direction:column;gap:10px;}
+.ps-i{display:flex;align-items:flex-start;gap:12px;}
+.ps-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:var(--white);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ps-txt{font-size:.84rem;line-height:1.6;}
+.ps-txt strong{display:block;font-size:.78rem;letter-spacing:.04em;color:var(--navy);margin-bottom:1px;}
+
+/* NEXT STEPS */
+.ns-list{display:flex;flex-direction:column;gap:8px;}
+.ns-i{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:5px;border:1px solid var(--border);}
+.ns-i.done{opacity:.6;background:var(--done-bg);border-color:#a7d7c0;}
+.ns-i.current{border-color:var(--gold);background:rgba(132,109,30,.04);}
+.ns-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--white);font-size:.66rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.ns-i.done .ns-num{background:var(--done);}
+.ns-i.current .ns-num{background:var(--gold);}
+.ns-body strong{font-size:.80rem;color:var(--navy);display:block;margin-bottom:2px;}
+.ns-i.done .ns-body strong{color:var(--done);}
+.ns-body p{font-size:.80rem;line-height:1.55;color:#3a3a3a;margin:0;}
+.ns-badge{font-size:.60rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.nb-done{color:var(--done);background:var(--done-bg);border:1px solid #a7d7c0;}
+.nb-cur{color:var(--gold);background:rgba(132,109,30,.08);border:1px solid rgba(132,109,30,.25);}
+
+/* CUSTODY */
+.cust-tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:10px;}
+.cust-tbl th{background:var(--navy);color:var(--cream);padding:7px 12px;text-align:left;font-size:.63rem;letter-spacing:.07em;text-transform:uppercase;}
+.cust-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.cust-tbl tr:last-child td{border-bottom:none;}
+.cust-tot{font-weight:700;font-size:.82rem;text-align:right;padding-top:8px;color:var(--navy);}
+
+/* SIG */
+.sig-blk{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:16px;}
+.sig-i{border-top:1px solid var(--border);padding-top:8px;}
+.sig-i label{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-top:6px;}
+.sig-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--navy);}
+.sig-cred{font-size:.72rem;color:var(--muted);}
+
+/* DISCLAIMER */
+.disc{background:var(--cream);border-top:2px solid var(--border);padding:20px 64px;font-size:.65rem;color:var(--muted);line-height:1.7;}
+
+/* PRINT */
+/* VERSION BADGE */
+.ver-badge{font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid rgba(180,144,64,.5);color:var(--gold-light);background:transparent;cursor:pointer;margin-right:10px;transition:all .15s;}
+.ver-badge:hover{background:var(--gold);color:var(--white);border-color:var(--gold);}
+
+/* CHANGELOG MODAL */
+.cl-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;}
+.cl-overlay.open{display:flex;}
+.cl-modal{background:var(--white);border-radius:8px;width:540px;max-height:78vh;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,.3);overflow:hidden;}
+.cl-hdr{background:var(--navy);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cl-hdr-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--white);}
+.cl-hdr-sub{font-size:.65rem;color:var(--gold-light);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+.cl-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer;line-height:1;padding:2px 6px;}
+.cl-close:hover{color:var(--white);}
+.cl-body{overflow-y:auto;padding:20px 24px;}
+.cl-entry{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.cl-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.cl-ver{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.cl-ver-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--navy);}
+.cl-ver-date{font-size:.66rem;color:var(--muted);}
+.cl-ver-badge{font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:var(--gold);color:var(--white);}
+.cl-changes{list-style:none;padding:0;margin:0;}
+.cl-changes li{font-size:.80rem;line-height:1.6;color:#3a3a3a;padding:3px 0 3px 14px;position:relative;}
+.cl-changes li::before{content:'·';position:absolute;left:0;color:var(--gold);font-weight:700;}
+
+/* Gold bar — screen hidden, print only */
+.page-gold-bar{display:none;}
+.disc-page{} /* print-only layout handled in @media print */
+.disc-spacer{display:none;} /* hidden on screen */
+.acct-tbl tr.acct-detail td{background:#f9f8f5;padding:4px 7px;border-bottom:2px solid var(--border);}
+.acct-tbl tr.acct-detail input[type=text]{font-size:.72rem;color:var(--muted);}
+.acct-profile{width:100%;border:1px solid var(--border);border-radius:3px;background:var(--cream);font-family:'Quattrocento Sans',sans-serif;color:var(--text);}
+.acct-tbl thead tr:nth-child(2) th{font-size:.58rem;padding:3px 7px;opacity:.8;}
+.port-block{margin-bottom:20px;}
+.alloc-summary-tbl{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:16px;}
+.alloc-summary-tbl th{background:var(--navy);color:var(--cream);padding:7px 12px;text-align:left;font-size:.63rem;letter-spacing:.07em;text-transform:uppercase;}
+.alloc-summary-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.alloc-summary-tbl td:first-child{font-weight:700;color:var(--navy);white-space:nowrap;width:120px;}
+.alloc-summary-tbl td:nth-child(2){white-space:nowrap;width:80px;}
+.alloc-summary-tbl tr:last-child td{border-bottom:none;}
+.alloc-disc{font-size:.68rem;color:var(--muted);line-height:1.65;margin-top:10px;padding:10px 14px;background:var(--cream);border-left:2px solid var(--border);font-style:italic;}
+.alloc-summary-tbl td.asset-group{font-weight:700;color:var(--navy);}
+.alloc-summary-tbl td.asset-sub{font-weight:400;color:var(--muted);font-size:.78rem;padding-left:20px;font-style:italic;}
+.alloc-summary-tbl td.asset-sub::before{content:"↳ ";color:var(--border);}
+.alloc-summary-tbl tr:has(td.asset-sub){background:rgba(245,240,232,0.5);}
+.port-block-hdr{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.ai-ph{background:var(--cream);border:1px dashed var(--border);border-radius:4px;padding:14px 16px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+
+@media print{
+  /* Page numbers in bottom margin — Chrome auto-sizes margin for @bottom-center content */
+  @page {
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Quattrocento Sans', sans-serif;
+      font-size: 8pt;
+      color: #6b7280;
+    }
+  }
+  /* Cover page — suppress page number */
+  @page :first {
+    @bottom-center { content: none; }
+  }
+  .sidebar,.header{display:none!important;}
+  .app-body{height:auto;overflow:visible;}
+  .preview{background:white;padding:0;overflow:visible;}
+  .doc{box-shadow:none;margin:0;max-width:100%;}
+  /* Cover owns its page */
+  .cov{page-break-after:always;break-after:page;min-height:100vh;}
+  /* Sections avoid breaking mid-content */
+  .doc-sec{page-break-inside:avoid;break-inside:avoid;}
+  .sec-ttl{page-break-after:avoid;break-after:avoid;}
+  /* Portfolio block stays together */
+  #port-grid-wrap{page-break-inside:avoid;break-inside:avoid;}
+  .prof-snap{page-break-inside:avoid;break-inside:avoid;}
+  .port-block{page-break-inside:avoid;break-inside:avoid;}
+  .port-block-hdr{page-break-after:avoid;break-after:avoid;}
+  .etf-tbl{page-break-inside:avoid;break-inside:avoid;}
+  /* Process steps: each step stays together; list can break between steps */
+  .ps-i{page-break-inside:avoid;break-inside:avoid;}
+  /* Next steps: each card stays together; list can break between cards */
+  .ns-i{page-break-inside:avoid;break-inside:avoid;}
+  /* Tables */
+  .fee-tbl{page-break-inside:avoid;break-inside:avoid;}
+  .info-grid{page-break-inside:avoid;break-inside:avoid;}
+  .cust-tbl{page-break-inside:avoid;break-inside:avoid;}
+  /* Color accuracy — all colored backgrounds */
+  .cov-top,.cov-disc,.page-gold-bar,
+  .alloc-summary-tbl th,.etf-tbl th,.etf-tbl tr.shdr td,.etf-tbl td.hl,
+  .fee-tbl th,.cust-tbl th,.acct-tbl th,
+  .ns-i.done,.ns-i.current,
+  .prof-snap,.alloc-bar,.ab-eq,.ab-fi,.ab-oth,
+  .leg-dot,.pb-eq,.pb-fi,.pb-oth,
+  .ps-num,.ns-num{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  /* Editables */
+  .editable{border:none!important;background:transparent!important;padding:0!important;margin:0!important;page-break-inside:auto;break-inside:auto;}
+  .editable:empty::before{display:none!important;}
+  .editable:empty{min-height:0!important;}
+  .edit-hint{display:none!important;}
+  /* Gold bar fixed at bottom of every page */
+  .page-gold-bar{display:block!important;position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--gold);}
+  .doc-body{padding-bottom:28px;}
+  /* Disclosure: own page, pushed to bottom via padding */
+  .disc-page{
+    page-break-before:always;
+    break-before:page;
+    padding-top:72vh;
+    box-sizing:border-box;
+  }
+  .disc-spacer{display:none!important;}
+  .disc{
+    background:var(--cream);
+    border-top:2px solid var(--border);
+    padding:16px 64px 20px;
+    font-size:.62rem;color:var(--muted);line-height:1.7;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="hdr-left">
+    <div class="hdr-logo">QWM</div>
+    <div class="hdr-div"></div>
+    <div class="hdr-sub">Prospect Proposal Builder</div>
+  </div>
+  <div style="display:flex;align-items:center;">
+    <button class="ver-badge" onclick="document.getElementById('cl-overlay').classList.add('open')">v1.5.2</button>
+    <button class="btn-print" onclick="window.print()">Print / Export PDF</button>
+  </div>
+</header>
+
+<div class="app-body">
+
+<!-- ══════ SIDEBAR ══════ -->
+<div class="sidebar">
+<div class="sb-inner">
+
+  <div class="sb-sec">
+    <div class="sb-ttl">Prospect Information</div>
+    <div class="field"><label>Client 1 — Full Name</label><input type="text" id="f-name1" placeholder="e.g. John Smith" oninput="sync()"></div>
+    <div class="field"><label>Client 2 — Spouse / Partner (optional)</label><input type="text" id="f-name2" placeholder="e.g. Jane Smith" oninput="sync()"></div>
+    <div class="field-row">
+      <div class="field"><label>Date</label><input type="date" id="f-date" oninput="sync()"></div>
+      <div class="field"><label>Approx. AUM ($)</label><input type="text" id="f-aum" placeholder="e.g. $500,000" oninput="fmtMoney(this);sync()"></div>
+    </div>
+    <div id="aum-mismatch" style="display:none;font-size:.66rem;color:#9a3412;background:#fff7ed;border-radius:3px;padding:5px 8px;margin-top:-4px;line-height:1.4;"></div>
+  </div>
+
+
+
+  <div class="sb-sec">
+    <div class="sb-ttl">Client Context</div>
+    <div class="field-row">
+      <div class="field"><label>Client 1 Age</label><input type="number" id="f-age1" placeholder="e.g. 48" oninput="sync()"></div>
+      <div class="field"><label>Client 2 Age</label><input type="number" id="f-age2" placeholder="optional" oninput="sync()"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Client 1 Retirement Age</label><input type="number" id="f-retage" placeholder="e.g. 67" oninput="sync()"></div>
+      <div class="field"><label>Monthly Income Target</label><input type="text" id="f-income" placeholder="e.g. $4,000–$5,000/mo" oninput="fmtMoneyRange(this);sync()"></div>
+    </div>
+    <div class="field" id="f-retage2-wrap" style="display:none">
+      <label>Client 2 Retirement Age</label><input type="number" id="f-retage2" placeholder="e.g. 65" oninput="sync()">
+    </div>
+  </div>
+
+  <div class="sb-sec">
+    <div class="sb-ttl">Client Accounts</div>
+    <div id="cust-form">
+      <div class="tog-row" style="margin-bottom:8px;">
+        <label class="tog"><input type="checkbox" id="same-profile-tog" checked onchange="syncCust()"><div class="tog-sl"></div></label>
+        <span class="tog-lbl" style="font-size:.72rem;">Same risk profile for all accounts</span>
+      </div>
+      <!-- Shared profile selector — shown when sameAll is ON -->
+      <div class="field" id="shared-profile-wrap" style="margin-bottom:10px;">
+        <label>Risk Profile (all accounts)</label>
+        <select id="f-shared-profile" onchange="syncCust();renderPortfolios()">
+          <option value="">— Select Profile —</option>
+          <option value="Conservative">Conservative</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Mod Growth">Moderate Growth</option>
+          <option value="Growth">Growth</option>
+          <option value="Aggressive">Aggressive</option>
+        </select>
+      </div>
+      <table class="acct-tbl">
+        <thead>
+          <tr><th>Name</th><th>Type</th><th>Value</th></tr>
+          <tr style="background:#0d1a30;"><th>Custodian</th><th style="text-align:center;">Schwab</th><th>Profile</th></tr>
+        </thead>
+        <tbody id="acct-body">
+          <tr class="acct-main">
+            <td><input type="text" placeholder="e.g. John IRA" oninput="syncCust()"></td>
+            <td><input type="text" placeholder="IRA" oninput="syncCust()"></td>
+            <td><input type="text" placeholder="$0" oninput="fmtMoney(this);syncCust()"></td>
+          </tr>
+          <tr class="acct-detail">
+            <td><input type="text" placeholder="e.g. Principal" oninput="syncCust()"></td>
+            <td style="text-align:center;"><input type="checkbox" class="schwab-chk" onchange="syncCust()" style="width:auto;accent-color:var(--gold);"></td>
+            <td><select class="acct-profile" onchange="syncCust()" style="font-size:.72rem;padding:3px 4px;"></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row" onclick="addAcct()">+ Add Account</button>
+    </div>
+  </div>
+
+  <div class="sb-sec">
+    <div class="sb-ttl">Next Steps — Configure &amp; Status</div>
+    <div class="step-cfg">
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" id="s-plan" checked onchange="renderNS()">
+          <span class="step-name">Financial Plan</span>
+          <label class="step-done"><input type="checkbox" id="d-plan" onchange="renderNS()"> Done</label>
+        </div>
+        <div class="step-note">eMoney — completed first, separately before this proposal.</div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" checked disabled>
+          <span class="step-name">Investment Proposal <span style="font-size:.63rem;color:var(--gold);font-weight:400">(this document)</span></span>
+        </div>
+        <div class="step-note">Always included — current stage.</div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" id="s-agree" checked onchange="renderNS()">
+          <span class="step-name">Advisory Agreement</span>
+          <label class="step-done"><input type="checkbox" id="d-agree" onchange="renderNS()"> Done</label>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" id="s-accts" checked onchange="renderNS()">
+          <span class="step-name">Account Opening at Schwab</span>
+          <label class="step-done"><input type="checkbox" id="d-accts" onchange="renderNS()"> Done</label>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" id="s-ips" onchange="renderNS()">
+          <span class="step-name">Investment Policy Statement</span>
+          <label class="step-done"><input type="checkbox" id="d-ips" onchange="renderNS()"> Done</label>
+        </div>
+        <div class="step-warn">⚠ IPS not yet approved — include only when cleared.</div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-top">
+          <input type="checkbox" id="s-impl" checked onchange="renderNS()">
+          <span class="step-name">Portfolio Implementation</span>
+          <label class="step-done"><input type="checkbox" id="d-impl" onchange="renderNS()"> Done</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sb-sec">
+    <div class="sb-ttl">Document Options</div>
+    <div class="tog-row">
+      <label class="tog"><input type="checkbox" id="opt-etf" onchange="renderPortfolios()"><div class="tog-sl"></div></label>
+      <span class="tog-lbl">Include detailed ETF grid</span>
+    </div>
+    <div style="font-size:.63rem;color:var(--muted);margin:-4px 0 10px 48px;line-height:1.5;">Off by default. Enable for existing clients or when appropriate to share holdings detail.</div>
+    <div class="tog-row">
+      <label class="tog"><input type="checkbox" id="opt-fee" checked onchange="syncOpts()"><div class="tog-sl"></div></label>
+      <span class="tog-lbl">Include fee schedule</span>
+    </div>
+    <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+      <div style="font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Cover Logo</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-bottom:8px;line-height:1.5;">Logo is embedded by default. Upload a replacement image to override it.</div>
+      <input type="file" id="logo-file" accept="image/*" onchange="uploadLogo(this)" style="font-size:.72rem;width:100%;color:var(--text);">
+      <button id="logo-clear" onclick="clearLogo()" style="display:none;margin-top:6px;font-size:.66rem;color:#9a3412;background:none;border:none;cursor:pointer;font-weight:700;padding:0;">✕ Remove logo</button>
+    </div>
+  </div>
+
+</div><!-- /sb-inner -->
+</div><!-- /sidebar -->
+
+<!-- ══════ PREVIEW ══════ -->
+<div class="preview">
+<div class="doc">
+
+  <!-- COVER -->
+  <div class="cov">
+    <div class="cov-top">
+      <div id="cov-logo-default" style="line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height:46px;width:auto;display:block;" viewBox="0 0 1161 273" version="1.1">
+<g id="surface1">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 163.390625 252.777344 L 144.980469 252.6875 L 144.75 224.066406 C 144.625 208.324219 144.523438 153.167969 144.523438 101.496094 L 144.523438 7.542969 L 161.789062 7.492188 C 171.285156 7.464844 179.789062 7.425781 180.691406 7.40625 L 182.324219 7.371094 L 182.320312 129.933594 C 182.316406 197.339844 182.199219 252.578125 182.058594 252.679688 C 181.917969 252.78125 173.519531 252.824219 163.390625 252.777344 Z M 16.523438 252.265625 C 16.433594 252.03125 16.398438 196.90625 16.445312 129.773438 L 16.535156 7.714844 L 34.402344 7.542969 C 44.226562 7.449219 52.695312 7.429688 53.214844 7.496094 L 54.160156 7.621094 L 54.074219 130.074219 L 53.988281 252.523438 L 35.335938 252.609375 C 20.601562 252.679688 16.652344 252.609375 16.523438 252.265625 Z M 80.613281 130.464844 C 80.613281 63.234375 80.613281 8.117188 80.613281 7.972656 C 80.613281 7.832031 89.195312 7.675781 99.683594 7.628906 L 118.753906 7.539062 L 118.75 129.34375 C 118.746094 196.335938 118.652344 251.496094 118.535156 251.921875 L 118.328125 252.695312 L 80.613281 252.695312 Z M 209.007812 252.46875 C 208.878906 252.339844 208.773438 197.179688 208.773438 129.890625 L 208.773438 7.542969 L 226.898438 7.507812 C 236.867188 7.492188 245.453125 7.453125 245.976562 7.421875 L 246.925781 7.371094 L 246.929688 129.949219 L 246.933594 252.523438 L 228.085938 252.609375 C 217.71875 252.660156 209.132812 252.59375 209.007812 252.46875 Z M 864.199219 236.671875 C 858.117188 235.199219 853.976562 230.722656 852.492188 224.023438 C 851.269531 218.511719 852.355469 213.027344 855.558594 208.535156 C 859.703125 202.726562 868.140625 200.632812 876.375 203.371094 C 879.027344 204.253906 879.519531 204.566406 881.75 206.78125 C 883.519531 208.539062 884.328125 209.632812 884.648438 210.699219 C 885.175781 212.464844 885 212.644531 882.410156 213.003906 C 880.785156 213.226562 880.640625 213.183594 879.988281 212.273438 C 878.457031 210.136719 877.011719 208.765625 875.277344 207.804688 C 873.585938 206.863281 873.199219 206.792969 869.847656 206.796875 C 866.480469 206.796875 866.085938 206.871094 863.957031 207.914062 C 861.433594 209.144531 859.816406 210.757812 858.71875 213.136719 C 857.683594 215.375 857.660156 222.742188 858.679688 225.496094 C 859.59375 227.964844 861.429688 229.976562 864.039062 231.367188 C 867.816406 233.378906 873.726562 233.207031 877.65625 230.96875 C 880.335938 229.441406 880.5 229.15625 880.5 225.988281 L 880.5 223.125 L 871.1875 223.125 L 871.289062 221.148438 L 871.394531 219.171875 L 885.722656 219.242188 L 885.671875 227.433594 C 885.644531 231.9375 885.535156 235.761719 885.429688 235.929688 C 885.324219 236.097656 884.597656 236.183594 883.816406 236.117188 C 882.480469 236.007812 882.382812 235.925781 882.28125 234.871094 C 882.21875 234.25 882.066406 233.796875 881.9375 233.863281 C 879.367188 235.203125 876.824219 236.269531 875.1875 236.691406 C 872.628906 237.355469 866.972656 237.34375 864.199219 236.671875 Z M 372.414062 236.625 C 370.539062 236.515625 370.246094 236.40625 370.082031 235.746094 C 368.351562 228.753906 364.667969 215.980469 362.179688 208.367188 C 361.351562 205.828125 360.753906 203.625 360.851562 203.46875 C 360.949219 203.3125 362.09375 203.183594 363.398438 203.183594 C 365.3125 203.183594 365.832031 203.300781 366.078125 203.785156 C 366.246094 204.117188 366.882812 206.242188 367.496094 208.511719 C 368.105469 210.78125 369.046875 214.109375 369.585938 215.90625 C 370.125 217.699219 371.046875 221.105469 371.628906 223.46875 C 372.773438 228.09375 373.292969 229.65625 373.691406 229.65625 C 373.832031 229.65625 374.363281 228.070312 374.875 226.132812 C 375.382812 224.195312 376.863281 219.28125 378.164062 215.21875 C 379.460938 211.152344 380.8125 206.820312 381.167969 205.589844 L 381.808594 203.355469 L 384.832031 203.183594 C 386.492188 203.089844 387.894531 203.089844 387.945312 203.183594 C 388.066406 203.410156 392.71875 219.015625 393.839844 222.953125 C 395.253906 227.910156 395.726562 229.3125 395.996094 229.3125 C 396.132812 229.3125 396.523438 228.191406 396.867188 226.820312 C 397.207031 225.449219 398.1875 221.929688 399.042969 219 C 399.894531 216.066406 401.171875 211.347656 401.875 208.511719 L 403.15625 203.355469 L 405.777344 203.253906 C 407.746094 203.179688 408.402344 203.265625 408.402344 203.597656 C 408.402344 203.84375 407.417969 207.136719 406.207031 210.917969 C 403.445312 219.574219 401.203125 227.234375 399.140625 235.074219 L 398.753906 236.535156 L 396.011719 236.535156 C 392.785156 236.535156 393.238281 237.152344 391.230469 230 C 390.515625 227.449219 389.351562 223.582031 388.644531 221.40625 C 387.9375 219.230469 386.8125 215.632812 386.140625 213.410156 C 385.46875 211.191406 384.8125 209.371094 384.683594 209.371094 C 384.394531 209.371094 383.578125 211.554688 382.8125 214.355469 C 382.503906 215.492188 381.582031 218.585938 380.765625 221.234375 C 378.277344 229.289062 377.207031 232.851562 376.785156 234.472656 C 376.308594 236.300781 375.878906 236.902344 375.117188 236.8125 C 374.808594 236.773438 373.59375 236.691406 372.414062 236.625 Z M 424.292969 236.652344 L 423.519531 236.488281 L 423.519531 203.199219 L 436.421875 203.105469 C 449.238281 203.011719 449.320312 203.015625 449.5 203.726562 C 449.597656 204.121094 449.628906 205.125 449.570312 205.960938 L 449.460938 207.480469 L 439.066406 207.351562 L 428.675781 207.21875 L 428.675781 217.675781 L 438.3125 217.425781 L 447.949219 217.179688 L 447.847656 219.367188 L 447.742188 221.558594 L 438.210938 221.464844 L 428.675781 221.371094 L 428.675781 232.410156 L 450.011719 232.410156 L 449.90625 234.53125 L 449.804688 236.65625 L 437.4375 236.738281 C 430.632812 236.78125 424.71875 236.742188 424.292969 236.652344 Z M 462.519531 236.535156 C 462.390625 236.328125 463.523438 233.5 465.035156 230.246094 C 467.9375 223.988281 475.484375 206.410156 476.546875 203.425781 C 476.738281 202.890625 477.140625 202.824219 479.765625 202.910156 L 482.761719 203.011719 L 483.515625 205.074219 C 484.429688 207.570312 486.613281 212.792969 488.117188 216.078125 C 488.722656 217.398438 490.070312 220.496094 491.109375 222.953125 C 492.148438 225.410156 493.988281 229.339844 495.195312 231.683594 C 496.40625 234.027344 497.394531 236.152344 497.394531 236.410156 C 497.394531 236.75 496.847656 236.878906 495.375 236.878906 C 492.097656 236.878906 491.285156 236.605469 490.878906 235.375 C 490.683594 234.785156 489.867188 232.785156 489.0625 230.933594 L 487.601562 227.570312 L 479.609375 227.496094 L 471.613281 227.421875 L 470.0625 231.203125 C 467.621094 237.160156 468.03125 236.691406 465.199219 236.804688 C 463.703125 236.867188 462.660156 236.761719 462.519531 236.535156 Z M 485.148438 223.128906 C 486.023438 223.125 485.742188 222.058594 483.796875 218.039062 C 482.949219 216.28125 481.777344 213.417969 481.199219 211.679688 C 479.984375 208.015625 479.6875 207.574219 479.222656 208.71875 C 479.035156 209.171875 477.636719 212.484375 476.109375 216.078125 C 474.585938 219.667969 473.339844 222.714844 473.339844 222.839844 C 473.34375 223.257812 474.457031 223.324219 479.527344 223.226562 C 482.265625 223.175781 484.796875 223.128906 485.148438 223.128906 Z M 512.765625 236.660156 C 512.199219 236.492188 512.167969 235.476562 512.25 219.917969 L 512.339844 203.355469 L 514.660156 203.183594 C 515.9375 203.089844 517.097656 203.050781 517.238281 203.097656 C 517.378906 203.144531 517.445312 209.753906 517.386719 217.789062 L 517.28125 232.398438 L 526.492188 232.488281 L 535.703125 232.582031 L 535.65625 234.40625 C 535.628906 235.410156 535.511719 236.324219 535.398438 236.441406 C 535.140625 236.699219 513.601562 236.910156 512.765625 236.660156 Z M 558.808594 236.621094 L 556.492188 236.503906 L 556.492188 207.480469 L 544.292969 207.480469 L 544.089844 203.175781 L 558.964844 203.265625 L 573.84375 203.355469 L 573.945312 204.578125 C 574 205.25 573.902344 206.183594 573.726562 206.648438 L 573.402344 207.496094 L 567.699219 207.421875 L 561.996094 207.34375 L 561.90625 221.996094 C 561.847656 231.4375 561.695312 236.664062 561.472656 236.691406 C 561.285156 236.714844 560.085938 236.683594 558.808594 236.621094 Z M 589.476562 220.058594 L 589.476562 203.238281 L 591.886719 203.125 C 593.214844 203.0625 594.414062 203.050781 594.550781 203.097656 C 594.6875 203.144531 594.75 206.355469 594.683594 210.230469 L 594.570312 217.28125 L 613.96875 217.28125 L 613.792969 210.226562 C 613.617188 203.214844 613.621094 203.171875 614.359375 202.988281 C 615.394531 202.726562 619.214844 202.953125 619.109375 203.269531 C 619.0625 203.410156 619.023438 211.03125 619.023438 220.203125 L 619.023438 236.878906 L 617.050781 236.875 C 613.222656 236.863281 613.527344 237.550781 613.527344 228.953125 L 613.527344 221.453125 L 604.03125 221.515625 L 594.539062 221.578125 L 594.703125 229.226562 L 594.867188 236.878906 L 589.476562 236.878906 Z M 661.914062 236.652344 C 661.386719 236.507812 661.34375 235.148438 661.398438 219.828125 L 661.457031 203.164062 L 665.003906 203.257812 L 668.554688 203.355469 L 670.265625 207.480469 C 674.113281 216.746094 676.429688 222.613281 677.628906 226.121094 C 678.324219 228.160156 679.003906 229.953125 679.140625 230.101562 C 679.515625 230.511719 680.027344 229.691406 680.703125 227.59375 C 681.324219 225.667969 682.71875 222.167969 686.53125 212.980469 C 687.707031 210.144531 689.015625 206.78125 689.4375 205.503906 L 690.203125 203.183594 L 693.648438 203.183594 C 696.5 203.183594 697.0625 203.269531 696.90625 203.675781 C 696.800781 203.949219 696.847656 211.414062 697.007812 220.265625 C 697.171875 229.117188 697.175781 236.496094 697.015625 236.664062 C 696.859375 236.828125 695.710938 236.855469 694.46875 236.722656 L 692.210938 236.480469 L 692.210938 223.613281 C 692.210938 216.351562 692.078125 210.746094 691.90625 210.746094 C 691.570312 210.746094 690.816406 212.523438 687.960938 220.03125 C 686.917969 222.773438 685.085938 227.570312 683.890625 230.6875 L 681.714844 236.363281 L 679.316406 236.453125 L 676.921875 236.546875 L 673.230469 227.171875 C 671.203125 222.015625 668.972656 216.132812 668.277344 214.097656 C 667.585938 212.066406 666.886719 210.402344 666.726562 210.402344 C 666.488281 210.402344 666.285156 220.621094 666.273438 233.613281 L 666.269531 236.707031 L 664.378906 236.757812 C 663.339844 236.789062 662.230469 236.742188 661.914062 236.652344 Z M 713.597656 236.625 C 712.605469 236.554688 711.792969 236.425781 711.792969 236.335938 C 711.792969 236.246094 712.273438 235.226562 712.855469 234.070312 C 714.082031 231.636719 718.476562 221.304688 722.699219 210.917969 C 724.316406 206.949219 725.792969 203.5 725.984375 203.253906 C 726.230469 202.945312 727.152344 202.84375 729.105469 202.910156 L 731.878906 203.011719 L 732.863281 205.417969 C 733.910156 207.96875 735.507812 211.65625 737.410156 215.90625 C 738.046875 217.324219 739.5625 220.882812 740.777344 223.8125 C 741.996094 226.742188 743.765625 230.792969 744.710938 232.8125 C 745.65625 234.835938 746.34375 236.574219 746.234375 236.683594 C 745.976562 236.941406 743.5625 236.898438 741.902344 236.601562 L 740.570312 236.363281 L 738.789062 231.71875 L 737.011719 227.078125 L 729.003906 227.132812 L 721 227.1875 L 719.546875 230.570312 C 718.746094 232.433594 717.988281 234.371094 717.863281 234.875 C 717.578125 236.03125 716.734375 236.898438 715.980469 236.8125 C 715.660156 236.78125 714.589844 236.695312 713.597656 236.625 Z M 735.160156 222.949219 C 735.160156 222.851562 734.328125 220.878906 733.308594 218.566406 C 730.230469 211.566406 729.414062 209.589844 729.171875 208.546875 C 729.042969 208 728.8125 207.691406 728.664062 207.859375 C 728.515625 208.03125 727.679688 209.949219 726.8125 212.121094 C 725.183594 216.195312 723.894531 219.195312 722.757812 221.554688 C 722.398438 222.300781 722.101562 222.957031 722.101562 223.015625 C 722.101562 223.078125 725.039062 223.125 728.628906 223.125 C 732.222656 223.125 735.160156 223.046875 735.160156 222.949219 Z M 761.402344 220.03125 C 761.429688 209.078125 761.5625 203.175781 761.789062 203.15625 C 763.320312 203.03125 766.671875 203.300781 767.003906 203.578125 C 767.230469 203.765625 768.691406 205.726562 770.25 207.9375 C 771.8125 210.144531 774.410156 213.777344 776.027344 216.007812 C 777.644531 218.238281 780 221.566406 781.265625 223.398438 C 784.402344 227.949219 784.996094 228.679688 785.449219 228.527344 C 785.734375 228.433594 785.804688 224.996094 785.714844 215.789062 L 785.585938 203.183594 L 790.476562 203.183594 L 790.476562 219.839844 C 790.476562 229 790.363281 236.550781 790.21875 236.621094 C 790.078125 236.6875 788.84375 236.660156 787.472656 236.554688 L 784.984375 236.363281 L 783.867188 234.746094 C 781.75 231.691406 775.542969 223.292969 772.992188 220.03125 C 771.585938 218.234375 769.601562 215.488281 768.582031 213.925781 C 767.5625 212.367188 766.566406 211.089844 766.371094 211.089844 C 766.132812 211.089844 766.058594 215.234375 766.136719 223.808594 C 766.230469 234.164062 766.167969 236.558594 765.796875 236.703125 C 765.546875 236.800781 764.445312 236.878906 763.347656 236.878906 L 761.359375 236.878906 Z M 805.703125 236.65625 C 805.289062 236.488281 805.492188 235.882812 807.246094 232.0625 C 807.636719 231.214844 808.367188 229.511719 808.867188 228.28125 C 809.371094 227.054688 810.988281 223.183594 812.464844 219.6875 C 814.980469 213.738281 817.980469 206.492188 818.972656 203.976562 L 819.40625 202.878906 L 822.335938 202.945312 L 825.261719 203.011719 L 825.933594 204.730469 C 827.980469 209.984375 835.855469 228.679688 837.4375 232.050781 C 838.453125 234.214844 839.210938 236.1875 839.117188 236.433594 C 838.933594 236.910156 836.382812 237.039062 834.523438 236.667969 C 833.527344 236.46875 833.394531 236.230469 831.835938 231.855469 L 830.195312 227.25 L 823.050781 227.1875 C 819.121094 227.15625 815.582031 227.117188 815.191406 227.101562 C 814.613281 227.082031 814.226562 227.683594 813.105469 230.34375 C 812.351562 232.140625 811.570312 234.152344 811.375 234.816406 C 810.824219 236.6875 810.527344 236.878906 808.214844 236.851562 C 807.058594 236.835938 805.925781 236.75 805.703125 236.65625 Z M 828.273438 222.789062 C 828.273438 222.347656 826.996094 219.054688 825.003906 214.355469 C 824.121094 212.277344 823.242188 210.035156 823.050781 209.371094 C 822.351562 206.960938 822.246094 207.097656 819.820312 213.425781 C 818.972656 215.640625 818.066406 217.917969 817.800781 218.484375 C 816.515625 221.273438 815.972656 222.738281 816.15625 222.921875 C 816.515625 223.277344 828.273438 223.148438 828.273438 222.789062 Z M 904.144531 236.703125 C 904.050781 236.605469 904.019531 229.023438 904.078125 219.851562 L 904.1875 203.179688 L 916.613281 203.019531 C 923.449219 202.929688 929.132812 202.914062 929.25 202.984375 C 929.367188 203.058594 929.410156 204.097656 929.347656 205.296875 L 929.238281 207.480469 L 919.425781 207.363281 C 911.488281 207.265625 909.558594 207.332031 909.320312 207.707031 C 909.160156 207.960938 909.023438 210.222656 909.023438 212.734375 L 909.015625 217.300781 L 918.035156 217.28125 C 922.996094 217.269531 927.25 217.261719 927.484375 217.269531 C 927.78125 217.277344 927.914062 217.933594 927.914062 219.378906 L 927.914062 221.480469 L 918.640625 221.355469 C 911.148438 221.257812 909.335938 221.320312 909.191406 221.691406 C 909.097656 221.945312 909.015625 224.464844 909.015625 227.292969 L 909.015625 232.4375 L 929.632812 232.234375 L 929.632812 236.878906 L 916.976562 236.878906 C 910.015625 236.878906 904.242188 236.800781 904.144531 236.703125 Z M 1001.785156 219.921875 L 1001.785156 202.964844 L 1014.671875 202.882812 L 1027.554688 202.804688 L 1027.554688 207.730469 L 1026.441406 207.53125 C 1025.824219 207.421875 1021.226562 207.304688 1016.21875 207.269531 L 1007.113281 207.203125 L 1007.019531 212.242188 L 1006.921875 217.28125 L 1026.214844 217.28125 L 1026.011719 221.234375 L 1007.347656 221.234375 L 1007.222656 226.046875 C 1007.15625 228.695312 1007.160156 231.21875 1007.238281 231.660156 L 1007.375 232.457031 L 1017.722656 232.378906 C 1023.414062 232.335938 1028.109375 232.402344 1028.15625 232.527344 C 1028.203125 232.648438 1028.242188 233.679688 1028.242188 234.816406 L 1028.242188 236.878906 L 1001.785156 236.878906 Z M 1045.582031 236.449219 C 1045.492188 236.210938 1045.457031 228.667969 1045.503906 219.6875 L 1045.59375 203.355469 L 1048.515625 203.261719 L 1051.4375 203.164062 L 1052.457031 204.808594 C 1054.121094 207.488281 1064.625 222.257812 1065.617188 223.316406 C 1065.984375 223.703125 1066.976562 225.007812 1067.820312 226.21875 C 1068.667969 227.425781 1069.542969 228.476562 1069.761719 228.550781 C 1070.0625 228.648438 1070.160156 225.496094 1070.160156 215.960938 L 1070.160156 203.238281 L 1072.601562 203.125 C 1073.941406 203.0625 1075.0625 203.089844 1075.09375 203.183594 C 1075.121094 203.277344 1075.101562 210.902344 1075.046875 220.128906 L 1074.945312 236.90625 L 1072.300781 236.804688 L 1069.65625 236.707031 L 1067.589844 233.902344 C 1066.453125 232.359375 1064.210938 229.269531 1062.601562 227.039062 C 1060.996094 224.808594 1058.855469 221.96875 1057.839844 220.730469 C 1056.828125 219.496094 1054.847656 216.742188 1053.433594 214.613281 C 1052.023438 212.488281 1050.703125 210.746094 1050.5 210.746094 C 1050.242188 210.746094 1050.1875 214.628906 1050.3125 223.8125 L 1050.492188 236.878906 L 1048.117188 236.878906 C 1046.535156 236.878906 1045.691406 236.734375 1045.582031 236.449219 Z M 1102 236.648438 C 1101.875 236.523438 1101.773438 229.945312 1101.773438 222.035156 L 1101.773438 207.652344 L 1089.746094 207.652344 L 1089.746094 203.183594 L 1104.175781 203.132812 C 1112.113281 203.101562 1118.792969 203.0625 1119.023438 203.046875 C 1119.308594 203.019531 1119.410156 203.59375 1119.347656 204.902344 C 1119.203125 208.066406 1119.703125 207.839844 1113.117188 207.703125 L 1107.269531 207.582031 L 1107.269531 236.878906 L 1104.75 236.878906 C 1103.363281 236.878906 1102.128906 236.773438 1102 236.648438 Z M 947.328125 219.859375 L 947.328125 203.183594 L 955.375 203.183594 L 955.746094 204.566406 C 955.953125 205.324219 956.4375 206.679688 956.832031 207.574219 C 957.222656 208.46875 958.203125 210.902344 959.015625 212.980469 C 959.828125 215.0625 961.0625 218.078125 961.765625 219.6875 C 962.464844 221.292969 963.542969 224.226562 964.15625 226.203125 C 964.773438 228.183594 965.429688 229.851562 965.617188 229.914062 C 965.800781 229.976562 966.378906 228.820312 966.894531 227.347656 C 967.414062 225.875 969.433594 220.648438 971.382812 215.734375 C 973.332031 210.816406 975.121094 206.132812 975.355469 205.328125 C 975.59375 204.523438 975.957031 203.71875 976.167969 203.546875 C 976.464844 203.296875 980.894531 203.035156 982.722656 203.160156 C 982.933594 203.171875 983.066406 204.574219 983.066406 206.707031 C 983.0625 208.644531 983.121094 216.109375 983.199219 223.296875 L 983.335938 236.363281 L 980.878906 236.464844 L 978.421875 236.5625 L 978.390625 229.414062 C 978.371094 225.484375 978.386719 220.097656 978.417969 217.445312 C 978.476562 212.722656 978.273438 210.746094 977.734375 210.746094 C 977.585938 210.746094 977.042969 211.945312 976.53125 213.410156 C 976.019531 214.878906 975.160156 217.238281 974.625 218.65625 C 973.710938 221.070312 969.734375 231.828125 968.554688 235.074219 L 968.023438 236.535156 L 963.355469 236.535156 L 962.671875 234.730469 C 962.296875 233.734375 961.054688 230.726562 959.90625 228.042969 C 958.761719 225.355469 956.738281 220.335938 955.410156 216.886719 C 954.085938 213.433594 952.84375 210.457031 952.65625 210.265625 C 952.425781 210.035156 952.308594 214.335938 952.308594 223.226562 L 952.308594 236.535156 L 947.328125 236.535156 Z M 406.535156 179.945312 C 389.59375 177.3125 374.625 170.9375 361.023438 160.5625 C 358.746094 158.824219 356.144531 156.746094 355.242188 155.941406 C 352.960938 153.914062 347.660156 149.816406 346.210938 148.964844 C 345.433594 148.503906 344.078125 148.175781 342.363281 148.027344 C 339.132812 147.75 331.273438 145.851562 327.347656 144.402344 C 309.792969 137.914062 297.371094 125.898438 291.085938 109.316406 C 287.804688 100.660156 286.597656 88.335938 288.140625 79.234375 C 288.558594 76.773438 289 74.683594 289.125 74.589844 C 289.246094 74.496094 289.386719 73.90625 289.4375 73.285156 C 289.59375 71.296875 291.949219 64.582031 293.890625 60.585938 C 299.367188 49.3125 308.144531 40.234375 320.058594 33.515625 C 331.546875 27.035156 347.21875 23.695312 361.238281 24.738281 C 378.390625 26.015625 393.191406 32.386719 404.164062 43.21875 C 411.476562 50.441406 417.773438 61.265625 420.289062 70.945312 C 422.671875 80.117188 422.71875 91.988281 420.40625 101.128906 C 416.75 115.570312 406.554688 129.929688 393.867188 138.496094 C 386.992188 143.140625 375.636719 147.464844 370.261719 147.484375 C 367.390625 147.496094 367.046875 147.925781 368.71875 149.425781 C 370.214844 150.769531 373.191406 153.113281 377.996094 156.742188 C 387.515625 163.933594 399.390625 169.832031 410.464844 172.871094 C 414.988281 174.113281 422.066406 175.332031 424.742188 175.332031 L 427.332031 175.332031 L 427.128906 179.972656 L 424.894531 180.191406 C 420.808594 180.589844 409.722656 180.441406 406.535156 179.945312 Z M 362.652344 144.515625 C 369.160156 143.195312 375.589844 140.636719 380.273438 137.503906 C 383.078125 135.625 388.910156 129.738281 391.207031 126.464844 C 396.59375 118.792969 400.023438 109.1875 401.386719 97.972656 C 402.167969 91.535156 401.914062 79.238281 400.882812 73.449219 C 398.34375 59.230469 393.308594 48.792969 385.382812 41.304688 C 377.976562 34.308594 367.960938 30.386719 356.519531 30 C 351.964844 29.847656 350.621094 29.929688 347.242188 30.574219 C 339.890625 31.976562 334.59375 33.992188 329.527344 37.316406 C 319.882812 43.648438 312.460938 54.847656 309.503906 67.542969 C 307.972656 74.105469 307.578125 78.109375 307.585938 86.96875 C 307.605469 101.558594 309.601562 110.699219 315.03125 121.007812 C 322.105469 134.445312 333.617188 142.960938 347.070312 144.714844 C 348.582031 144.910156 350.285156 145.136719 350.851562 145.214844 C 352.71875 145.472656 360.082031 145.035156 362.652344 144.515625 Z M 484.164062 149.1875 C 473.480469 148.382812 465.179688 145.644531 459.003906 140.886719 C 454.640625 137.523438 450.8125 132.203125 449.445312 127.597656 C 448.007812 122.753906 447.917969 120.445312 447.917969 88.296875 C 447.914062 53.800781 448 55.078125 445.511719 52.585938 C 443.871094 50.945312 442.023438 50.433594 436.921875 50.203125 L 432.625 50.007812 L 432.625 45.882812 L 455.644531 45.96875 L 478.667969 46.054688 L 478.546875 47.859375 C 478.394531 50.117188 478.296875 50.265625 477.160156 50.015625 C 476.117188 49.785156 470.421875 50.359375 468.425781 50.894531 C 466.933594 51.296875 464.726562 53.402344 463.605469 55.496094 C 462.863281 56.882812 462.863281 56.886719 462.757812 86.796875 C 462.652344 117.8125 462.714844 119.617188 464.09375 124.753906 C 466.691406 134.429688 472.328125 139.832031 482.511719 142.40625 C 485.152344 143.074219 486.4375 143.171875 492.582031 143.171875 C 500.320312 143.167969 502.925781 142.800781 508.144531 140.957031 C 512.472656 139.425781 515.488281 137.617188 518.203125 134.921875 C 521.78125 131.371094 523.953125 127.125 525.628906 120.390625 C 526.359375 117.464844 526.378906 116.765625 526.503906 89.398438 C 526.589844 70.601562 526.511719 60.625 526.265625 59.03125 C 525.269531 52.609375 522.003906 50.183594 513.542969 49.578125 C 509.570312 49.292969 509.476562 49.226562 509.914062 46.898438 L 510.128906 45.746094 L 528.671875 45.796875 L 547.214844 45.84375 L 547.214844 47.175781 C 547.214844 49.265625 546.773438 49.804688 545.222656 49.59375 C 543.269531 49.332031 539.144531 50.078125 537.261719 51.03125 C 535.199219 52.078125 533.335938 54.21875 532.789062 56.171875 C 532.480469 57.277344 532.355469 64.976562 532.308594 85.984375 C 532.25 111.175781 532.175781 114.738281 531.632812 118.257812 C 531.03125 122.148438 529.25 128.109375 527.886719 130.808594 C 525.09375 136.316406 519.992188 141.292969 514.082031 144.269531 C 506.640625 148.019531 494.691406 149.984375 484.164062 149.1875 Z M 1108.128906 148.960938 C 1098.246094 148.074219 1090.617188 145.875 1083.644531 141.898438 L 1081.148438 140.476562 L 1081.328125 117.398438 L 1083.636719 117.296875 C 1086.28125 117.179688 1086.128906 116.972656 1086.445312 121.0625 C 1086.550781 122.417969 1087.054688 124.476562 1087.679688 126.097656 C 1090.914062 134.492188 1098.417969 140.789062 1107.710938 142.902344 C 1111.441406 143.753906 1118.667969 143.660156 1122.214844 142.714844 C 1126.410156 141.601562 1130.476562 139.453125 1132.617188 137.226562 C 1135.9375 133.769531 1138.167969 127.664062 1137.691406 123.335938 C 1137.054688 117.558594 1134.191406 113.101562 1128.578125 109.152344 C 1126.0625 107.386719 1118.304688 103.328125 1113.109375 101.066406 C 1108.417969 99.023438 1099.246094 94.335938 1095.929688 92.289062 C 1091.652344 89.644531 1087.28125 85.300781 1085.546875 81.96875 C 1083.40625 77.855469 1082.761719 74.820312 1082.957031 69.785156 C 1083.089844 66.308594 1083.300781 64.949219 1084.050781 62.730469 C 1086.960938 54.128906 1094.257812 47.898438 1104.535156 45.238281 C 1114.480469 42.664062 1123.332031 43.132812 1133.628906 46.78125 C 1135.289062 47.371094 1137.882812 48.289062 1139.394531 48.828125 L 1142.144531 49.804688 L 1142.316406 70.15625 L 1140.558594 70.054688 L 1138.800781 69.949219 L 1138.175781 67.480469 C 1137.382812 64.355469 1135.53125 60.332031 1133.910156 58.203125 C 1127.167969 49.367188 1113.453125 46.4375 1102.609375 51.515625 C 1099.636719 52.90625 1096.214844 56.21875 1094.820312 59.0625 C 1093.78125 61.171875 1093.699219 61.589844 1093.699219 64.789062 L 1093.699219 68.238281 L 1095.21875 70.898438 C 1096.054688 72.363281 1096.867188 73.558594 1097.023438 73.558594 C 1097.558594 73.558594 1097.304688 74.195312 1096.703125 74.355469 C 1096.253906 74.472656 1096.300781 74.519531 1096.882812 74.550781 C 1097.308594 74.574219 1098.777344 75.5 1100.144531 76.605469 C 1103.898438 79.648438 1108.570312 82.183594 1115.171875 84.75 C 1138.355469 93.765625 1148.265625 102.570312 1149.886719 115.601562 C 1150.648438 121.71875 1149.609375 126.296875 1145.996094 132.761719 C 1143.363281 137.476562 1137.78125 142.324219 1131.65625 145.21875 C 1125.589844 148.085938 1115.761719 149.648438 1108.128906 148.960938 Z M 808.585938 146.535156 L 783.226562 146.445312 L 783.332031 144.5 L 783.433594 142.554688 L 786.527344 142.449219 C 794.992188 142.15625 798.957031 140.328125 800.652344 135.929688 C 801.273438 134.3125 801.300781 132.660156 801.300781 94.53125 L 801.300781 54.820312 L 789.101562 54.828125 C 777.402344 54.835938 776.824219 54.867188 774.890625 55.589844 C 772.210938 56.59375 769.507812 58.734375 767.675781 61.308594 C 765.632812 64.179688 764.867188 65.777344 763.859375 69.265625 C 763.382812 70.902344 762.910156 72.382812 762.800781 72.554688 C 762.5625 72.941406 759.890625 72.964844 759.292969 72.585938 C 758.953125 72.371094 759.160156 70.707031 760.242188 64.941406 C 761.003906 60.886719 762.199219 54.4375 762.898438 50.609375 L 764.175781 43.644531 L 765.988281 43.644531 C 767.492188 43.644531 767.800781 43.75 767.800781 44.253906 C 767.800781 45.382812 769.453125 47.351562 770.800781 47.828125 C 771.851562 48.199219 779.292969 48.289062 810.125 48.289062 C 847.878906 48.289062 848.15625 48.28125 849.121094 47.585938 C 849.65625 47.199219 850.523438 46 851.046875 44.921875 L 852.007812 42.957031 L 855.972656 42.957031 L 855.953125 47.6875 C 855.941406 50.285156 856.007812 56.824219 856.105469 62.214844 L 856.277344 72.011719 L 854.859375 71.980469 C 852.632812 71.929688 852.324219 71.703125 852.324219 70.09375 C 852.324219 68.390625 851.582031 65.324219 850.371094 62.042969 C 849.660156 60.113281 849.0625 59.21875 847.367188 57.535156 C 844.296875 54.496094 844.148438 54.472656 829.277344 54.503906 C 822.554688 54.515625 816.796875 54.628906 816.480469 54.75 C 815.945312 54.953125 815.902344 57.796875 815.902344 94.0625 C 815.902344 121.507812 816.019531 133.820312 816.289062 135.382812 C 817.144531 140.292969 820.832031 142.171875 830.242188 142.496094 L 834.285156 142.636719 L 834.390625 144.195312 C 834.449219 145.054688 834.371094 145.953125 834.21875 146.191406 C 834 146.53125 828.664062 146.605469 808.585938 146.535156 Z M 1061.367188 146.53125 L 1047.246094 146.441406 L 1046.277344 144.640625 C 1045.128906 142.503906 1043.394531 139.800781 1035.96875 128.570312 C 1030.152344 119.777344 1028.929688 117.890625 1023.113281 108.742188 C 1021.167969 105.683594 1018.820312 102.332031 1017.894531 101.289062 C 1015.578125 98.691406 1014.421875 98.355469 1007.457031 98.277344 L 1001.957031 98.214844 L 1001.863281 115.542969 C 1001.808594 125.640625 1001.910156 133.785156 1002.105469 135.0625 C 1002.460938 137.382812 1003.605469 139.519531 1004.980469 140.417969 C 1006.507812 141.421875 1011.078125 142.3125 1014.699219 142.320312 C 1016.605469 142.324219 1018.234375 142.394531 1018.320312 142.480469 C 1018.402344 142.5625 1018.390625 143.441406 1018.289062 144.429688 L 1018.109375 146.226562 L 994.3125 146.273438 C 972.972656 146.316406 970.519531 146.265625 970.515625 145.785156 C 970.511719 145.488281 970.417969 144.667969 970.300781 143.957031 L 970.085938 142.667969 L 972.648438 142.667969 C 975.980469 142.667969 981.316406 141.746094 983.0625 140.867188 C 984.71875 140.03125 986.152344 138.453125 986.734375 136.824219 C 987.304688 135.226562 987.578125 62.4375 987.027344 58.289062 C 986.609375 55.109375 985.53125 53 983.777344 51.914062 C 982.09375 50.875 978.449219 50.191406 974.542969 50.183594 L 971.175781 50.179688 L 971.378906 46.015625 L 998.179688 46 C 1016.625 45.992188 1025.890625 46.109375 1027.898438 46.382812 C 1037.511719 47.691406 1045.097656 51.402344 1048.996094 56.699219 C 1054.394531 64.039062 1055.226562 72.914062 1051.253906 80.796875 C 1048.203125 86.851562 1040.464844 93.214844 1033.914062 95.058594 C 1032.777344 95.378906 1031.71875 95.765625 1031.554688 95.917969 C 1031.390625 96.070312 1032.101562 97.328125 1033.132812 98.714844 C 1034.167969 100.101562 1036.328125 103.25 1037.9375 105.707031 C 1039.546875 108.164062 1042.382812 112.496094 1044.242188 115.335938 C 1046.105469 118.171875 1047.832031 120.871094 1048.085938 121.332031 C 1049.089844 123.171875 1055.648438 132.15625 1058.09375 135.050781 C 1061.8125 139.445312 1069.300781 142.984375 1074.925781 143.007812 L 1076.425781 143.011719 L 1076.1875 144.644531 C 1076.054688 145.542969 1075.84375 146.355469 1075.71875 146.449219 C 1075.589844 146.546875 1069.132812 146.582031 1061.367188 146.53125 Z M 1013.835938 92.808594 C 1022.546875 92.324219 1026.574219 91.117188 1030.910156 87.691406 C 1037.4375 82.523438 1039.351562 71.683594 1035.214844 63.304688 C 1033.433594 59.695312 1029.390625 55.605469 1026.011719 53.988281 C 1022.597656 52.355469 1020.378906 51.644531 1017.394531 51.230469 C 1013.046875 50.625 1003.335938 50.921875 1002.570312 51.683594 C 1002.300781 51.957031 1001.769531 92.417969 1002.03125 92.898438 C 1002.21875 93.246094 1006.542969 93.214844 1013.835938 92.808594 Z M 539.800781 146.117188 C 539.273438 145.972656 539.140625 145.621094 539.140625 144.386719 C 539.140625 142.628906 539.460938 142.441406 542.550781 142.367188 C 545.226562 142.300781 549.421875 141.007812 551.660156 139.558594 C 556.265625 136.582031 558.136719 132.929688 570.0625 103.644531 C 573.144531 96.082031 576.929688 86.875 578.472656 83.1875 C 580.019531 79.5 581.441406 76.054688 581.632812 75.535156 C 581.828125 75.015625 582.238281 74.589844 582.550781 74.585938 C 582.921875 74.582031 582.980469 74.492188 582.726562 74.328125 C 582.332031 74.070312 586.398438 63.542969 591.855469 50.695312 C 593.21875 47.480469 594.550781 44.035156 594.808594 43.039062 C 595.070312 42.046875 595.375 41.078125 595.492188 40.890625 C 595.605469 40.703125 597.148438 40.550781 598.917969 40.550781 L 602.132812 40.550781 L 602.371094 41.667969 C 602.609375 42.792969 603.480469 44.894531 608.027344 55.335938 C 614.085938 69.238281 615.945312 73.695312 615.828125 74.042969 C 615.757812 74.25 615.902344 74.574219 616.144531 74.761719 C 616.539062 75.066406 626.324219 98.105469 631.113281 110.003906 C 634.652344 118.792969 640.449219 132.617188 641.734375 135.328125 C 642.742188 137.453125 643.414062 138.386719 644.511719 139.195312 C 646.46875 140.636719 649.179688 141.621094 652.695312 142.175781 C 654.304688 142.429688 655.65625 142.644531 655.703125 142.652344 C 655.75 142.660156 655.789062 143.417969 655.789062 144.332031 L 655.789062 146 L 632.898438 146.199219 C 620.308594 146.308594 609.796875 146.316406 609.535156 146.214844 C 609.210938 146.09375 609.058594 145.441406 609.058594 144.179688 L 609.058594 142.324219 L 612.753906 142.320312 C 616.695312 142.3125 620.664062 141.648438 622 140.773438 C 622.449219 140.476562 623.277344 139.601562 623.84375 138.824219 C 625.105469 137.078125 625.191406 135.183594 624.148438 131.980469 C 623.519531 130.042969 614.242188 106.367188 613.046875 103.644531 L 612.59375 102.613281 L 594.421875 102.707031 L 576.246094 102.800781 L 573.230469 110.273438 C 571.570312 114.378906 569.683594 119.132812 569.035156 120.835938 C 568.386719 122.539062 567.054688 126.019531 566.074219 128.570312 C 564.554688 132.523438 564.285156 133.582031 564.257812 135.679688 C 564.214844 138.625 564.808594 139.679688 567.160156 140.851562 C 569.011719 141.773438 573.925781 142.667969 577.152344 142.667969 L 579.511719 142.667969 L 579.507812 143.785156 C 579.503906 144.402344 579.417969 145.214844 579.316406 145.589844 C 579.136719 146.269531 578.839844 146.277344 559.796875 146.289062 C 549.164062 146.292969 540.164062 146.214844 539.800781 146.117188 Z M 611.121094 97.589844 C 611.121094 97.40625 610.804688 96.632812 610.417969 95.875 C 610.03125 95.113281 609.117188 92.992188 608.390625 91.160156 C 607.664062 89.328125 606.417969 86.28125 605.625 84.390625 C 604.828125 82.5 603.640625 79.636719 602.988281 78.027344 C 602.332031 76.421875 601.578125 74.9375 601.3125 74.730469 C 601.042969 74.519531 600.925781 74.253906 601.042969 74.132812 C 601.308594 73.867188 600.058594 70.824219 597.171875 64.71875 C 595.992188 62.21875 594.925781 59.859375 594.804688 59.472656 C 594.503906 58.519531 594.136719 58.597656 593.613281 59.71875 C 591.964844 63.289062 587.765625 73.753906 587.867188 74.054688 C 587.933594 74.253906 587.808594 74.574219 587.585938 74.761719 C 587.367188 74.953125 586.011719 77.890625 584.574219 81.296875 C 583.136719 84.699219 580.960938 89.757812 579.738281 92.535156 C 577.613281 97.367188 577.546875 97.59375 578.253906 97.730469 C 579.910156 98.046875 611.121094 97.914062 611.121094 97.589844 Z M 661.800781 146.164062 C 661.707031 146.070312 661.628906 145.246094 661.628906 144.332031 L 661.628906 142.667969 L 663.820312 142.667969 C 666.703125 142.667969 671.621094 141.792969 673.65625 140.917969 C 675.785156 140 677.277344 138.398438 677.789062 136.480469 C 678.316406 134.5 678.609375 63.335938 678.113281 58.507812 C 677.421875 51.835938 675.503906 50.449219 666.230469 49.902344 L 662.144531 49.664062 L 662.042969 47.839844 L 661.9375 46.015625 L 690.386719 46.148438 C 715.285156 46.265625 719.160156 46.355469 721.40625 46.855469 C 724.546875 47.550781 729.011719 49.003906 730.863281 49.929688 C 739.234375 54.125 744.324219 62.296875 744.058594 71.121094 C 744.003906 72.933594 743.851562 74.574219 743.726562 74.761719 C 743.597656 74.953125 743.398438 75.648438 743.277344 76.308594 C 742.621094 79.953125 738.746094 85.648438 734.382812 89.375 C 731.195312 92.097656 726.320312 94.703125 723.730469 95.070312 C 722.832031 95.195312 722.003906 95.445312 721.894531 95.625 C 721.78125 95.804688 722.382812 96.832031 723.222656 97.90625 C 724.066406 98.980469 725.34375 100.789062 726.0625 101.925781 C 737.53125 120.050781 746.230469 132.488281 750.023438 136.171875 C 753.550781 139.601562 758.527344 141.917969 763.609375 142.496094 L 765.773438 142.742188 L 765.667969 144.507812 L 765.566406 146.277344 L 752.511719 146.277344 C 737.8125 146.277344 736.878906 146.234375 736.878906 145.523438 C 736.878906 144.929688 734.84375 141.398438 731.832031 136.753906 C 728.707031 131.933594 725.636719 127.050781 718.25 115.164062 C 710.894531 103.320312 710.046875 102.03125 708.585938 100.46875 C 706.949219 98.714844 705.460938 98.367188 698.984375 98.222656 L 693.21875 98.09375 L 693.414062 137.390625 L 694.335938 138.785156 C 694.894531 139.628906 695.855469 140.46875 696.777344 140.914062 C 698.847656 141.917969 703.011719 142.667969 706.5 142.667969 C 709.695312 142.667969 709.714844 142.6875 709.191406 145.289062 L 708.992188 146.277344 L 685.480469 146.304688 C 672.550781 146.320312 661.894531 146.257812 661.800781 146.164062 Z M 706.578125 92.796875 C 714.386719 92.238281 719.175781 90.308594 722.984375 86.195312 C 726.515625 82.378906 727.816406 78.132812 727.511719 71.371094 C 727.300781 66.632812 726.476562 63.902344 724.21875 60.441406 C 722.191406 57.328125 719.960938 55.34375 716.734375 53.773438 C 712.3125 51.617188 709.800781 51.179688 701.953125 51.195312 C 695.125 51.203125 694 51.316406 693.503906 52.046875 C 693.1875 52.503906 693.15625 92.613281 693.46875 92.929688 C 693.8125 93.269531 700.988281 93.199219 706.578125 92.796875 Z M 861.441406 145.84375 C 861.339844 145.582031 861.257812 144.78125 861.257812 144.070312 L 861.257812 142.773438 L 865.5625 142.542969 C 873.96875 142.09375 876.539062 140.921875 878.503906 136.652344 L 879.296875 134.933594 L 879.296875 56.539062 L 878.335938 54.582031 C 876.785156 51.421875 874.78125 50.582031 867.957031 50.222656 L 863.835938 50.007812 L 863.730469 48.03125 L 863.628906 46.054688 L 906.027344 46.054688 C 929.347656 46.054688 949.382812 45.953125 950.546875 45.832031 L 952.664062 45.609375 L 952.570312 57.4375 L 952.480469 69.261719 L 951.421875 69.363281 C 950.1875 69.484375 949.859375 69.136719 949.207031 67.027344 C 948.433594 64.511719 946.191406 59.121094 945.289062 57.605469 C 944.019531 55.464844 941.417969 52.953125 939.640625 52.152344 C 938.148438 51.476562 937.152344 51.410156 923.449219 51.113281 C 905.949219 50.734375 897.449219 51.035156 896.28125 52.078125 C 894.597656 53.582031 894.585938 53.722656 894.585938 73.546875 L 894.585938 92.125 L 910.132812 92.125 C 928.136719 92.121094 930.769531 91.925781 932.777344 90.449219 C 933.535156 89.890625 934.535156 88.921875 934.996094 88.289062 C 936.058594 86.855469 937.164062 83.316406 937.398438 80.613281 C 937.726562 76.847656 937.660156 76.949219 939.671875 77.066406 L 941.441406 77.167969 L 941.441406 112.582031 L 938.277344 112.792969 L 938.050781 110.796875 C 937.1875 103.113281 935.242188 99.519531 931.09375 97.96875 C 929.351562 97.316406 928.402344 97.285156 911.753906 97.285156 L 894.242188 97.285156 L 894.253906 114.5625 C 894.261719 124.0625 894.402344 132.898438 894.566406 134.191406 C 894.957031 137.210938 896.273438 139.421875 898.378906 140.605469 L 899.910156 141.464844 L 915.03125 141.574219 C 934.507812 141.714844 939.75 141.183594 945.214844 138.515625 C 951.007812 135.691406 955.710938 129.796875 958.179688 122.277344 C 958.59375 121.011719 959.105469 119.960938 959.316406 119.945312 C 962.238281 119.699219 962.675781 119.730469 962.855469 120.191406 C 963.078125 120.78125 962.601562 123.425781 961.246094 129.085938 C 960.699219 131.355469 959.695312 136.070312 959.011719 139.566406 C 958.328125 143.058594 957.734375 145.953125 957.691406 145.992188 C 957.652344 146.035156 936.019531 146.125 909.621094 146.199219 C 868.699219 146.308594 861.601562 146.253906 861.441406 145.84375 Z M 759.984375 74.34375 C 760.503906 74.265625 761.355469 74.265625 761.875 74.34375 C 762.394531 74.421875 761.96875 74.488281 760.929688 74.488281 C 759.890625 74.488281 759.464844 74.421875 759.984375 74.34375 Z M 759.984375 74.34375 "/>
+</g>
+</svg></div>
+      <img id="cov-logo-img" src="" alt="Quarters Wealth Management, LLC" style="display:none;max-height:46px;width:auto;object-fit:contain;">
+    </div>
+    <div class="cov-body">
+      <div class="cov-doc-type">Confidential</div>
+      <div class="cov-title">Investment Proposal</div>
+      <div class="cov-rule"></div>
+      <div class="cov-label">Prepared For</div>
+      <div class="cov-client" id="cv-client">—</div>
+      <div class="cov-meta-row">
+        <div class="cov-meta-item">
+          <div class="cov-label">Date Prepared</div>
+          <div class="cov-val" id="cv-date">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="cov-bottom">
+      <div class="cov-advisor">
+        <strong>Duane Johnson, ChFC® CLU®</strong>
+        Founder &amp; Principal<br>
+        810.224.2008 &nbsp;·&nbsp; djohnson@vanderbiltsecurities.com
+      </div>
+      <div class="cov-date-block">
+        <div class="cov-label">Meeting Date</div>
+        <div class="cov-val" id="cv-meeting">—</div>
+      </div>
+    </div>
+    <div class="cov-disc">
+      Duane Johnson is an investment advisor representative of Consolidated Portfolio Review. Quarters Wealth Management, LLC and Vanderbilt Financial Group are separate and unaffiliated entities. Vanderbilt Financial Group is the marketing name for Consolidated Portfolio Review and its affiliates. Advisory Services offered through Consolidated Portfolio Review. This material is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. For additional information on services, disclosures, fees, and conflicts of interest, please visit www.vanderbiltfg.com/disclosures
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+    <div class="doc-sec">
+      <div class="sec-ttl">I. Executive Summary</div>
+      <div class="edit-hint">↑ Click any section to edit</div>
+      <div class="prose editable" contenteditable="true"
+           data-ph="Click to write the executive summary — 2–3 sentences summarizing the prospect's situation and what Quarters Wealth Management, LLC is proposing."></div>
+    </div>
+
+    <div class="doc-sec">
+      <div class="sec-ttl">II. Client Profile</div>
+      <div class="info-grid" id="info-grid"></div>
+      <div class="prose editable" contenteditable="true"
+           data-ph="Click to add a brief narrative about this client's situation, goals, and timeline."></div>
+    </div>
+
+    <div class="doc-sec" id="sec-cust">
+      <div class="sec-ttl" id="sec-cust-ttl">III. Current Account Summary</div>
+      <table class="cust-tbl"><thead><tr><th>Account / Title</th><th>Type</th><th>Custodian</th><th>Value</th></tr></thead><tbody id="cust-prev"></tbody></table>
+      <div class="cust-tot" id="cust-tot"></div>
+      <div class="prose editable" style="margin-top:14px" contenteditable="true"
+           data-ph="Click to add notes about the accounts in custody and transition or management approach."></div>
+    </div>
+
+    <div class="doc-sec">
+      <div class="sec-ttl" id="h-port">III. Proposed Portfolio</div>
+      <div id="portfolio-sections">
+        <div class="ai-ph">Select a risk profile in the sidebar to display the portfolio allocation.</div>
+      </div>
+      <div class="prose editable" id="strat-text" style="margin-top:16px" contenteditable="true" data-ph="Click to add additional strategy notes specific to this client (optional)."></div>
+    </div>
+
+    <div class="doc-sec">
+      <div class="sec-ttl" id="h-proc">IV. Our Investment Process</div>
+      <div class="proc-steps">
+        <div class="ps-i"><div class="ps-num">1</div><div class="ps-txt"><strong>Discovery &amp; Financial Planning</strong>A comprehensive discovery process and risk assessment establishes goals, timeline, income needs, and capacity for risk. Your financial plan, maintained in eMoney, is developed as a separate engagement before any portfolio decision is made and is reviewed annually.</div></div>
+        <div class="ps-i"><div class="ps-num">2</div><div class="ps-txt"><strong>Portfolio Construction</strong>Your portfolio is built from the QWM Model Portfolios — a disciplined allocation matched to your risk profile. Holdings are selected based on a range of criteria, including cost-effectiveness, liquidity, transparency, and portfolio role. No commissions. No product sales. No conflicts.</div></div>
+        <div class="ps-i"><div class="ps-num">3</div><div class="ps-txt"><strong>Ongoing Monitoring</strong>Portfolio drift is monitored systematically via iRebal. Performance is reported quarterly through Black Diamond. The financial plan is maintained in eMoney and reviewed annually or upon any material life change.</div></div>
+        <div class="ps-i"><div class="ps-num">4</div><div class="ps-txt"><strong>Tactical Risk Management</strong>In confirmed negative market environments, Quarters Wealth Management, LLC applies a documented protocol: quality/value tilts within the equity sleeve, defensive fixed income adjustments, and incremental deployment of buffered ETFs — in an effort to mitigate downside impact without abandoning long-term allocation targets.</div></div>
+        <div class="ps-i"><div class="ps-num">5</div><div class="ps-txt"><strong>Regular Ongoing Reviews</strong>Formal reviews are conducted annually — or sooner upon any material life change — covering portfolio performance, financial plan progress, goal alignment, and any needed adjustments to strategy or allocation. Quarterly performance reports are delivered through Black Diamond. You are encouraged to reach out at any time between scheduled reviews.</div></div>
+      </div>
+    </div>
+
+    <div class="doc-sec">
+      <div class="sec-ttl" id="h-why">V. Why Quarters Wealth Management, LLC</div>
+      <div class="prose editable" contenteditable="true"
+           data-ph="Click to write the Why QWM section..."><p>Most advisory relationships are built around a portfolio. At Quarters Wealth Management, LLC, the portfolio is built around a plan — and that difference shapes everything we do.</p><p>Before any investment decision is made, we develop a comprehensive financial plan that maps your goals, timeline, income needs, and capacity for risk. The portfolio follows from that plan. Every holding, every allocation, and every rebalance is deliberate and tied directly to where you are going — not just where markets are. Our investment process is documented, our model portfolios are disciplined, and we review your portfolio on an ongoing and as-needed basis so that decisions are never reactive.</p><p>Our fee is straightforward (please see the fee agreement) and is based on assets under management. We earn nothing from products, transactions, or referrals. We primarily use low-cost, transparent ETFs — and where appropriate, select active strategies — because cost and quality discipline compound meaningfully over time. And because we work with a focused number of clients, you have direct access to your advisor — not a call center, not a junior associate — when it matters most.</p></div>
+    </div>
+
+    <div class="doc-sec" id="sec-fee-block">
+      <div class="sec-ttl" id="h-fee">VI. Fee Schedule</div>
+      <table class="fee-tbl">
+        <thead><tr><th>AUM Tier</th><th>Annual Advisory Fee</th><th>What It Covers</th></tr></thead>
+        <tbody><tr><td>Up to $2,000,000</td><td><strong>1.00% per year</strong></td><td>Portfolio management, financial planning, quarterly reporting, annual review, direct advisor access</td></tr></tbody>
+      </table>
+      <div class="prose" style="margin-top:12px;font-size:.80rem;color:var(--muted);">
+        <p>Fees are assessed quarterly <strong>in advance</strong> based on the account value at the start of each quarter. No commissions are earned on any investment product. Quarters Wealth Management, LLC does not receive compensation from any third party in connection with the management of your account. There are no transaction fees for ETF trades at Schwab for securities on the approved list.</p>
+        <p id="fee-est" style="margin-top:10px;color:var(--navy);"></p>
+      </div>
+    </div>
+
+    <div class="doc-sec">
+      <div class="sec-ttl" id="h-ns">VII. Proposed Next Steps</div>
+      <div class="ns-list" id="ns-list"></div>
+    </div>
+
+  </div><!-- /doc-body -->
+
+  <div class="disc-page">
+    <div class="disc-spacer"></div>
+    <div class="disc">
+    Duane Johnson is an investment advisor representative of Consolidated Portfolio Review. Quarters Wealth Management, LLC and Vanderbilt Financial Group are separate and unaffiliated entities. Vanderbilt Financial Group is the marketing name for Consolidated Portfolio Review and its affiliates. Advisory Services offered through Consolidated Portfolio Review. This proposal is for informational purposes only and does not constitute a binding investment recommendation or contract. Past performance is not indicative of future results. All investing involves risk, including the possible loss of principal. Form ADV Part 2 is available upon request. Prospectus information for all fund holdings is available upon request. For additional information on services, disclosures, fees, and conflicts of interest, please visit <strong>www.vanderbiltfg.com/disclosures</strong><br><br>
+    Quarters Wealth Management, LLC &nbsp;|&nbsp; 810-224-2008 &nbsp;|&nbsp; Text: 810-692-3537 &nbsp;|&nbsp; djohnson@vanderbiltsecurities.com
+  </div>
+  </div><!-- /disc-page -->
+
+</div><!-- /doc -->
+</div><!-- /preview -->
+</div><!-- /app-body -->
+
+<script>
+var PR={Conservative:{eq:30,fi:64,g:3,c:3},Moderate:{eq:50,fi:45,g:3,c:2},'Mod Growth':{eq:60,fi:36,g:2,c:2},Growth:{eq:70,fi:26,g:2,c:2},Aggressive:{eq:85,fi:11,g:2,c:2}};
+var PD={Conservative:'Conservative',Moderate:'Moderate','Mod Growth':'Moderate Growth',Growth:'Growth',Aggressive:'Aggressive'};
+var PO=['Conservative','Moderate','Mod Growth','Growth','Aggressive'];
+var PC={Conservative:'c',Moderate:'m','Mod Growth':'mg',Growth:'g',Aggressive:'a'};
+var EG=[
+  {t:'EQUITY TOTAL',d:'',tp:'tot',c:30,m:50,mg:60,g:70,a:85},
+  {t:'ITOT',d:'Total US Market (iShares)',tp:'eq',c:15,m:22,mg:26,g:30,a:38},
+  {t:'QGRW',d:'Quality Growth Factor',tp:'eq',c:5,m:8,mg:10,g:11,a:14},
+  {t:'AVLV',d:'US Large Cap Value (Avantis)',tp:'eq',c:3,m:4,mg:5,g:6,a:7},
+  {t:'SCHD',d:'Dividend Equity (Schwab)',tp:'eq',c:3,m:4,mg:5,g:5,a:6},
+  {t:'AVDE',d:'Intl Developed Equity (Avantis)',tp:'eq',c:2,m:7,mg:8,g:10,a:11},
+  {t:'AVEM',d:'Emerging Markets Equity (Avantis)',tp:'eq',c:2,m:5,mg:6,g:8,a:9},
+  {t:'FIXED INCOME TOTAL',d:'',tp:'tot',c:64,m:45,mg:36,g:26,a:11},
+  {t:'AGG',d:'US Aggregate Bond (iShares)',tp:'fi',c:31,m:22,mg:17,g:13,a:6},
+  {t:'PONAX',d:'PIMCO Income (Active Fixed Income)',tp:'fi',c:16,m:12,mg:9,g:7,a:5},
+  {t:'VTIP',d:'Short-Term TIPS (Vanguard)',tp:'fi',c:9,m:6,mg:5,g:2,a:null},
+  {t:'VCIT',d:'Intermediate Corp Bond (Vanguard)',tp:'fi',c:8,m:5,mg:5,g:4,a:null},
+  {t:'GLDM',d:'Gold (SPDR MiniShares)',tp:'alt',c:3,m:3,mg:2,g:2,a:2},
+  {t:'CASH',d:'Money Market / Cash Equivalents',tp:'alt',c:3,m:2,mg:2,g:2,a:2}
+];
+var NS_DEF=[
+  {key:'plan', label:'Financial Plan', text:'Your financial plan establishes the foundation — goals, timeline, income needs, and the risk profile that guides portfolio construction. It is developed as a separate engagement before any portfolio decisions are made.'},
+  {key:'prop', label:'Investment Proposal', text:'This document summarizes the proposed strategy, portfolio allocation, and advisory process. It marks the beginning of our advisory relationship.', isCurrent:true},
+  {key:'agree',label:'Advisory Agreement', text:'The advisory agreement formalizes the relationship between the client and Quarters Wealth Management, LLC through Consolidated Portfolio Review. It defines scope, fee authorization, and discretionary investment authority.'},
+  {key:'accts',label:'Account Opening at Schwab', text:'Accounts are opened at Charles Schwab & Co., Inc. Clients receive statements directly from Schwab and are encouraged to review them alongside Quarters Wealth Management, LLC performance reports.'},
+  {key:'ips',  label:'Investment Policy Statement', text:'The Investment Policy Statement documents goals, risk profile, target allocation, allowable investments, and the governing rules of the portfolio relationship. It is reviewed annually and amended only upon material life changes.'},
+  {key:'impl', label:'Portfolio Implementation', text:'Your accounts are funded and invested to the agreed target allocation from the QWM Model Portfolios — implemented systematically with attention to tax efficiency. Ongoing monitoring begins immediately.'}
+];
+
+// Standardized strategy language per profile
+var INVEST_PHIL="Quarters Wealth Management, LLC constructs client portfolios using a disciplined, goal-driven process. Before any portfolio decision is made, we develop a comprehensive financial plan that establishes your goals, time horizon, income needs, and capacity for risk. The portfolio is built from that plan — not the other way around. We use primarily low-cost, transparent exchange-traded funds and, where appropriate, select active strategies, because cost discipline and quality selection compound meaningfully over time. Every allocation decision is deliberate, documented, and tied directly to your specific financial objectives.";
+
+var STRAT_TEXT={
+  'Conservative':'This portfolio is designed to prioritize capital preservation and modest income generation while limiting exposure to equity market volatility. The allocation to fixed income and other stabilizing assets is intended to reduce the impact of short-term market fluctuations, while the equity component provides a measure of long-term inflation protection and growth potential. This profile reflects your stated risk tolerance, time horizon, and the objective of protecting accumulated wealth while generating a measure of return.',
+  'Moderate':'This portfolio is designed to balance long-term capital growth with income and stability. The allocation to equity provides growth potential over time, while the fixed income component is intended to moderate overall portfolio volatility and provide diversification across asset classes. This profile reflects a willingness to accept moderate short-term fluctuations in pursuit of longer-term financial objectives, consistent with your stated time horizon and risk tolerance.',
+  'Mod Growth':'This portfolio is positioned for long-term capital appreciation with a meaningful allocation to fixed income intended to moderate volatility along the way. The equity sleeve is diversified across domestic and international markets, incorporating factor tilts designed to emphasize quality and value. This profile reflects your capacity and willingness to accept periods of meaningful short-term decline in pursuit of above-average long-term growth, consistent with your stated goals and investment time horizon.',
+  'Growth':'This portfolio is oriented toward long-term capital appreciation, with equity as the primary return driver. The fixed income allocation provides diversification and a measure of downside mitigation, but this portfolio will experience meaningful short-term volatility. Periodic declines — including significant ones — are an expected and normal feature of this profile. This recommendation reflects your stated risk tolerance, time horizon, and the objective of growing wealth over the long term.',
+  'Aggressive':'This portfolio seeks to maximize long-term capital appreciation through a predominantly equity allocation. The minimal fixed income exposure reflects a high stated tolerance for short-term volatility and a long investment time horizon. Substantial short-term losses are an expected feature of this profile, not an exception. This recommendation is appropriate only where both the financial capacity and the emotional willingness to remain invested through significant market downturns have been clearly established.'
+};
+
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function txt(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
+function ROM(n){return['I','II','III','IV','V','VI','VII','VIII'][n-1]||n;}
+function dname(){var n1=v('f-name1'),n2=v('f-name2');if(n1&&n2)return n1+' & '+n2;return n1||'—';}
+
+// Build profile select options HTML
+function profileOpts(selected){
+  var h='<option value="">— Profile —</option>';
+  PO.forEach(function(p){h+='<option value="'+p+'"'+(selected===p?' selected':'')+'>'+PD[p]+'</option>';});
+  return h;
+}
+
+// Init all acct-profile selects
+function initProfileSelects(){
+  document.querySelectorAll('.acct-profile').forEach(function(sel){
+    if(!sel.innerHTML.trim()) sel.innerHTML=profileOpts('');
+  });
+}
+
+// Get unique profiles from accounts (or main profile if same-for-all)
+function getActiveProfiles(){
+  var sameAll=document.getElementById('same-profile-tog')&&document.getElementById('same-profile-tog').checked;
+  if(sameAll){ var spf=v('f-shared-profile'); return spf?[spf]:[]; }
+  var profiles=[];
+  document.querySelectorAll('.acct-profile').forEach(function(sel){
+    var p=sel.value;
+    if(p&&profiles.indexOf(p)===-1) profiles.push(p);
+  });
+  return profiles;
+}
+
+// Get accounts for a given profile (for labeling multi-profile grids)
+function getAccountsForProfile(pf){
+  var sameAll=document.getElementById('same-profile-tog')&&document.getElementById('same-profile-tog').checked;
+  if(sameAll) return null; // no label needed
+  var names=[];
+  var rows=document.querySelectorAll('#acct-body tr.acct-main');
+  var details=document.querySelectorAll('#acct-body tr.acct-detail');
+  rows.forEach(function(r,i){
+    var det=details[i];
+    if(!det)return;
+    var sel=det.querySelector('.acct-profile');
+    if(sel&&sel.value===pf){
+      var inp=r.querySelector('input');
+      if(inp&&inp.value) names.push(inp.value);
+    }
+  });
+  return names.length?names:null;
+}
+
+function buildPortfolioGrid(pf){
+  var p=PR[pf];if(!p)return'';
+  var col=PC[pf];
+  var oth=p.g+p.c;
+  var showETF=document.getElementById('opt-etf')&&document.getElementById('opt-etf').checked;
+  var h='<div class="port-block">';
+
+  // Always: profile snapshot bar
+  h+='<div class="prof-snap"><div><div class="snap-name">'+PD[pf]+'</div><div class="snap-alloc">'+p.eq+'% Equity / '+p.fi+'% Fixed Income / '+oth+'% Real Assets &amp; Cash</div></div>';
+  h+='<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">';
+  h+='<div class="alloc-bar"><div class="ab-eq" style="flex:'+p.eq+' 0 0"></div><div class="ab-fi" style="flex:'+p.fi+' 0 0"></div><div class="ab-oth" style="flex:'+oth+' 0 0"></div></div>';
+  h+='<div class="legend"><div class="leg-i"><div class="leg-dot" style="background:var(--navy)"></div>Equity</div><div class="leg-i"><div class="leg-dot" style="background:var(--gold)"></div>Fixed Income</div><div class="leg-i"><div class="leg-dot" style="background:var(--border)"></div>Real Assets & Cash</div></div>';
+  h+='</div></div>';
+
+  // Target allocation table (always shown — simple, non-specific)
+  h+='<table class="alloc-summary-tbl">';
+  h+='<thead><tr><th>Asset Class</th><th>Target</th><th>Approach</th></tr></thead>';
+  h+='<tbody>';
+  h+='<tr><td class="asset-group">Equity</td><td>'+p.eq+'%</td><td>The engine of long-term wealth creation. Broadly diversified across global markets with deliberate tilts toward quality, value, and growth — characteristics associated with companies that compound wealth more effectively over time.</td></tr>';
+  h+='<tr><td class="asset-sub">US Equity</td><td></td><td>Core US market exposure anchored in a total market position and complemented by quality, value, and growth factor tilts. The growth component carries a quality overlay — emphasizing companies with strong earnings trajectories and the financial discipline to sustain them.</td></tr>';
+  h+='<tr><td class="asset-sub">International &amp; Emerging Markets</td><td></td><td>Geographic diversification across developed international and emerging markets, capturing growth opportunities across different economic cycles and regions. Applied with a quality and growth tilt to emphasize the stronger businesses within each market.</td></tr>';
+  h+='<tr><td class="asset-group">Fixed Income</td><td>'+p.fi+'%</td><td>A thoughtfully constructed blend of core investment-grade bonds and select active fixed income strategies. This sleeve is designed to generate income, provide a counterweight to equity volatility, and give the portfolio a degree of resilience when markets are under stress.</td></tr>';
+  h+='<tr><td class="asset-group">Real Assets</td><td>'+p.g+'%</td><td>Currently implemented through a physical gold position. This sleeve is designed to hold real assets — commodities, inflation-sensitive instruments, or similar — that have historically demonstrated low correlation to traditional stocks and bonds and that serve as a portfolio diversifier during periods of inflation or broader market stress.</td></tr>';
+  h+='<tr><td class="asset-group">Cash &amp; Equivalents</td><td>'+p.c+'%</td><td>A deliberate liquidity reserve — held in money market instruments — that keeps the portfolio anchored and ready. Not idle money; a strategic position that provides stability and optionality.</td></tr>';
+  h+='</tbody></table>';
+
+  // Investment philosophy (always shown)
+  h+='<div class="prose" style="margin-top:16px;"><p>'+INVEST_PHIL+'</p></div>';
+
+  // ETF grid (conditional)
+  if(showETF){
+    h+='<div class="etf-grid-wrap" style="margin-top:20px;">';
+    h+='<div style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Portfolio Holdings Detail</div>';
+    h+='<table class="etf-tbl"><thead><tr><th>ETF / Category</th><th>Description</th><th class="hl">'+PD[pf]+' %</th></tr></thead><tbody>';
+    EG.forEach(function(r){
+      var val=r[col],vs=(val==null||val==='')? '—':val+'%';
+      if(r.tp==='tot') h+='<tr class="shdr"><td colspan="2">'+r.t+'</td><td class="hl">'+vs+'</td></tr>';
+      else h+='<tr><td class="tk">'+r.t+'</td><td>'+r.d+'</td><td class="hl'+(val==null?' zero':'')+'">'+vs+'</td></tr>';
+    });
+    h+='</tbody></table>';
+    h+='<p class="etf-note">Allocations reflect the QWM Model Portfolios for the selected risk profile. Portfolio reviewed on an ongoing and as needed basis.</p>';
+    h+='</div>';
+  }
+
+  // Strategy rationale (always shown)
+  var strat=STRAT_TEXT[pf];
+  if(strat) h+='<div class="prose" style="margin-top:16px;"><p>'+strat+'</p></div>';
+
+  h+='</div>'; // close port-block
+  return h;
+}
+
+function renderPortfolios(){
+  var profiles=getActiveProfiles();
+  var container=document.getElementById('portfolio-sections');
+  if(!container)return;
+  if(profiles.length===0){
+    container.innerHTML='<div class="ai-ph">Select a risk profile in the sidebar to display the portfolio allocation.</div>';
+    return;
+  }
+  var h='';
+  profiles.forEach(function(pf,i){
+    var accts=getAccountsForProfile(pf);
+    if(profiles.length>1&&accts){
+      h+='<div class="port-block-hdr">'+PD[pf]+' Profile — Applies to: '+accts.join(', ')+'</div>';
+    }
+    h+=buildPortfolioGrid(pf);
+    if(i<profiles.length-1) h+='<hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">';
+  });
+  container.innerHTML=h;
+
+}
+
+
+function sync(){
+  var nm=dname();
+  var dv=v('f-date');
+  var ds=dv?new Date(dv+'T00:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
+  var pf=v('f-profile');
+  txt('cv-client',nm); txt('cv-date',ds); txt('cv-meeting',ds);
+
+  var a1=v('f-age1'),a2=v('f-age2'),ra=v('f-retage'),ra2=v('f-retage2'),hasP=!!v('f-name2');
+  var ytr=(a1&&ra)?(parseInt(ra)-parseInt(a1))+' years':'—';
+  var ytr2=(a2&&ra2)?(parseInt(ra2)-parseInt(a2))+' years':'—';
+
+  // Show/hide Client 2 retirement age field
+  var ra2wrap=document.getElementById('f-retage2-wrap');
+  if(ra2wrap) ra2wrap.style.display=hasP?'block':'none';
+
+  var gh='';
+  if(hasP){
+    gh+='<div class="ig-i"><label>Client 1</label><div class="iv">'+(v('f-name1')||'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Client 2 / Partner</label><div class="iv">'+(v('f-name2')||'—')+'</div></div>';
+    if(a1) gh+='<div class="ig-i"><label>Client 1 Age</label><div class="iv">'+a1+'</div></div>';
+    if(a2) gh+='<div class="ig-i"><label>Client 2 Age</label><div class="iv">'+a2+'</div></div>';
+    gh+='<div class="ig-i"><label>Client 1 Retirement Age</label><div class="iv">'+(ra?'Age '+ra:'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Client 2 Retirement Age</label><div class="iv">'+(ra2?'Age '+ra2:'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Client 1 Years to Retirement</label><div class="iv">'+ytr+'</div></div>';
+    gh+='<div class="ig-i"><label>Client 2 Years to Retirement</label><div class="iv">'+ytr2+'</div></div>';
+  } else {
+    gh+='<div class="ig-i"><label>Name</label><div class="iv">'+(v('f-name1')||'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Current Age</label><div class="iv">'+(a1||'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Target Retirement Age</label><div class="iv">'+(ra?'Age '+ra:'—')+'</div></div>';
+    gh+='<div class="ig-i"><label>Years to Retirement</label><div class="iv">'+ytr+'</div></div>';
+  }
+  gh+='<div class="ig-i"><label>Monthly Income Target</label><div class="iv">'+(v('f-income')||'—')+'</div></div>';
+  document.getElementById('info-grid').innerHTML=gh;
+
+  var aum=v('f-aum'),fe=document.getElementById('fee-est');
+  if(fe){var an=parseFloat(aum.replace(/[^0-9.]/g,''));
+    if(!isNaN(an)&&an>0){var fee=an*.01;fe.innerHTML='<strong>Estimated annual fee for '+nm+':</strong> $'+an.toLocaleString()+' × 1.00% = <strong>$'+fee.toLocaleString(undefined,{maximumFractionDigits:0})+'</strong>/year ($'+Math.round(fee/4).toLocaleString()+'/quarter, billed in advance).';}
+    else fe.textContent='';}
+  checkAumMatch();
+  renderPortfolios();
+  updateNums();
+}
+
+function syncProfile(){
+  var pf=v('f-profile'),badge=document.getElementById('pb');
+  if(!pf){badge.style.display='none';sync();return;}
+  var p=PR[pf],oth=p.g+p.c;
+  badge.style.display='flex';
+  txt('pb-pct',p.eq+'%');
+  document.getElementById('pb-eq').style.width=p.eq+'%';
+  document.getElementById('pb-fi').style.width=p.fi+'%';
+  document.getElementById('pb-oth').style.width=oth+'%';
+  txt('pb-det',p.eq+'% Equity / '+p.fi+'% Fixed Income / '+oth+'% Other');
+
+
+  sync();
+}
+
+function updateNums(){
+  var hf=document.getElementById('opt-fee').checked;
+  txt('h-port', 'III. Proposed Portfolio');
+  txt('h-proc', 'IV. Our Investment Process');
+  txt('h-why',  'V. Why Quarters Wealth Management, LLC');
+  txt('h-fee',  'VI. Fee Schedule');
+  txt('h-ns',   (hf?'VII':'VI')+'. Proposed Next Steps');
+}
+
+function addAcct(){
+  var tb=document.getElementById('acct-body');
+  var mainRow=document.createElement('tr');
+  mainRow.className='acct-main';
+  mainRow.innerHTML='<td><input type="text" placeholder="Account name" oninput="syncCust()"></td><td><input type="text" placeholder="IRA" oninput="syncCust()"></td><td><input type="text" placeholder="$0" oninput="fmtMoney(this);syncCust()"></td>';
+  var detRow=document.createElement('tr');
+  detRow.className='acct-detail';
+  detRow.innerHTML='<td><input type="text" placeholder="Custodian" oninput="syncCust()"></td><td style="text-align:center;"><input type="checkbox" class="schwab-chk" onchange="syncCust()" style="width:auto;accent-color:var(--gold);"></td><td><select class="acct-profile" onchange="syncCust()" style="font-size:.72rem;padding:3px 4px;">'+profileOpts('')+'</select></td>';
+  tb.appendChild(mainRow);
+  tb.appendChild(detRow);
+}
+
+function syncCust(){
+  var sameAll=document.getElementById('same-profile-tog')&&document.getElementById('same-profile-tog').checked;
+  var sharedWrap=document.getElementById('shared-profile-wrap');
+  if(sharedWrap) sharedWrap.style.display=sameAll?'block':'none';
+  document.querySelectorAll('.acct-profile').forEach(function(sel){
+    sel.parentElement.style.display=sameAll?'none':'table-cell';
+  });
+  var mainRows=document.querySelectorAll('#acct-body tr.acct-main');
+  var detRows=document.querySelectorAll('#acct-body tr.acct-detail');
+  var h='',tot=0;
+
+  mainRows.forEach(function(r,i){
+    var det=detRows[i];
+    var inp=r.querySelectorAll('input');
+    var nm=inp[0]?inp[0].value:'';
+    var tp=inp[1]?inp[1].value:'';
+    var vl=inp[2]?inp[2].value:'';
+    var custInp=det?det.querySelector('input[type=text]'):null;
+    var cust=custInp?custInp.value:'';
+    var schwabChk=det?det.querySelector('.schwab-chk'):null;
+    var atSchwab=schwabChk?schwabChk.checked:false;
+
+    if(nm||vl){
+      h+='<tr>';
+      h+='<td>'+(nm||'—')+'</td>';
+      h+='<td>'+(tp||'—')+'</td>';
+      h+='<td>'+(cust||'—')+(atSchwab?' <span style="color:var(--gold);font-weight:700;">✓</span>':'')+'</td>';
+      h+='<td>'+(vl||'—')+'</td>';
+      h+='</tr>';
+      var n=parseFloat((vl||'').replace(/[^0-9.]/g,''));
+      if(!isNaN(n))tot+=n;
+    }
+  });
+
+  document.getElementById('cust-prev').innerHTML=h||'<tr><td colspan="4" style="color:var(--muted);font-style:italic">No accounts entered.</td></tr>';
+  document.getElementById('cust-tot').textContent=tot>0?'Total: $'+tot.toLocaleString():'';
+  acctTotal=tot;
+  checkAumMatch();
+  renderPortfolios();
+}
+
+function renderNS(){
+  var h='',num=1;
+  var chk=function(k){var el=document.getElementById('s-'+k);return el?el.checked:false;};
+  var dn=function(k){var el=document.getElementById('d-'+k);return el?el.checked:false;};
+  NS_DEF.forEach(function(def){
+    var inc=def.isCurrent||chk(def.key);
+    if(!inc)return;
+    var isDone=!def.isCurrent&&dn(def.key),isCur=def.isCurrent;
+    var cls='ns-i'+(isDone?' done':isCur?' current':'');
+    var badge=isDone?'<span class="ns-badge nb-done">&#10003; Completed</span>':isCur?'<span class="ns-badge nb-cur">Current</span>':'';
+    h+='<div class="'+cls+'"><div class="ns-num">'+num+'</div><div class="ns-body"><strong>'+def.label+badge+'</strong><p>'+def.text+'</p></div></div>';
+    num++;
+  });
+  document.getElementById('ns-list').innerHTML=h||'<div style="color:var(--muted);font-style:italic;font-size:.82rem">No steps selected.</div>';
+}
+
+function syncOpts(){
+  var showFee=document.getElementById('opt-fee').checked;
+  document.getElementById('sec-fee-block').style.display=showFee?'':'none';
+  updateNums();
+}
+
+function fmtMoney(input){
+  var raw=input.value.replace(/[^0-9]/g,'');
+  if(raw===''){input.value='';return;}
+  var num=parseInt(raw,10);
+  var formatted='$'+num.toLocaleString();
+  input.value=formatted;
+  try{var l=formatted.length;input.setSelectionRange(l,l);}catch(e){}
+}
+
+function fmtMoneyRange(input){
+  var val=input.value;
+  if(val&&/^[0-9]/.test(val)&&val[0]!=='$') input.value='$'+val;
+}
+
+var acctTotal=0;
+function checkAumMatch(){
+  var warn=document.getElementById('aum-mismatch');
+  if(!warn)return;
+  var aum=v('f-aum');
+  var an=parseFloat(aum.replace(/[^0-9.]/g,''));
+  if(isNaN(an)||an===0||acctTotal===0){warn.style.display='none';return;}
+  var diff=Math.abs(an-acctTotal);
+  var pct=diff/an;
+  if(pct<0.005){warn.style.display='none';return;} // within 0.5% — ignore rounding
+  warn.style.display='block';
+  warn.textContent='⚠ Account total ($'+acctTotal.toLocaleString()+') doesn\'t match Approx. AUM ($'+an.toLocaleString()+')';
+}
+
+function uploadLogo(input){
+  var file=input.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=document.getElementById('cov-logo-img');
+    var def=document.getElementById('cov-logo-default');
+    if(img){img.src=e.target.result;img.style.display='block';}
+    if(def)def.style.display='none';
+    document.getElementById('logo-clear').style.display='inline-block';
+  };
+  reader.readAsDataURL(file);
+}
+function clearLogo(){
+  var img=document.getElementById('cov-logo-img');
+  var def=document.getElementById('cov-logo-default');
+  if(img){img.src='';img.style.display='none';}
+  if(def)def.style.display='block';
+  document.getElementById('logo-file').value='';
+  document.getElementById('logo-clear').style.display='none';
+}
+
+// INIT
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+var firstSel=document.querySelector('.acct-profile');
+if(firstSel) firstSel.innerHTML=profileOpts('');
+sync();
+syncCust();
+renderNS();
+</script>
+<div class="page-gold-bar"></div>
+
+<!-- CHANGELOG MODAL -->
+<div class="cl-overlay" id="cl-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="cl-modal">
+    <div class="cl-hdr">
+      <div>
+        <div class="cl-hdr-title">QWM Proposal Builder</div>
+        <div class="cl-hdr-sub">Release Notes</div>
+      </div>
+      <button class="cl-close" onclick="document.getElementById('cl-overlay').classList.remove('open')">&#10005;</button>
+    </div>
+    <div class="cl-body">
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.5.2</span>
+          <span class="cl-ver-date">May 9, 2026</span>
+          <span class="cl-ver-badge">Current</span>
+        </div>
+        <ul class="cl-changes">
+          <li>QWM logo embedded inline in cover navy bar — white SVG, persistent across all sessions, no upload required</li>
+          <li>Logo upload in Document Options now overrides the embedded logo rather than replacing firm name text; Remove button restores embedded logo</li>
+        </ul>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.5.1</span>
+          <span class="cl-ver-date">May 9, 2026</span>
+        </div>
+        <ul class="cl-changes">
+          <li>Next Steps numbering fixed — done items now retain their sequential number; marking a step done no longer compresses the numbers of remaining steps</li>
+          <li>Financial Plan text: removed eMoney reference, now reads "Your financial plan establishes the foundation..."</li>
+          <li>Investment Proposal text: removed "and fee structure"; last sentence changed to "It marks the beginning of our advisory relationship."</li>
+          <li>Portfolio Implementation text: reworked opening; removed "drift" from monitoring reference</li>
+          <li>Print regression fixed — removed explicit margin-bottom from @page rule that was compressing page content areas</li>
+        </ul>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.5.0</span>
+          <span class="cl-ver-date">May 9, 2026</span>
+        </div>
+        <ul class="cl-changes">
+          <li>Account Summary column order changed to: Account / Title → Type → Custodian → Value</li>
+          <li>AUM mismatch warning — sidebar shows alert when account totals don't match Approx. AUM</li>
+          <li>Print footer with page numbers — centered page number on all pages starting page 2; cover suppressed via CSS @page :first</li>
+          <li>Logo upload — Document Options now includes logo uploader; replaces firm name text in cover navy bar; PNG/SVG with transparent background recommended; removable</li>
+        </ul>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.4.2</span>
+          <span class="cl-ver-date">May 9, 2026</span>
+        </div>
+        <ul class="cl-changes">
+          <li>Removed dead code block in <code>getActiveProfiles()</code> — unreachable duplicate after first return statement</li>
+        </ul>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.4.1</span>
+          <span class="cl-ver-date">May 9, 2026</span>
+        </div>
+        <ul class="cl-changes">
+          <li>Legend and profile snap text updated from "Gold &amp; Cash" to "Real Assets &amp; Cash" — consistent with Target Allocation table terminology</li>
+        </ul>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-ver">
+          <span class="cl-ver-num">v1.4.0</span>
+          <span class="cl-ver-date">May 5, 2026</span>
+        </div>
+        <ul class="cl-changes">
+          <li>Initial release — prospect proposal builder tool</li>
+          <li>Cover page: white background, navy top bar, gold rule, client name, risk profile, date, advisor info, cover disclaimer strip</li>
+          <li>Sections: Executive Summary, Client Profile, Current Account Summary (optional), Proposed Portfolio, Our Investment Process, Why QWM, Fee Schedule (optional), Next Steps</li>
+          <li>Risk profile selector with live ETF grid (Conservative through Aggressive) pulled from QWM Model Portfolios</li>
+          <li>Client Profile grid adjusts automatically for individual vs. couple</li>
+          <li>Assets in custody toggle — account table with auto-formatting and running total</li>
+          <li>Next Steps configurator — include/exclude each step, mark as Done; sequential numbering skips completed items</li>
+          <li>Fee Schedule optional; section numbers update automatically when omitted</li>
+          <li>Acknowledgment and signature block optional toggle</li>
+          <li>AUM and account value fields auto-format with $ and commas</li>
+          <li>All narrative sections are editable directly in the preview — empty sections hidden in print</li>
+          <li>Why QWM pre-populated with firm value proposition copy</li>
+          <li>Print layout: cover breaks to own page; sections avoid splitting; gold bar runs on every printed page; disclosure static on final page only</li>
+          <li>Investment Process: 5 steps including Tactical Risk Management and Regular Ongoing Reviews</li>
+          <li>ETF note corrected — removed inaccurate "all holdings are low-cost ETFs" claim (PONAX is active)</li>
+          <li>Fees billed quarterly in advance (not arrears)</li>
+          <li>All references to firm use "Quarters Wealth Management, LLC" — no exceptions</li>
+          <li>No AI generation dependency — no API key required</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
