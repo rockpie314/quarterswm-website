@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>In case of ...everything. | Quarters Wealth Management, LLC</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/in-case-of-everything.css">
+<script>if (new URLSearchParams(window.location.search).get('embedded') === '1') document.documentElement.classList.add('embedded-mode', 'embedded-welcome-active');</script>
+</head>
+<body>
+<!-- PRINT HEADER (hidden on screen, shown on print) -->
+<div class="print-header">
+<img alt="Quarters Wealth Management" src="qwm-logo-color.jpg"/>
+</div>
+<!-- NAV -->
+<!-- WELCOME SCREEN (v12) -->
+<div class="welcome-screen" id="welcomeScreen">
+<div class="welcome-header-band">
+<div class="brand-mark"><img alt="Quarters Wealth Management" src="qwm-logo-white.svg"/></div>
+<div class="brand-tagline">WE HELP PEOPLE.</div>
+</div>
+<div class="welcome-inner">
+<aside class="welcome-personal-note" aria-label="A note from Duane">
+<h3>A note from Duane</h3>
+<p>There's no right way to do this, and no rush. Take as much or as little as feels right. Save your progress with a password and come back whenever. If a question comes up, please reach out. That's what I'm here for.</p>
+<p class="signoff"><strong>Duane Johnson, ChFC<sup>®</sup>, CLU<sup>®</sup></strong><br/>
+<a href="tel:+18102242008">(810) 224-2008</a> &nbsp;·&nbsp; <a href="mailto:DJohnson@Vanderbiltsecurities.com">DJohnson@Vanderbiltsecurities.com</a></p>
+</aside>
+<div class="welcome-greeting">Welcome to</div>
+<h1 class="welcome-title">In case of...everything.</h1>
+<p class="welcome-sub">A personal record for the people you love</p>
+<div class="welcome-rule"></div>
+<div class="welcome-intro">
+<p>This document is a personal letter from you to the people you love, written ahead of time, so they don’t have to guess. Pick the topics you want to cover, then fill in what feels right. You can save your progress with a password at any time and come back to finish later.</p>
+</div>
+<h2 class="welcome-section-title">Select the topics you’d like to include</h2>
+<p class="welcome-hint">Click the ▾ next to a section to fine-tune which prompts within it to include.</p>
+<div class="welcome-presets">
+<button class="welcome-preset-btn" onclick="welcomePreset('quickstart')" type="button">Quick Start</button>
+<button class="welcome-preset-btn" onclick="welcomePreset('all')" type="button">All</button>
+<button class="welcome-preset-btn" onclick="welcomePreset('none')" type="button">None</button>
+</div>
+<div class="welcome-grid">
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="opening" type="checkbox" aria-label="Opening"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">Opening</span>
+<span class="welcome-topic-desc">Why I'm writing this</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="opening" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="opening" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="opening-sub-1" type="checkbox"/><span>I am writing this for</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="opening-sub-2" type="checkbox"/><span>I took the time to write this because</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="opening-sub-3" type="checkbox"/><span>Some Other Thoughts</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="opening-sub-4" type="checkbox"/><span>Anything else I want you to know before you read on</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s1" type="checkbox" aria-label="1 · About Me"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">1 · About Me</span>
+<span class="welcome-topic-desc">Who I am, in my own words</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s1" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s1" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s1-sub-1" type="checkbox"/><span>A bit about me</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s1-sub-2" type="checkbox"/><span>Some things I am proud of</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s1-sub-3" type="checkbox"/><span>Causes and charities that matter to me</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s1-sub-4" type="checkbox"/><span>How I want to be remembered</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s2" type="checkbox" aria-label="2 · People in My Life"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">2 · People in My Life</span>
+<span class="welcome-topic-desc">Family, friends, advisors to notify</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s2" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s2" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-1" type="checkbox"/><span>My Spouse / Partner</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-2" type="checkbox"/><span>My Children</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-3" type="checkbox"/><span>My Grandchildren</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-4" type="checkbox"/><span>Other Family Members</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-5" type="checkbox"/><span>Close Friends Who Should Be Notified</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-6" type="checkbox"/><span>My Advisors</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-7" type="checkbox"/><span>My Clergy / Spiritual Advisor</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s2-sub-8" type="checkbox"/><span>Anyone Else Who Should Be Contacted</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s3" type="checkbox" aria-label="3 · Financial Life"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">3 · Financial Life</span>
+<span class="welcome-topic-desc">Accounts, debts, advisors</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s3" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s3" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-1" type="checkbox"/><span>Wealth Manager / Investment Advisor</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-2" type="checkbox"/><span>Investment Accounts</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-3" type="checkbox"/><span>Banking</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-4" type="checkbox"/><span>Pension &amp; Social Security</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-5" type="checkbox"/><span>Long Term Care Insurance</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-6" type="checkbox"/><span>Life Insurance</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-7" type="checkbox"/><span>Other Financial Assets</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s3-sub-8" type="checkbox"/><span>Safe / Lockbox / Important Documents Location</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s4" type="checkbox" aria-label="4 · Legal"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">4 · Legal</span>
+<span class="welcome-topic-desc">Wills, trusts, powers of attorney</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s4" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s4" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-1" type="checkbox"/><span>Last Will &amp; Testament</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-2" type="checkbox"/><span>Trust Agreement</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-3" type="checkbox"/><span>Durable Power of Attorney</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-4" type="checkbox"/><span>Healthcare Power of Attorney</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-5" type="checkbox"/><span>Advance Directive / Living Will</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s4-sub-6" type="checkbox"/><span>My Attorney</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s5" type="checkbox" aria-label="5 · Medical"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">5 · Medical</span>
+<span class="welcome-topic-desc">Doctors, medications, directives</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s5" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s5" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-1" type="checkbox"/><span>Primary Care Physician</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-2" type="checkbox"/><span>Specialists</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-3" type="checkbox"/><span>Current Medications</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-4" type="checkbox"/><span>Health Insurance</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-5" type="checkbox"/><span>Organ Donation</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s5-sub-6" type="checkbox"/><span>My Healthcare Wishes</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s6" type="checkbox" aria-label="6 · Digital"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">6 · Digital</span>
+<span class="welcome-topic-desc">Online accounts, passwords, devices</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s6" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s6" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-1" type="checkbox"/><span>Devices</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-2" type="checkbox"/><span>Password Manager / Stored Passwords</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-3" type="checkbox"/><span>Email Accounts</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-4" type="checkbox"/><span>Social Media Accounts</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-5" type="checkbox"/><span>Subscriptions &amp; Recurring Payments to Cancel</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s6-sub-6" type="checkbox"/><span>Online Banking &amp; Bill Pay</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s7" type="checkbox" aria-label="7 · Property"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">7 · Property</span>
+<span class="welcome-topic-desc">Real estate, vehicles, valuables</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s7" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s7" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s7-sub-1" type="checkbox"/><span>Primary Residence</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s7-sub-2" type="checkbox"/><span>Other Real Estate</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s7-sub-3" type="checkbox"/><span>Vehicles</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s7-sub-4" type="checkbox"/><span>Storage Units</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s7-sub-5" type="checkbox"/><span>Meaningful Personal Items &amp; My Wishes</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s8" type="checkbox" aria-label="8 · Business"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">8 · Business</span>
+<span class="welcome-topic-desc">Businesses and partnerships</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s8" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s8" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s8-sub-1" type="checkbox"/><span>Employer / Current Employment</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s8-sub-2" type="checkbox"/><span>Business Ownership</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s8-sub-3" type="checkbox"/><span>Professional Licenses &amp; Associations</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s9" type="checkbox" aria-label="9 · Final Wishes"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">9 · Final Wishes</span>
+<span class="welcome-topic-desc">Funeral and farewell preferences</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s9" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s9" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s9-sub-1" type="checkbox"/><span>Burial or Cremation</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s9-sub-2" type="checkbox"/><span>Funeral or Memorial Service</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s9-sub-3" type="checkbox"/><span>Obituary</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s9-sub-4" type="checkbox"/><span>Celebration of Life</span></label>
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s9-sub-5" type="checkbox"/><span>Notifications</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main">
+<input class="welcome-section-cb" data-welcome-section="s10" type="checkbox" aria-label="10 · Personal Note"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">10 · Personal Note</span>
+<span class="welcome-topic-desc">A letter to the people who matter most</span>
+</div>
+<button aria-label="Show options" class="welcome-expand-btn" data-expand-for="s10" onclick="toggleExpand(this)" type="button">▾</button>
+</div>
+<div class="welcome-subitems" data-subitems-for="s10" hidden="">
+<label class="welcome-subitem"><input checked="" data-subitem-cb="s10-sub-1" type="checkbox"/><span>To the people I love most</span></label>
+</div>
+</div>
+<div class="welcome-topic-row">
+<div class="welcome-topic-main disabled">
+<input checked="" data-welcome-section="disclosure" disabled="" type="checkbox" aria-label="Disclosure ⚏"/>
+<div class="welcome-topic-text">
+<span class="welcome-topic-title">Disclosure ⚏</span>
+<span class="welcome-topic-desc">Required legal language</span>
+</div>
+</div>
+</div>
+</div>
+<div class="welcome-actions">
+<button class="welcome-begin" id="welcomeBeginButton" onclick="welcomeBegin()" type="button">Begin →</button>
+<div class="welcome-counter" id="welcomeCounter">0 of 10 sections selected</div>
+<div class="welcome-note">You can change sections later from the top of the form. Sub-item choices are set here.</div>
+</div>
+</div>
+</div>
+<nav class="nav-bar">
+<a class="nav-logo" href="https://quarterswm.com"><img alt="Quarters Wealth Management" src="qwm-logo-white.svg" style="height:48px; width:auto; display:block;"/></a>
+<span class="nav-tagline">We help people.</span>
+<div class="nav-controls">
+  <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙 Dark</button>
+  <button class="hamburger-menu" id="hamburgerMenu" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</div>
+</nav>
+<!-- PRIVACY NOTICE -->
+<div class="privacy-notice">
+<span>🔒</span> Nothing you enter is stored, transmitted, or seen by us. Optionally save an encrypted copy to your own device to resume later.
+</div>
+<!-- SECTION SELECTOR -->
+<div class="selector-panel" id="selectorPanel"><button aria-expanded="false" class="selector-toggle" onclick="toggleSelectorMenu()"><span>Sections</span><span class="caret">▾</span></button><button class="selector-back-btn" onclick="welcomeBack()" title="Re-open the topic selection screen" type="button">← Back to Topics</button><div class="selector-menu" hidden="" id="selectorMenu"><div class="selector-menu-header">Include sections</div><a class="selector-menu-back" href="#" onclick="welcomeBack(); return false;">← Back to topic selection</a><div class="selector-menu-options"><label class="selector-check"><input checked="" data-section="opening" type="checkbox"/><span>Opening</span></label><label class="selector-check"><input checked="" data-section="s1" type="checkbox"/><span>1 · About Me</span></label><label class="selector-check"><input checked="" data-section="s2" type="checkbox"/><span>2 · People</span></label><label class="selector-check"><input checked="" data-section="s3" type="checkbox"/><span>3 · Financial</span></label><label class="selector-check"><input checked="" data-section="s4" type="checkbox"/><span>4 · Legal</span></label><label class="selector-check"><input data-section="s5" type="checkbox"/><span>5 · Medical</span></label><label class="selector-check"><input data-section="s6" type="checkbox"/><span>6 · Digital</span></label><label class="selector-check"><input data-section="s7" type="checkbox"/><span>7 · Property</span></label><label class="selector-check"><input data-section="s8" type="checkbox"/><span>8 · Business</span></label><label class="selector-check"><input checked="" data-section="s9" type="checkbox"/><span>9 · Final Wishes</span></label><label class="selector-check"><input checked="" data-section="s10" type="checkbox"/><span>10 · Personal Note</span></label><label class="selector-check" title="Required"><input checked="" data-section="disclosure" disabled="" type="checkbox"/><span>Disclosure ⚑</span></label></div><div class="selector-menu-actions"><button class="selector-btn" onclick="setAll(true)">All</button><button class="selector-btn" onclick="setAll(false)">None</button></div></div><div class="selector-actions"><span class="last-loaded-indicator" id="lastLoadedIndicator"></span><button class="selector-btn" onclick="saveProgress()" title="Download an encrypted copy of your answers to your own device">Save Progress</button><button class="selector-btn" onclick="loadProgress()" title="Resume from a previously saved file">Resume</button><button class="selector-btn danger" id="resetFormBtn" onclick="resetForm()" title="Clear every field">Reset</button><button class="selector-btn primary" id="pdfDownloadBtn" onclick="confirmAndPrint()">Download Completed PDF</button></div>
+<div class="section-controls">
+  <button class="collapse-all-btn" onclick="collapseAllSections()" title="Collapse all sections">Collapse All</button>
+  <button class="collapse-all-btn" onclick="expandAllSections()" title="Expand all sections">Expand All</button>
+</div></div>
+<div class="document-status" id="documentStatus" role="status" aria-live="polite"></div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<a class="sidebar-item active" href="#cover">Cover</a>
+<a class="sidebar-item" href="#opening">Opening</a>
+<div class="sidebar-divider"></div>
+<a class="sidebar-item" href="#s1">1 · About Me</a>
+<a class="sidebar-item" href="#s2">2 · People in My Life</a>
+<a class="sidebar-item" href="#s3">3 · Financial Life</a>
+<a class="sidebar-item" href="#s4">4 · Legal Documents</a>
+<a class="sidebar-item" href="#s5">5 · Medical Life</a>
+<a class="sidebar-item" href="#s6">6 · Digital Life</a>
+<a class="sidebar-item" href="#s7">7 · Property</a>
+<a class="sidebar-item" href="#s8">8 · Business</a>
+<a class="sidebar-item" href="#s9">9 · Final Wishes</a>
+<a class="sidebar-item" href="#s10">10 · Personal Note</a>
+<div class="sidebar-divider"></div>
+<a class="sidebar-item" href="#disclosure">Disclosure</a>
+</aside>
+<div class="layout">
+<main class="main">
+<!-- ══ COVER ══ -->
+<section class="cover" id="cover">
+<div class="cover-title">In case of  ...everything.</div>
+<div class="cover-sub">A map and a message</div>
+<div class="cover-rule"></div>
+<div class="cover-photo-wrap" data-no-print-controls><img alt="Cover photo" class="cover-photo-img" id="coverPhotoImg"/><label class="cover-photo-upload-btn">Add cover photo (optional)<input accept="image/*" hidden id="coverPhotoInput" onchange="handleCoverPhoto(event)" type="file"/></label><button class="cover-photo-remove" id="coverPhotoRemove" onclick="removeCoverPhoto()" type="button">remove</button></div>
+<div class="cover-fields">
+<label class="cover-label">Prepared by</label>
+<div class="field-group" style="margin-bottom:1rem">
+<input placeholder="" type="text" aria-label="Prepared by"/>
+</div>
+<label class="cover-label">Prepared on</label>
+<div class="field-group">
+<input placeholder="" type="text" aria-label="Prepared on"/>
+</div>
+</div>
+<p class="cover-disclaimer">This document is not a will, a trust, or any other legal or financial instrument. It is simply a gift: a map and a message, written with intention, so that the people who matter most to me do not have to guess.</p>
+<p class="cover-couples-note"><strong>For couples:</strong> the personal sections (About Me, Final Wishes, A Personal Note) belong to each of you individually. Fill out your own copy. The factual sections (finances, legal, property, family) can be shared in a single copy between you.</p>
+</section>
+<!-- ══ OPENING ══ -->
+<section class="section-block" id="opening" aria-labelledby="hdr-opening">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">◆</span>
+<span class="section-header-title" id="hdr-opening">Opening · Why I'm Writing This</span>
+</div>
+<div class="field-full" data-subitem="opening-sub-1">
+<p class="prompt-text">I am writing this for... and more than anything, I want them to know...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+<div class="field-full" data-subitem="opening-sub-2">
+<p class="prompt-text">I took the time to write this because... and my hope is that this document gives them...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+<div class="section-divider"></div>
+<p class="section-note"><strong>A note on how to use this document:</strong> Read it fully before acting on anything. Some sections reference legal documents. Those documents govern. This letter is meant to give you context, comfort, and direction, not legal instruction. If something here conflicts with a formal document, the formal document controls.</p>
+<div class="sub-header" data-subitem="opening-sub-3">Some Other Thoughts</div>
+<div class="field-full" data-subitem="opening-sub-4">
+<p class="prompt-text">Anything else I want you to know before you read on...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+</section>
+<!-- ══ SECTION 1 ══ -->
+<section class="section-block" id="s1" aria-labelledby="hdr-s1">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">1</span>
+<span class="section-header-title" id="hdr-s1">About Me</span>
+</div>
+<p class="section-note">This section is not your resume. It is who you are, in your own words. Write as much or as little as feels right.</p>
+<div class="field-full" data-subitem="s1-sub-1">
+<p class="prompt-text">A bit about me... what I believe... and what has brought me joy...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+<div class="field-full" data-subitem="s1-sub-2">
+<p class="prompt-text">Some things I am proud of... and my life's work and what it meant to me...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+<div class="field-full" data-subitem="s1-sub-3">
+<p class="prompt-text">Causes and charities that matter to me... and my faith, spirituality, or guiding philosophy...</p>
+<textarea aria-label="Open response" class="xl"></textarea>
+</div>
+<div class="field-full" data-subitem="s1-sub-4">
+<p class="prompt-text">How I want to be remembered...</p>
+<textarea aria-label="Open response" class="lg"></textarea>
+</div>
+</section>
+<!-- ══ SECTION 2 ══ -->
+<section class="section-block" id="s2" aria-labelledby="hdr-s2">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">2</span>
+<span class="section-header-title" id="hdr-s2">The People in My Life</span>
+</div>
+<p class="section-note">The people listed here matter to me. Please reach out to them, keep them informed, and treat them with the same care they showed me.</p>
+<!-- v14: Primary Emergency Contact -->
+<div class="primary-contact-block" role="region" aria-label="Primary Emergency Contact">
+<span class="primary-contact-label">★ Primary Emergency Contact</span>
+<p class="section-note" style="margin-bottom:.75rem;">The single person who should be called first.</p>
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Primary Phone</label><input type="text" aria-label="Primary Phone"/></div><div class="field-group"><label class="field-label">Alternate Phone</label><input type="text" aria-label="Alternate Phone"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div><div class="field-group"><label class="field-label">Address</label><input type="text" aria-label="Address"/></div></div>
+</div>
+
+<!-- Person block helper via repeated markup -->
+<div class="sub-header" data-subitem="s2-sub-1">My Spouse / Partner</div>
+<div class="account-block">
+<div class="field-row">
+<div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div>
+<div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div>
+</div>
+<div class="field-row">
+<div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div>
+<div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div>
+</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-2">My Children</div>
+<div data-repeat="children" data-repeat-label="child">
+<div class="account-block" data-repeat-item="">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-3">My Grandchildren</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-4">Other Family Members</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Relationship</label><input type="text" aria-label="Relationship"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Anyone else in my family I want to mention...</label><textarea aria-label="Anyone else in my family I want to mention..."></textarea></div></div>
+<div class="sub-header" data-subitem="s2-sub-5">Close Friends Who Should Be Notified</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div><div class="field-group"><label class="field-label">Notes</label><input type="text" aria-label="Notes"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div><div class="field-group"><label class="field-label">Notes</label><input type="text" aria-label="Notes"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div><div class="field-group"><label class="field-label">Notes</label><input type="text" aria-label="Notes"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-6">My Advisors</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Financial Advisor: Name</label><input type="text" value="Duane Johnson, ChFC®, CLU®" aria-label="Financial Advisor: Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" value="Quarters Wealth Management, LLC" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" value="(810) 224-2008" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" value="DJohnson@Vanderbiltsecurities.com" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Attorney: Name</label><input type="text" aria-label="Attorney: Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">CPA / Tax Advisor: Name</label><input type="text" aria-label="CPA / Tax Advisor: Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Agent: Name</label><input type="text" aria-label="Insurance Agent: Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-7">My Clergy / Spiritual Advisor</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Organization</label><input type="text" aria-label="Organization"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s2-sub-8">Anyone Else Who Should Be Contacted</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Others I want notified or involved...</label><textarea class="lg" aria-label="Others I want notified or involved..."></textarea></div></div>
+</section>
+<!-- ══ SECTION 3 ══ -->
+<section class="section-block major-print-break" id="s3" aria-labelledby="hdr-s3">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">3</span>
+<span class="section-header-title" id="hdr-s3">My Financial Life</span>
+</div>
+<p class="section-note">This section is a map of my financial world. Account numbers are here for reference. Always verify with the institution directly.</p>
+<!-- v14: Liquid Net Worth (optional) -->
+<div class="net-worth-block" role="region" aria-label="Liquid Net Worth (optional)">
+<div class="field-group"><label class="field-label">Total Estimated Liquid Net Worth (optional)</label><input placeholder="e.g. $250,000" type="text" aria-label="Total Estimated Liquid Net Worth (optional)"/></div>
+<p class="net-worth-disclaimer">Optional. Your estimate of cash plus investments that could be accessed within roughly 30 days. Not a legal valuation.</p>
+</div>
+<!-- v14: Recurring Income Sources -->
+<div class="sub-header">Recurring Income Sources</div>
+<div role="region" aria-label="Recurring Income Sources">
+<table class="income-table" id="incomeTable">
+<thead><tr><th>Source Name</th><th>Type</th><th>Monthly Amount</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><input aria-label="Income source name" type="text"/></td><td><select aria-label="Income source type"><option value=""></option><option>Pension</option><option>Social Security</option><option>Annuity</option><option>Rental</option><option>Other</option></select></td><td><input aria-label="Monthly amount" type="text"/></td><td><input aria-label="Notes" type="text"/></td></tr>
+<tr><td><input aria-label="Income source name" type="text"/></td><td><select aria-label="Income source type"><option value=""></option><option>Pension</option><option>Social Security</option><option>Annuity</option><option>Rental</option><option>Other</option></select></td><td><input aria-label="Monthly amount" type="text"/></td><td><input aria-label="Notes" type="text"/></td></tr>
+<tr><td><input aria-label="Income source name" type="text"/></td><td><select aria-label="Income source type"><option value=""></option><option>Pension</option><option>Social Security</option><option>Annuity</option><option>Rental</option><option>Other</option></select></td><td><input aria-label="Monthly amount" type="text"/></td><td><input aria-label="Notes" type="text"/></td></tr>
+</tbody>
+</table>
+<button class="income-add-row" onclick="addIncomeRow()" type="button">+ Add row</button>
+</div>
+
+<div class="sub-header" data-subitem="s3-sub-1">Wealth Manager / Investment Advisor <span class="sub-header-note">(Primary contact for financial matters)</span></div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" value="Duane Johnson, ChFC®, CLU®" aria-label="Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" value="Quarters Wealth Management, LLC" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" value="(810) 224-2008" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" value="DJohnson@Vanderbiltsecurities.com" aria-label="Email"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-2">Investment Accounts</div>
+<div id="inv-accounts">
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text" aria-label="Institution / Company"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text" aria-label="Account Title"/></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text" aria-label="Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text" aria-label="Location of Statements / Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text" aria-label="Institution / Company"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text" aria-label="Account Title"/></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text" aria-label="Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text" aria-label="Location of Statements / Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text" aria-label="Institution / Company"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text" aria-label="Account Title"/></div><div class="field-group"><label class="field-label">Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)</label><input type="text" aria-label="Account Type (e.g. IRA, Roth IRA, Trust, Joint, Individual)"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text" aria-label="Location of Statements / Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-3">Banking</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text" aria-label="Institution / Company"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text" aria-label="Account Title"/></div><div class="field-group"><label class="field-label">Account Type (Checking, Savings, CD, IRA)</label><input type="text" aria-label="Account Type (Checking, Savings, CD, IRA)"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text" aria-label="Location of Statements / Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Institution / Company</label><input type="text" aria-label="Institution / Company"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Account Title</label><input type="text" aria-label="Account Title"/></div><div class="field-group"><label class="field-label">Account Type (Checking, Savings, CD, IRA)</label><input type="text" aria-label="Account Type (Checking, Savings, CD, IRA)"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Statements / Documents</label><input type="text" aria-label="Location of Statements / Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-4">Pension &amp; Social Security</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Pension Provider</label><input type="text" aria-label="Pension Provider"/></div><div class="field-group"><label class="field-label">Monthly Benefit</label><input type="text" aria-label="Monthly Benefit"/></div></div>
+<div class="field-row" style="align-items:center">
+<div class="field-group">
+<label class="field-label">Survivor Option</label>
+<div class="checkbox-row">
+<div class="checkbox-group"><input id="surv_yes" type="checkbox"/><label for="surv_yes">Yes</label></div>
+<div class="checkbox-group"><input id="surv_no" type="checkbox"/><label for="surv_no">No</label></div>
+<div class="checkbox-inline-field"><label>Percentage</label><input placeholder="%" type="text"/></div>
+</div>
+</div>
+</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Pension Contact / Notes</label><textarea aria-label="Pension Contact / Notes"></textarea></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Social Security Number Stored At</label><input type="text" aria-label="Social Security Number Stored At"/></div><div class="field-group"><label class="field-label">Monthly Benefit (if applicable)</label><input type="text" aria-label="Monthly Benefit (if applicable)"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-5">Long Term Care Insurance</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text" aria-label="Insurance Company"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Type (Reimbursement or Indemnity)</label><input type="text" aria-label="Type (Reimbursement or Indemnity)"/></div><div class="field-group"><label class="field-label">Elimination Period</label><input type="text" aria-label="Elimination Period"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Daily / Monthly Benefit</label><input type="text" aria-label="Daily / Monthly Benefit"/></div><div class="field-group"><label class="field-label">Benefit Period</label><input type="text" aria-label="Benefit Period"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text" aria-label="Location of Policy Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text" aria-label="Insurance Company"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Type (Reimbursement or Indemnity)</label><input type="text" aria-label="Type (Reimbursement or Indemnity)"/></div><div class="field-group"><label class="field-label">Elimination Period</label><input type="text" aria-label="Elimination Period"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Daily / Monthly Benefit</label><input type="text" aria-label="Daily / Monthly Benefit"/></div><div class="field-group"><label class="field-label">Benefit Period</label><input type="text" aria-label="Benefit Period"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text" aria-label="Location of Policy Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-6">Life Insurance</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text" aria-label="Insurance Company"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Death Benefit</label><input type="text" aria-label="Death Benefit"/></div><div class="field-group"><label class="field-label">Beneficiary</label><input type="text" aria-label="Beneficiary"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text" aria-label="Location of Policy Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text" aria-label="Insurance Company"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Death Benefit</label><input type="text" aria-label="Death Benefit"/></div><div class="field-group"><label class="field-label">Beneficiary</label><input type="text" aria-label="Beneficiary"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Contact Name</label><input type="text" aria-label="Contact Name"/></div><div class="field-group"><label class="field-label">Phone / Email</label><input type="text" aria-label="Phone / Email"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Location of Policy Documents</label><input type="text" aria-label="Location of Policy Documents"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s3-sub-7">Other Financial Assets <span class="sub-header-note">(Crypto, Annuities, Storage Facility, Safety Deposit Box, etc.)</span></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Description and location of other financial assets...</label><textarea class="lg" aria-label="Description and location of other financial assets..."></textarea></div></div>
+<div class="sub-header" data-subitem="s3-sub-8">Safe / Lockbox / Important Documents Location</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location</label><input type="text" aria-label="Location"/></div><div class="field-group"><label class="field-label">Combination / Key Location</label><input type="text" aria-label="Combination / Key Location"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">What is stored there...</label><textarea aria-label="What is stored there..."></textarea></div></div>
+</div>
+</section>
+<!-- ══ SECTION 4 ══ -->
+<section class="section-block" id="s4" aria-labelledby="hdr-s4">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">4</span>
+<span class="section-header-title" id="hdr-s4">My Legal Documents</span>
+</div>
+<p class="section-note">These are my formal legal documents. The documents themselves govern. This section simply tells you where they are and who prepared them.</p>
+<div class="sub-header" data-subitem="s4-sub-1">Last Will &amp; Testament</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text" aria-label="Location of Original"/></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text" aria-label="Date Executed"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Executor</label><input type="text" aria-label="Executor"/></div><div class="field-group"><label class="field-label">Alternate Executor</label><input type="text" aria-label="Alternate Executor"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s4-sub-2">Trust Agreement</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text" aria-label="Location of Original"/></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text" aria-label="Date Executed"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Trustee</label><input type="text" aria-label="Trustee"/></div><div class="field-group"><label class="field-label">Successor Trustee(s)</label><input type="text" aria-label="Successor Trustee(s)"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s4-sub-3">Durable Power of Attorney (Financial)</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text" aria-label="Location of Original"/></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text" aria-label="Date Executed"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Assignee</label><input type="text" aria-label="Assignee"/></div><div class="field-group"><label class="field-label">Alternate Assignee</label><input type="text" aria-label="Alternate Assignee"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s4-sub-4">Healthcare Power of Attorney</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text" aria-label="Location of Original"/></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text" aria-label="Date Executed"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Healthcare Agent</label><input type="text" aria-label="Healthcare Agent"/></div><div class="field-group"><label class="field-label">Alternate Agent</label><input type="text" aria-label="Alternate Agent"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s4-sub-5">Advance Directive / Living Will</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Location of Original</label><input type="text" aria-label="Location of Original"/></div><div class="field-group"><label class="field-label">Date Executed</label><input type="text" aria-label="Date Executed"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Designated Decision Maker</label><input type="text" aria-label="Designated Decision Maker"/></div><div class="field-group"><label class="field-label">Alternate</label><input type="text" aria-label="Alternate"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s4-sub-6">My Attorney</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Firm</label><input type="text" aria-label="Firm"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+</div>
+</section>
+<!-- ══ SECTION 5 ══ -->
+<section class="section-block major-print-break" id="s5" aria-labelledby="hdr-s5">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">5</span>
+<span class="section-header-title" id="hdr-s5">My Medical Life</span>
+</div>
+<p class="section-note">My medical providers, insurance, and personal healthcare wishes are documented here.</p>
+<div class="sub-header" data-subitem="s5-sub-1">Primary Care Physician</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Practice / Hospital</label><input type="text" aria-label="Practice / Hospital"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Address</label><input type="text" aria-label="Address"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s5-sub-2">Specialists</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Specialty</label><input type="text" aria-label="Specialty"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Practice</label><input type="text" aria-label="Practice"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Name</label><input type="text" aria-label="Name"/></div><div class="field-group"><label class="field-label">Specialty</label><input type="text" aria-label="Specialty"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div><div class="field-group"><label class="field-label">Practice</label><input type="text" aria-label="Practice"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s5-sub-3">Current Medications</div>
+<div class="field-full"><div class="field-group"><label class="field-label">List of medications, dosages, and prescribing physicians...</label><textarea class="xl" aria-label="List of medications, dosages, and prescribing physicians..."></textarea></div></div>
+<div class="sub-header" data-subitem="s5-sub-4">Health Insurance</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Company</label><input type="text" aria-label="Insurance Company"/></div><div class="field-group"><label class="field-label">Member ID</label><input type="text" aria-label="Member ID"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Group Number</label><input type="text" aria-label="Group Number"/></div><div class="field-group"><label class="field-label">Phone</label><input type="text" aria-label="Phone"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Medicare / Medicaid Number</label><input type="text" aria-label="Medicare / Medicaid Number"/></div><div class="field-group"><label class="field-label">Part B / D Info Location</label><input type="text" aria-label="Part B / D Info Location"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s5-sub-5">Organ Donation</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Donor Status</label><input type="text" aria-label="Donor Status"/></div><div class="field-group"><label class="field-label">Documented On</label><input type="text" aria-label="Documented On"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">My wishes regarding organ donation...</label><textarea aria-label="My wishes regarding organ donation..."></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s5-sub-6">My Healthcare Wishes</div>
+<div class="field-full"><div class="field-group"><label class="field-label">What I want my family and caregivers to know about my wishes for my care...</label><textarea class="xl" aria-label="What I want my family and caregivers to know about my wishes for my care..."></textarea></div></div>
+</section>
+<!-- ══ SECTION 6 ══ -->
+<section class="section-block" id="s6" aria-labelledby="hdr-s6">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">6</span>
+<span class="section-header-title" id="hdr-s6">My Digital Life</span>
+</div>
+<p class="section-note">Do not store passwords here in plain text. Instead, note where passwords are kept. This section helps loved ones access and close accounts.</p>
+<div class="sub-header" data-subitem="s6-sub-1">Devices</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Computer / Laptop (make &amp; model)</label><input type="text" aria-label="Computer / Laptop (make &amp;amp; model)"/></div><div class="field-group"><label class="field-label">PIN / Password Location</label><input type="text" aria-label="PIN / Password Location"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Phone (make &amp; model)</label><input type="text" aria-label="Phone (make &amp;amp; model)"/></div><div class="field-group"><label class="field-label">PIN / Password Location</label><input type="text" aria-label="PIN / Password Location"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s6-sub-2">Password Manager / Stored Passwords</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Password Manager Used</label><input type="text" aria-label="Password Manager Used"/></div><div class="field-group"><label class="field-label">Master Password Location</label><input type="text" aria-label="Master Password Location"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Any other notes on accessing my accounts...</label><textarea aria-label="Any other notes on accessing my accounts..."></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s6-sub-3">Email Accounts</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Primary Email Address</label><input type="text" aria-label="Primary Email Address"/></div><div class="field-group"><label class="field-label">Provider</label><input type="text" aria-label="Provider"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Secondary Email Address</label><input type="text" aria-label="Secondary Email Address"/></div><div class="field-group"><label class="field-label">Provider</label><input type="text" aria-label="Provider"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s6-sub-4">Social Media Accounts</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Platforms I use and my wishes for each account (memorialize, delete, leave)...</label><textarea class="lg" aria-label="Platforms I use and my wishes for each account (memorialize, delete, leave)..."></textarea></div></div>
+<div class="sub-header" data-subitem="s6-sub-5">Subscriptions &amp; Recurring Payments to Cancel</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Services, subscriptions, and memberships that should be cancelled...</label><textarea class="lg" aria-label="Services, subscriptions, and memberships that should be cancelled..."></textarea></div></div>
+<div class="sub-header" data-subitem="s6-sub-6">Online Banking &amp; Bill Pay</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes on automatic payments, online banking, and bills in my name...</label><textarea class="lg" aria-label="Notes on automatic payments, online banking, and bills in my name..."></textarea></div></div>
+<!-- v14: Digital Executors & Account Recovery -->
+<div class="sub-header">Digital Executors &amp; Account Recovery</div>
+<div role="region" aria-label="Digital Executors and Account Recovery">
+<div class="field-full"><div class="field-group"><label class="field-label">Who I trust with my digital life</label><textarea aria-label="Who I trust with my digital life"></textarea></div></div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Google: Recovery Contact Name</label><input type="text" aria-label="Google: Recovery Contact Name"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Google: Phone</label><input type="text" aria-label="Google: Phone"/></div><div class="field-group"><label class="field-label">Notes (Inactive Account Manager set up?)</label><input type="text" aria-label="Notes (Inactive Account Manager set up?)"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Apple: Legacy Contact Name</label><input type="text" aria-label="Apple: Legacy Contact Name"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Apple: Phone</label><input type="text" aria-label="Apple: Phone"/></div><div class="field-group"><label class="field-label">Notes (Access Key location)</label><input type="text" aria-label="Notes (Access Key location)"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Microsoft: Recovery Contact Name</label><input type="text" aria-label="Microsoft: Recovery Contact Name"/></div><div class="field-group"><label class="field-label">Email</label><input type="text" aria-label="Email"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Microsoft: Phone</label><input type="text" aria-label="Microsoft: Phone"/></div><div class="field-group"><label class="field-label">Notes</label><input type="text" aria-label="Notes"/></div></div>
+</div>
+</div>
+</section>
+<!-- ══ SECTION 7 ══ -->
+<section class="section-block major-print-break" id="s7" aria-labelledby="hdr-s7">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">7</span>
+<span class="section-header-title" id="hdr-s7">My Property &amp; Possessions</span>
+</div>
+<p class="section-note">This section describes my property and any wishes I have about specific possessions. My will and trust are the legal authority. This is my personal guidance.</p>
+<div class="sub-header" data-subitem="s7-sub-1">Primary Residence</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Address</label><input type="text" aria-label="Address"/></div><div class="field-group"><label class="field-label">Ownership Type</label><input type="text" aria-label="Ownership Type"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Mortgage Lender</label><input type="text" aria-label="Mortgage Lender"/></div><div class="field-group"><label class="field-label">Account Number</label><input type="text" aria-label="Account Number"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Deed Location</label><input type="text" aria-label="Deed Location"/></div><div class="field-group"><label class="field-label">Homeowners Insurance</label><input type="text" aria-label="Homeowners Insurance"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Notes</label><textarea aria-label="Notes"></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s7-sub-2">Other Real Estate</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Address / Description</label><input type="text" aria-label="Address / Description"/></div><div class="field-group"><label class="field-label">Ownership Type</label><input type="text" aria-label="Ownership Type"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Deed / Title Location</label><input type="text" aria-label="Deed / Title Location"/></div><div class="field-group"><label class="field-label">Notes</label><input type="text" aria-label="Notes"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s7-sub-3">Vehicles</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Year / Make / Model</label><input type="text" aria-label="Year / Make / Model"/></div><div class="field-group"><label class="field-label">Title Location</label><input type="text" aria-label="Title Location"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Provider</label><input type="text" aria-label="Insurance Provider"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Year / Make / Model</label><input type="text" aria-label="Year / Make / Model"/></div><div class="field-group"><label class="field-label">Title Location</label><input type="text" aria-label="Title Location"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Insurance Provider</label><input type="text" aria-label="Insurance Provider"/></div><div class="field-group"><label class="field-label">Policy Number</label><input type="text" aria-label="Policy Number"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s7-sub-4">Storage Units</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Facility Name &amp; Address</label><input type="text" aria-label="Facility Name &amp;amp; Address"/></div><div class="field-group"><label class="field-label">Unit Number / Key Location</label><input type="text" aria-label="Unit Number / Key Location"/></div></div>
+</div>
+<div class="sub-header" data-subitem="s7-sub-5">Meaningful Personal Items &amp; My Wishes</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Items that are important to me and who I would like to have them...</label><textarea class="xl" aria-label="Items that are important to me and who I would like to have them..."></textarea></div></div>
+</section>
+<!-- ══ SECTION 8 ══ -->
+<section class="section-block" id="s8" aria-labelledby="hdr-s8">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">8</span>
+<span class="section-header-title" id="hdr-s8">My Business &amp; Professional Life</span>
+</div>
+<p class="section-note">Complete this section if you are employed, self-employed, or have business interests. Skip any items that do not apply.</p>
+<div class="sub-header" data-subitem="s8-sub-1">Employer / Current Employment</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Employer Name</label><input type="text" aria-label="Employer Name"/></div><div class="field-group"><label class="field-label">HR Contact</label><input type="text" aria-label="HR Contact"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">HR Phone / Email</label><input type="text" aria-label="HR Phone / Email"/></div><div class="field-group"><label class="field-label">Employee ID</label><input type="text" aria-label="Employee ID"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Benefits, pension, or accounts through employer...</label><textarea aria-label="Benefits, pension, or accounts through employer..."></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s8-sub-2">Business Ownership</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">Business Name</label><input type="text" aria-label="Business Name"/></div><div class="field-group"><label class="field-label">My Role</label><input type="text" aria-label="My Role"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Business Attorney</label><input type="text" aria-label="Business Attorney"/></div><div class="field-group"><label class="field-label">Accountant</label><input type="text" aria-label="Accountant"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Key contacts, partners, and what should happen to the business...</label><textarea class="lg" aria-label="Key contacts, partners, and what should happen to the business..."></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s8-sub-3">Professional Licenses &amp; Associations</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Any licenses, certifications, or professional memberships...</label><textarea aria-label="Any licenses, certifications, or professional memberships..."></textarea></div></div>
+</section>
+<!-- ══ SECTION 9 ══ -->
+<section class="section-block major-print-break" id="s9" aria-labelledby="hdr-s9">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">9</span>
+<span class="section-header-title" id="hdr-s9">My Final Wishes</span>
+</div>
+<p class="section-note">These are my personal wishes. They are not legally binding, but they reflect what matters to me. I hope they make difficult decisions a little easier.</p>
+<!-- v14: Common wishes checklist -->
+<div class="sub-header">Common Wishes <span class="sub-header-note">(check any that apply)</span></div>
+<div class="wishes-grid" role="group" aria-label="Common wishes">
+<label class="wish-with-input"><input type="checkbox"/> No flowers. Donations to: <input type="text" placeholder="charity"/></label>
+<label><input type="checkbox"/> Open casket</label>
+<label><input type="checkbox"/> Closed casket</label>
+<label class="wish-with-input"><input type="checkbox"/> Specific music/songs: <input type="text" placeholder="song titles"/></label>
+<label class="wish-with-input"><input type="checkbox"/> Specific readings: <input type="text" placeholder="scripture/poems"/></label>
+<label><input type="checkbox"/> Military honors</label>
+<label><input type="checkbox"/> Eco-friendly / green burial</label>
+<label><input type="checkbox"/> Private service (family only)</label>
+<label><input type="checkbox"/> Public memorial</label>
+<label class="wish-with-input"><input type="checkbox"/> Cremation, ashes scattered at: <input type="text" placeholder="location"/></label>
+</div>
+
+<div class="sub-header" data-subitem="s9-sub-1">Burial or Cremation</div>
+<div class="account-block">
+<div class="field-row"><div class="field-group"><label class="field-label">My Preference</label><input type="text" aria-label="My Preference"/></div><div class="field-group"><label class="field-label">Pre-Arrangements Made With</label><input type="text" aria-label="Pre-Arrangements Made With"/></div></div>
+<div class="field-row"><div class="field-group"><label class="field-label">Location / Cemetery</label><input type="text" aria-label="Location / Cemetery"/></div><div class="field-group"><label class="field-label">Documents Located At</label><input type="text" aria-label="Documents Located At"/></div></div>
+<div class="field-full"><div class="field-group"><label class="field-label">Any other wishes regarding burial or cremation...</label><textarea aria-label="Any other wishes regarding burial or cremation..."></textarea></div></div>
+</div>
+<div class="sub-header" data-subitem="s9-sub-2">Funeral or Memorial Service</div>
+<div class="field-full"><div class="field-group"><label class="field-label">My wishes for my funeral or memorial service: type of service, location, tone, music, readings...</label><textarea class="xl" aria-label="My wishes for my funeral or memorial service: type of service, location, tone, music, readings..."></textarea></div></div>
+<div class="sub-header" data-subitem="s9-sub-3">Obituary</div>
+<div class="field-full"><div class="field-group"><label class="field-label">What I would want said about me, or notes for whoever writes my obituary...</label><textarea class="xl" aria-label="What I would want said about me, or notes for whoever writes my obituary..."></textarea></div></div>
+<div class="sub-header" data-subitem="s9-sub-4">Celebration of Life</div>
+<div class="field-full"><div class="field-group"><label class="field-label">If I want a celebration of life: what that looks like, who to invite, what to serve, what music to play...</label><textarea class="xl" aria-label="If I want a celebration of life: what that looks like, who to invite, what to serve, what music to play..."></textarea></div></div>
+<div class="sub-header" data-subitem="s9-sub-5">Notifications</div>
+<div class="field-full"><div class="field-group"><label class="field-label">Organizations, clubs, institutions, or publications that should be notified...</label><textarea class="lg" aria-label="Organizations, clubs, institutions, or publications that should be notified..."></textarea></div></div>
+</section>
+<!-- ══ SECTION 10 ══ -->
+<section class="section-block" id="s10" aria-labelledby="hdr-s10">
+<div class="section-header"><button class="section-toggle" onclick="toggleSectionCollapse(this)" aria-label="Toggle section">▾</button>
+<span class="section-header-num">10</span>
+<span class="section-header-title" id="hdr-s10">A Personal Note</span>
+</div>
+<p class="section-note">This is your space. Write what you want the people you love to know, in your own voice, without prompts. There is no right way to do this.</p>
+<div class="field-full" data-subitem="s10-sub-1">
+<p class="prompt-text">To the people I love most...</p>
+<textarea aria-label="Open response" class="xxl"></textarea>
+</div>
+<div class="field-full"><textarea aria-label="Open response" class="xxl"></textarea></div>
+<div class="field-full"><textarea aria-label="Open response" class="xxl"></textarea></div>
+<div class="section-divider"></div>
+<p class="section-note" style="text-align:center; font-style:italic;">This document was completed with care and intention. Please keep it somewhere safe and tell the people who need it where to find it.</p>
+</section>
+<!-- ══ DISCLOSURE ══ -->
+<!-- CLOSING NOTE -->
+<div class="closing-note" id="closing">
+<h2>A note from Duane</h2>
+<p>Thank you for the trust you've placed in me by working through this. I hope this document sits quietly in a drawer for many years, but having it ready is one of the kindest things you can do for the people who love you.</p>
+<p>If a question comes up as you fill it out, or any time after, please reach out.</p>
+<div class="closing-signoff">~ Duane</div>
+<div class="closing-signature">
+<div class="name">Duane Johnson, ChFC®, CLU®</div>
+<div class="title">Founder &amp; Principal</div>
+<div class="firm">Quarters Wealth Management, LLC</div>
+<div class="closing-contact">
+      (810) 224-2008  ·  <a href="mailto:DJohnson@Vanderbiltsecurities.com">DJohnson@Vanderbiltsecurities.com</a>  ·  <a href="https://quarterswm.com">quarterswm.com</a>
+</div>
+</div>
+</div>
+<div class="disclosure" id="disclosure">
+<p>Duane Johnson is an investment advisor representative of Consolidated Portfolio Review. Quarters Wealth Management, LLC and Vanderbilt Financial Group are separate and unaffiliated entities.</p>
+<p>Vanderbilt Financial Group is the marketing name for Consolidated Portfolio Review and its affiliates. Advisory Services offered through Consolidated Portfolio Review.</p>
+<p>For additional information on services, disclosures, fees, and conflicts of interest, please visit <a href="https://www.vanderbiltfg.com/disclosures" target="_blank">www.vanderbiltfg.com/disclosures</a></p>
+<p style="margin-top:.5rem; font-size:.7rem; opacity:.5;">This document is personal in nature and is not a legal or financial instrument. It is intended solely to provide guidance and information to the named individual's designated heirs and representatives. Nothing contained herein constitutes investment, legal, or tax advice.</p>
+</div>
+</main>
+</div>
+<script src="html2pdf.bundle.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="js/in-case-of-everything.js"></script>
+</body>
+</html>
